@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Программа для дом. управа</string>
+
+    <string name="content_main_inspection_button">ОСМОТР КОМИССИЕЙ</string>
+
+    <string name="content_main_title">АКТ ОСМОТРА ОБЩЕГО ИМУЩЕСТВА МНОГОКВАРТИРНОГО ДОМА</string>
+
+    <string name="content_main_common1">Адрес:</string>
+    <string name="content_main_common2">Дата:</string>
+    <string name="content_main_common3">Состав комиссии</string>
+    <string name="content_main_common4">Представители принимающее дом управляющей организации (УК, ТСЖ, ЖСК, др.):
+    </string>
+    <string name="content_main_common5">Должность:</string>
+    <string name="content_main_common6">Фамилия, инициалы:</string>
+    <string name="content_main_common7">Представители Совета многоквартирного дома (собственников дома):</string>
+    <string name="content_main_common8">№ квартиры:</string>
+
+    <string name="content_main_specifications1">Технические характеристики многоквартирного дома</string>
+    <string name="content_main_specifications2">Год ввода дома в эксплуатацию:</string>
+    <string name="content_main_specifications3">Срок службы здания</string>
+    <string name="content_main_specifications4">Материал стен</string>
+    <string name="content_main_specifications5">Вид и тип фундамента</string>
+    <string name="content_main_specifications6">Вид и тип кровли</string>
+    <string name="content_main_specifications7">Число этажей</string>
+    <string name="content_main_specifications8">Количество подъездов</string>
+    <string name="content_main_specifications9">Количество квартир</string>
+    <string name="content_main_specifications10">Количество лифтов</string>
+    <string name="content_main_specifications11">Общая площадь дома (кв.м.)</string>
+    <string name="content_main_specifications12">Общая площадь жилых помещений (кв.м.)</string>
+    <string name="content_main_specifications13">Наличие подвала (технического подвала/ технического подполья)</string>
+    <string name="content_main_specifications14">Наличие технического этажа (между этажами)</string>
+    <string name="content_main_specifications15">Наличие мансарды</string>
+    <string name="content_main_specifications16">Наличие чердака (технического чердака)</string>
+    <string name="content_main_specifications17">Наличие цокольного этажа(паркинга)</string>
+    <string name="content_main_specifications18">Количество нежилых помещений, не входящих в состав общего имущества
+        (кв.м.)
+    </string>
+    <string name="content_main_specifications19">Количество приборов учёта тепловой энергии</string>
+    <string name="content_main_specifications20">Количество приборов учёта ХГВС</string>
+    <string name="content_main_specifications21">Количество ВРУ</string>
+    <string name="content_main_specifications22">Количество приборов учёта эл.энергии</string>
+    <string name="content_main_specifications23">Принадлежность к памятнику архитектуры</string>
+
+    <string name="content_main_results1">Результаты осмотра</string>
+    <string name="content_main_results2">Кровля</string>
+    <string name="content_main_results3">кровельное покрытие</string>
+    <string name="content_main_results4">свесы</string>
+    <string name="content_main_results5">желоба</string>
+    <string name="content_main_results6">защитные ограждения</string>
+    <string name="content_main_results7">Крыша</string>
+    <string name="content_main_results8">стропильная система</string>
+    <string name="content_main_results9">мауэрлат</string>
+    <string name="content_main_results10">выходы на чердак</string>
+    <string name="content_main_results11">чердачные продухи</string>
+    <string name="content_main_results12">слуховые окна</string>
+    <string name="content_main_results13">устройства защиты вентиляционных каналов и дымоходов от осадков</string>
+    <string name="content_main_results14">наружный водосток</string>
+    <string name="content_main_results15">водоотводящие лотки и отводы от здания</string>
+
+    <string name="content_main_commission1">Члены комиссии:</string>
+    <string name="title_activity_inspection">InspectionActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_item_list">Items</string>
+    <string name="title_item_detail">Item Detail</string>
+
+
+</resources>
