@@ -20,6 +20,10 @@
                 android:label="@string/title_activity_inspection"
                 android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+                android:name=".InspectionDetails"
+                android:label="@string/title_activity_content_results_child">
+        </activity>
     </application>
 
 </manifest>

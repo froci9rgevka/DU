@@ -1,9 +1,15 @@
 package com.pea.du;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,6 +20,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.ViewFlipper;
 
 public class InspectionActivity extends AppCompatActivity
@@ -50,10 +58,20 @@ public class InspectionActivity extends AppCompatActivity
 
         // Create a View and adding them to flipper
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        int layouts[] = new int[]{  R.layout.content_common,  R.layout.content_specifications,
-                                    R.layout.content_results, R.layout.content_commission       };
+        int layouts[] = new int[]{R.layout.content_common, R.layout.content_specifications,
+                R.layout.content_results, R.layout.content_commission};
         for (int layout : layouts)
             content_flipper.addView(inflater.inflate(layout, null));
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+
+        //////////////////////////////////////////////////////////////////////////////////////////////
+        // 18.07.2017 PEA ad flipper
+        //Spinner spinner = (Spinner) findViewById(R.id.content_common_adress_spinner);
+
+
+        //ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,dbWorker.read());
+        //spinner.setAdapter(adp);
 
         //////////////////////////////////////////////////////////////////////////////////////////////
     }
@@ -120,4 +138,10 @@ public class InspectionActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public void onResultButtonClick(View view) {
+        Intent intent = new Intent(InspectionActivity.this, InspectionDetails.class);
+        startActivity(intent);
+    }
+
 }

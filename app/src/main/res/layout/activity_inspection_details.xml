@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.pea.du.InspectionDetails">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="368dp"
+                  android:layout_height="551dp" tools:layout_editor_absoluteY="8dp" tools:layout_editor_absoluteX="8dp">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView2" android:textStyle="normal|bold"
+                android:textAlignment="center" android:text="@string/content_main_results3"/>
+
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:weightSum="1">
+
+            <TextView
+                    android:text="@string/content_main_results_details1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <EditText
+                    android:layout_width="68dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
+                    android:ems="10"
+                    android:id="@+id/common_content5_data" android:layout_weight="0.92"/>
+            <Spinner
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content" android:id="@+id/spinner"
+                    android:entries="@array/content_main_results_details_list"/>
+            />
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+        </LinearLayout>
+
+        <TextView
+                android:text="@string/content_main_results_details3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:textAlignment="center"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/common_content6_data"/>
+
+        <TextView
+                android:text="@string/content_main_results_details4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView13" android:textAlignment="center"/>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPostalAddress"
+                android:ems="10"
+                android:id="@+id/common_content6_data"/>
+        <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" app:srcCompat="@drawable/ic_menu_camera"
+                android:id="@+id/inspection_details_imagView" android:onClick="onInspectionDetailsPhotoClick"/>
+
+
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -57,6 +57,18 @@
     <string name="content_main_results14">наружный водосток</string>
     <string name="content_main_results15">водоотводящие лотки и отводы от здания</string>
 
+    <string name="content_main_results_details1">Количество</string>
+    <string name="content_main_results_details2">Ед. измер.</string>
+    <string name="content_main_results_details3">Описание элементов (материал, конструкция   или система, отделка и прочее)</string>
+    <string name="content_main_results_details4">Техническое состояние элементов (выявленные дефекты)</string>
+    <string name="content_main_results_details5">Фото</string>
+    <string-array name="content_main_results_details_list">
+        <item>кв.м.</item>
+        <item>пог.м.</item>
+        <item>шт.</item>
+        <item>куб. м.</item>
+    </string-array>
+
     <string name="content_main_commission1">Члены комиссии:</string>
     <string name="title_activity_inspection">InspectionActivity</string>
 
@@ -66,6 +78,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_content_results_child">content_results_child</string>
+    <string name="title_activity_inspection_details">inspection_details</string>
 
 
 </resources>
