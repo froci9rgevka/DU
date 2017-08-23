@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="image_ids">
+        <item>@drawable/ic_apps_black_24dp</item>
+        <item>@drawable/ic_menu_camera</item>
+        <item>@drawable/ic_menu_gallery</item>
+    </integer-array>
+</resources>

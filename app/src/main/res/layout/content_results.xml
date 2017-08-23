@@ -25,54 +25,87 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/result_button_1_1"
                 android:onClick="onResultButtonClick"/>
+
         <Button
-                android:text="@string/content_main_results4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_1_2"/>
+            android:id="@+id/result_button_1_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results4" />
+
         <Button
-                android:text="@string/content_main_results5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_1_3"/>
+            android:id="@+id/result_button_1_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results5" />
+
         <Button
-                android:text="@string/content_main_results6"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_1_4"/>
+            android:id="@+id/result_button_1_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results6" />
         <TextView
                 android:text="@string/content_main_results7"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" android:id="@+id/textView5" android:textStyle="normal|bold"
                 android:textAlignment="viewStart"/>
+
         <Button
-                android:text="@string/content_main_results8"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_1"/>
+            android:id="@+id/result_button_2_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results8" />
+
         <Button
-                android:text="@string/content_main_results9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_2"/>
+            android:id="@+id/result_button_2_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results9" />
+
         <Button
-                android:text="@string/content_main_results10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_3"/>
+            android:id="@+id/result_button_2_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results10" />
+
         <Button
-                android:text="@string/content_main_results11"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_4"/>
+            android:id="@+id/result_button_2_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results11" />
+
         <Button
-                android:text="@string/content_main_results12"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_5"/>
+            android:id="@+id/result_button_2_5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results12" />
+
         <Button
-                android:text="@string/content_main_results13"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_6"/>
+            android:id="@+id/result_button_2_6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results13" />
+
         <Button
-                android:text="@string/content_main_results14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_7"/>
+            android:id="@+id/result_button_2_7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results14" />
+
         <Button
-                android:text="@string/content_main_results15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/result_button_2_8"/>
+            android:id="@+id/result_button_2_8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onResultButtonClick"
+            android:text="@string/content_main_results15" />
     </LinearLayout>
 </ScrollView>

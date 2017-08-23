@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content5_data"/>
+                    android:id="@+id/commission_content1_data"/>
 
 
         </LinearLayout>
@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content6_data"/>
+                    android:id="@+id/commission_content2_data"/>
 
 
         </LinearLayout>
@@ -74,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content7_data"/>
+                    android:id="@+id/commission_content3_data"/>
 
 
         </LinearLayout>
@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/commission_content4_data"/>
 
 
         </LinearLayout>
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content5_data"/>
+                    android:id="@+id/commission_content5_data"/>
 
 
         </LinearLayout>
@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content6_data"/>
+                    android:id="@+id/commission_content6_data"/>
 
 
         </LinearLayout>
@@ -158,7 +158,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content7_data"/>
+                    android:id="@+id/commission_content7_data"/>
 
 
         </LinearLayout>
@@ -177,14 +177,15 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/commission_content8_data"/>
 
 
         </LinearLayout>
         <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" android:visibility="visible" android:id="@+id/view2"/>
+                android:background="@color/colorPrimaryDark"
+                android:visibility="visible" />
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -261,31 +262,32 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/commission_content9_data"/>
 
 
         </LinearLayout>
         <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
-                android:background="@color/colorPrimaryDark" android:visibility="visible" android:id="@+id/view2"/>
+                android:background="@color/colorPrimaryDark" android:visibility="visible" />
 
         <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
-                    android:text="@string/content_main_common2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" android:textAlignment="textEnd"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/content_main_common2"
+                android:textAlignment="textEnd" />
 
-            <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPostalAddress"
-                    android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+            <Button
+                android:id="@+id/dateButton_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="setDate" />
 
 
         </LinearLayout>

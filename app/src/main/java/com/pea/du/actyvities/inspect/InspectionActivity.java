@@ -1,15 +1,15 @@
-package com.pea.du;
+package com.pea.du.actyvities.inspect;
 
-import android.content.ContentValues;
+import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.util.Log;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,11 +21,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
+import com.pea.du.R;
+import com.pea.du.db.methods.ReadMethods;
 
+import java.util.ArrayList;
+
+import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+
+
+@TargetApi(Build.VERSION_CODES.N)
 public class InspectionActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    Calendar dateAndTime= Calendar.getInstance();
+
+    Button dateButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +51,6 @@ public class InspectionActivity extends AppCompatActivity
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -53,7 +67,7 @@ public class InspectionActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // 18.07.2017 PEA ad flipper
+        // 18.07.2017 PEA add flipper
         ViewFlipper content_flipper = (ViewFlipper) findViewById(R.id.content_flipper);
 
         // Create a View and adding them to flipper
@@ -66,14 +80,21 @@ public class InspectionActivity extends AppCompatActivity
         //////////////////////////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////////////////////////
-        // 18.07.2017 PEA ad flipper
-        //Spinner spinner = (Spinner) findViewById(R.id.content_common_adress_spinner);
+        // 18.07.2017 PEA add spinner
+        Spinner spinner = (Spinner) findViewById(R.id.content_common_adress_spinner);
 
 
-        //ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,dbWorker.read());
-        //spinner.setAdapter(adp);
+        // Добавление элемента
+        //SQLiteDatabase db_write = dbHelper.getWritableDatabase();
+        //WriteMethods.setAddress(db_write,"Рижская улица");
+
+        ArrayList addresses = ReadMethods.getStaticValues(this, ADDRESS_TABLE_NAME,null, null);
+
+        ArrayAdapter<String> adp = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,addresses);
+        spinner.setAdapter(adp);
 
         //////////////////////////////////////////////////////////////////////////////////////////////
+
     }
 
     @Override
@@ -109,7 +130,6 @@ public class InspectionActivity extends AppCompatActivity
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -130,8 +150,8 @@ public class InspectionActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.bar_button_main_menu) {
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -140,8 +160,49 @@ public class InspectionActivity extends AppCompatActivity
     }
 
     public void onResultButtonClick(View view) {
-        Intent intent = new Intent(InspectionActivity.this, InspectionDetails.class);
+        Intent intent = new Intent(InspectionActivity.this, InspectionDetailsActivity.class);
         startActivity(intent);
     }
+
+
+    // отображаем диалоговое окно для выбора даты
+    public void setDate(View v) {
+        switch(v.getId())
+        {
+            case R.id.dateButton_1:
+                dateButton=(Button)findViewById(R.id.dateButton_1);
+                break;
+            case R.id.dateButton_2:
+                dateButton=(Button)findViewById(R.id.dateButton_2);
+                break;
+            default:
+                throw new RuntimeException("Unknown button ID");
+        }
+
+        new DatePickerDialog(InspectionActivity.this, d,
+                dateAndTime.get(Calendar.YEAR),
+                dateAndTime.get(Calendar.MONTH),
+                dateAndTime.get(Calendar.DAY_OF_MONTH))
+                .show();
+    }
+
+    // установка начальных даты и времени
+    private void setInitialDateTime() {
+
+        dateButton.setText(DateUtils.formatDateTime(this,
+                dateAndTime.getTimeInMillis(),
+                DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                       // | DateUtils.FORMAT_SHOW_TIME));
+    }
+
+    // установка обработчика выбора даты
+    DatePickerDialog.OnDateSetListener d=new DatePickerDialog.OnDateSetListener() {
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            dateAndTime.set(Calendar.YEAR, year);
+            dateAndTime.set(Calendar.MONTH, monthOfYear);
+            dateAndTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            setInitialDateTime();
+        }
+    };
 
 }

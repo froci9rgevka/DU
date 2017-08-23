@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.pea.du.actyvities.defects.address.act.AddActActivity">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
+            tools:layout_editor_absoluteX="8dp">
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/add_act_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/colorPrimary"
+                android:clickable="true"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:title="@string/defect_toolbar_title"
+                tools:layout_editor_absoluteX="8dp"
+                tools:layout_editor_absoluteY="0dp"/>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/activity_defect_constructive" android:id="@+id/textView8"/>
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/activity_defect_constructive_element"
+                    android:layout_weight="1"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_type"/>
+
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/activity_defect_type"
+                    android:layout_weight="1"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_porch"/>
+
+            <EditText
+                    android:id="@+id/activity_defect_porch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_floor"/>
+
+            <EditText
+                    android:id="@+id/activity_defect_floor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_flat"/>
+
+            <EditText
+                    android:id="@+id/activity_defect_flat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_description"/>
+
+            <EditText
+                    android:id="@+id/activity_defect_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName"/>
+
+
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+            <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/activity_defect_currency"/>
+            <EditText
+                    android:id="@+id/activity_defect_currency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:inputType="textPersonName" android:layout_weight="1"/>
+            <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:id="@+id/activity_defect_measure"
+                    android:layout_weight="1"/>
+
+
+        </LinearLayout>
+        <Button
+                android:id="@+id/button4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.05"
+                android:onClick="onAddButtonClick"
+                android:text="ДОБАВИТЬ АКТ"/>
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

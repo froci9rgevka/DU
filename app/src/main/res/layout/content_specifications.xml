@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="date"
                     android:ems="10"
-                    android:id="@+id/common_content2_data" android:layout_weight="0.26"/>
+                    android:id="@+id/specification_content1_data" android:layout_weight="0.26"/>
 
 
         </LinearLayout>
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content5_data"/>
+                    android:id="@+id/specification_content2_data"/>
 
 
         </LinearLayout>
@@ -88,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content6_data"/>
+                    android:id="@+id/specification_content3_data"/>
 
 
         </LinearLayout>
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content7_data"/>
+                    android:id="@+id/specification_content4_data"/>
 
 
         </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/specification_content5_data"/>
 
 
         </LinearLayout>
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content9data"/>
+                    android:id="@+id/specification_content6_data"/>
 
 
         </LinearLayout>
@@ -164,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content10_data"/>
+                    android:id="@+id/specification_content7_data"/>
 
 
         </LinearLayout>
@@ -183,7 +183,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content11_data"/>
+                    android:id="@+id/specification_content8_data"/>
 
 
         </LinearLayout>
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content12_data"/>
+                    android:id="@+id/specification_content9_data"/>
 
 
         </LinearLayout>
@@ -241,7 +241,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="date"
                     android:ems="10"
-                    android:id="@+id/common_content2_data" android:layout_weight="0.26"/>
+                    android:id="@+id/specification_content10_data" android:layout_weight="0.26"/>
 
 
         </LinearLayout>
@@ -260,7 +260,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content5_data"/>
+                    android:id="@+id/specification_content11_data"/>
 
 
         </LinearLayout>
@@ -279,7 +279,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content6_data"/>
+                    android:id="@+id/specification_content12_data"/>
 
 
         </LinearLayout>
@@ -298,7 +298,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content7_data"/>
+                    android:id="@+id/specification_content13_data"/>
 
 
         </LinearLayout>
@@ -317,7 +317,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/specification_content14_data"/>
 
 
         </LinearLayout>
@@ -336,7 +336,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content9data"/>
+                    android:id="@+id/specification_content15_data"/>
 
 
         </LinearLayout>
@@ -355,7 +355,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content10_data"/>
+                    android:id="@+id/specification_content16_data"/>
 
 
         </LinearLayout>
@@ -374,7 +374,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content11_data"/>
+                    android:id="@+id/specification_content17_data"/>
 
 
         </LinearLayout>
@@ -393,7 +393,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content12_data"/>
+                    android:id="@+id/specification_content18_data"/>
         </LinearLayout>
         <LinearLayout
                 android:orientation="horizontal"
@@ -410,7 +410,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content8_data"/>
+                    android:id="@+id/specification_content19_data"/>
 
 
         </LinearLayout>
@@ -429,7 +429,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content9data"/>
+                    android:id="@+id/specification_content20_data"/>
 
 
         </LinearLayout>

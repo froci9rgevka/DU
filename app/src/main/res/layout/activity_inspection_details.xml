@@ -5,17 +5,23 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.pea.du.InspectionDetails">
+        tools:context="com.pea.du.actyvities.inspect.InspectionDetailsActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                   android:orientation="vertical"
                   android:layout_width="368dp"
                   android:layout_height="551dp" tools:layout_editor_absoluteY="8dp" tools:layout_editor_absoluteX="8dp">
 
-        <TextView
+        <android.support.v7.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/textView2" android:textStyle="normal|bold"
-                android:textAlignment="center" android:text="@string/content_main_results3"/>
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:theme="?attr/actionBarTheme"
+                android:minHeight="?attr/actionBarSize"
+                android:id="@+id/inspection_details_toolbar"
+                tools:layout_editor_absoluteY="0dp"
+                tools:layout_editor_absoluteX="8dp" android:clickable="true" app:logo="@drawable/ic_menu_camera"
+                app:title="@string/content_main_results3"/>
 
 
         <LinearLayout
@@ -33,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPostalAddress"
                     android:ems="10"
-                    android:id="@+id/common_content5_data" android:layout_weight="0.92"/>
+                    android:id="@+id/inspection_details1_data" android:layout_weight="0.92"/>
             <Spinner
                     android:layout_width="144dp"
                     android:layout_height="wrap_content" android:id="@+id/spinner"
@@ -60,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:ems="10"
-                android:id="@+id/common_content6_data"/>
+                android:id="@+id/inspection_details2_data"/>
 
         <TextView
                 android:text="@string/content_main_results_details4"
@@ -72,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPostalAddress"
                 android:ems="10"
-                android:id="@+id/common_content6_data"/>
+                android:id="@+id/inspection_details3_data"/>
         <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" app:srcCompat="@drawable/ic_menu_camera"
