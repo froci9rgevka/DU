@@ -11,7 +11,7 @@ import com.pea.du.db.methods.ReadMethods;
 
 import java.util.ArrayList;
 
-public class StaticValue implements Parcelable{
+public class StaticValue implements Parcelable {
     private Integer id;
     private String name;
     private Integer serverId;

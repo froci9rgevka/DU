@@ -113,7 +113,7 @@ public class PhotoLibrary extends AppCompatActivity {
     // Подготовка картинок с текстом для gridView
     private ArrayList<ImageItem> getData() {
         final ArrayList<ImageItem> imageItems = new ArrayList<>();
-        TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
+        //TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
         for (int i = 0; i < photoList.size(); i++) { //img.length
             //Drawable d = getResources().getDrawable(imgs.getResourceId(i, -1));
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imgs.getResourceId(i, -1));
@@ -185,7 +185,7 @@ public class PhotoLibrary extends AppCompatActivity {
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 }
 
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
         }
     }
 

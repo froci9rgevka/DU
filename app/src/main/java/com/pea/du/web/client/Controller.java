@@ -174,8 +174,9 @@ public class Controller implements Callback<Object> {
 
                     //Скрываем прогрес бар и делаем кнопки активными
                     AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-                    appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
-                    appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
+                    //appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
+                    //appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
+                    appCompatActivity.findViewById(R.id.main_menu_listview).setEnabled(true);
                     appCompatActivity.findViewById(R.id.sync_button).setEnabled(true);
                     appCompatActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
                     break;

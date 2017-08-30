@@ -9,44 +9,33 @@
         tools:context="com.pea.du.actyvities.MainActivity">
 
     <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
+            android:layout_width="0dp"
+            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
             tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp" android:weightSum="1">
-            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
+                tools:layout_editor_absoluteX="8dp">
+            <ListView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" app:srcCompat="@mipmap/comission"
-                    android:id="@+id/inspection_button"
-                    android:layout_weight="0.54" android:onClick="onInspectionButtonClick"/>
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="5dp"
-                android:background="@color/cardview_dark_background" android:visibility="visible"/>
-            <ImageButton
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" app:srcCompat="@mipmap/defect" android:id="@+id/defection_button"
-                    android:layout_weight="0.47" android:onClick="onDefectButtonClick"/>
+                    android:layout_height="447dp" android:id="@+id/main_menu_listview"/>
             <Button
                     android:text="@string/content_main_login_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/sync_button"
                     android:onClick="onLoginButtonClick" android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerHorizontal="true" />
         </LinearLayout>
 
         <ProgressBar
-                style="?android:attr/progressBarStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/menuProgressBar"
-                android:layout_centerVertical="true" android:layout_centerHorizontal="true"
-                tools:layout_editor_absoluteY="0dp" tools:layout_editor_absoluteX="0dp" android:visibility="gone"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" android:visibility="gone"/>
     </RelativeLayout>
+
 </android.support.constraint.ConstraintLayout>
