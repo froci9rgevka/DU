@@ -35,4 +35,10 @@ public interface GerritAPI {
 
     @POST("message/defect/")
     Call<Object> saveDefect(@Query("query") String query);
+
+    @POST("message/photo/")
+    Call<Object> savePhoto(@Query("encodedPart") String encodedPart);
+
+    @POST("message/photoInfo/")
+    Call<Object> savePhotoInfo(@Query("length") Integer length);
 }

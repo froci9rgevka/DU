@@ -14,6 +14,7 @@ public final class Contract {
     public static final String SAVE_DEFECT = "saveDefect" ;
 
     public static final String SAVE_PHOTO = "savePhoto" ;
+    public static final String SAVE_PHOTO_PART = "savePhotoPart" ;
 
     private Contract() {
     }

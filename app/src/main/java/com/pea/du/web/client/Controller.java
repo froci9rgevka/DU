@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,6 +46,9 @@ public class Controller implements Callback<Object> {
     Context context;
     String typeOfObject;
     Object argument;
+
+    ArrayList<String> imageParts = new ArrayList<>();
+    Integer packagesCount = 0;
 
     public Controller(Context context, String typeOfObject) {
         super();
@@ -134,11 +139,35 @@ public class Controller implements Callback<Object> {
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-                photo.getImage().compress(Bitmap.CompressFormat.JPEG,40,baos);
+                Bitmap bitmap = photo.getImage();
+
+                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, false);
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG,40,baos);
+
 
                 String encodedImage =Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
 
-                call = gerritAPI.saveDefect(encodedImage);
+                Integer len = encodedImage.length();
+                Integer packager = 5000;
+                packagesCount = len/packager+1;
+                Integer mod = len % packager;
+                for (int i = 0; i < packagesCount-1; i++) {
+                    imageParts.add(encodedImage.substring(i*packager,(i+1)*packager));
+                }
+                imageParts.add(encodedImage.substring(len - mod, len));
+
+                call = gerritAPI.savePhotoInfo(len);
+                break;
+            case SAVE_PHOTO_PART:
+                TextView tvPocketsCount = (TextView) ((PhotoLibrary) context).findViewById(R.id.tvPocketsCount);
+                tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
+                ProgressBar pbSendPhoto = (ProgressBar) ((PhotoLibrary) context).findViewById(R.id.pbSendPhoto);
+                pbSendPhoto.setMax(packagesCount);
+                pbSendPhoto.setProgress(packagesCount - imageParts.size());
+
+                String string = imageParts.remove(0);
+                call = gerritAPI.savePhoto(string);
                 break;
         }
         call.enqueue(this);
@@ -204,6 +233,9 @@ public class Controller implements Callback<Object> {
                     onDefectSaved(((Double)response.body()).intValue());
                     break;
                 case SAVE_PHOTO:
+                    onPhotoSavedStart(((Double)response.body()).intValue());
+                    break;
+                case SAVE_PHOTO_PART:
                     onPhotoSaved(((Double)response.body()).intValue());
                     break;
                 case CHECK_USER:
@@ -278,11 +310,19 @@ public class Controller implements Callback<Object> {
         ((AddActActivity) context).onBackPressed();
     }
 
-    public void onPhotoSaved(Integer response){
-        ((Photo) argument).setServerId(response);
-        WriteMethods.setDefectPhoto(context, (Photo)argument);
+    public void onPhotoSavedStart(Integer response){
+        typeOfObject = SAVE_PHOTO_PART; start();
+    }
 
-        ((PhotoLibrary) context).loadPhotosInGrid();
+    public void onPhotoSaved(Integer response){
+        if (response==0)
+            start();
+        else{
+            ((Photo) argument).setServerId(response);
+            WriteMethods.setDefectPhoto(context, (Photo)argument);
+
+            ((PhotoLibrary) context).loadPhotosInGrid();
+        }
     }
 
     public void onCheckUser(Integer response){

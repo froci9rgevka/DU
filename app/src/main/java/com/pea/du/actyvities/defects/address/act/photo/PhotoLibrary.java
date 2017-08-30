@@ -19,6 +19,7 @@ import com.pea.du.tools.gridview.GridViewAdapter;
 import com.pea.du.tools.gridview.ImageItem;
 import com.pea.du.R;
 import com.pea.du.db.methods.WriteMethods;
+import com.pea.du.web.client.Controller;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.pea.du.data.Photo.getPhotosByDefect;
+import static com.pea.du.web.client.Contract.LOAD_STATIC_ADDRESS;
+import static com.pea.du.web.client.Contract.SAVE_PHOTO;
 
 
 public class PhotoLibrary extends AppCompatActivity {
@@ -195,9 +198,11 @@ public class PhotoLibrary extends AppCompatActivity {
             newPhoto.setDefect(currentDefect);
             newPhoto.getImageFromPath();
 
-            savePhoto();
+            //savePhoto();
+            //loadPhotosInGrid();
 
-            loadPhotosInGrid();
+            Controller controller = new Controller(this, SAVE_PHOTO, newPhoto); // последовательно загружаются все статичные данные
+            controller.start();
 
         }
 
