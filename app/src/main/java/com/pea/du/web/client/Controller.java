@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,6 +22,10 @@ import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
 import com.pea.du.data.*;
 import com.pea.du.db.methods.DeleteMethods;
 import com.pea.du.db.methods.WriteMethods;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -27,6 +33,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -47,7 +57,7 @@ public class Controller implements Callback<Object> {
     String typeOfObject;
     Object argument;
 
-    ArrayList<String> imageParts = new ArrayList<>();
+    ArrayList<String> imageParts = new ArrayList<String>();
     Integer packagesCount = 0;
 
     public Controller(Context context, String typeOfObject) {
@@ -78,97 +88,118 @@ public class Controller implements Callback<Object> {
         GerritAPI gerritAPI = retrofit.create(GerritAPI.class);
 
         Call<Object> call = gerritAPI.loadAddresses("status:open");
-        switch (typeOfObject)
-        {
-            case LOAD_STATIC_ADDRESS:
-                call = gerritAPI.loadAddresses("status:open");
-                break;
-            case LOAD_STATIC_MEASURE:
-                call = gerritAPI.loadMeasures("status:open");
-                break;
-            case LOAD_STATIC_CONSTRUCTIVE_ELEMENT:
-                call = gerritAPI.loadConstructiveElements("status:open");
-                break;
-            case LOAD_STATIC_TYPE:
-                call = gerritAPI.loadTypes("status:open");
-                break;
-            case LOAD_ACTS:
-                call = gerritAPI.loadActs("status:open");
-                break;
-            case LOAD_DEFECTS:
-                call = gerritAPI.loadDefects("status:open");
-                break;
-            case CHECK_USER:
-                call = gerritAPI.checkUser((String) argument);
-                break;
-            case SAVE_ACT:
-                Act act = new Act((Act) argument);
+        if (typeOfObject.equals(LOAD_STATIC_ADDRESS)) {
+            call = gerritAPI.loadAddresses("status:open");
 
-                //java.text.SimpleDateFormat sdf =
-                //        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                //String сreateDate = sdf.format(act.getCreateDate());
+        } else if (typeOfObject.equals(LOAD_STATIC_MEASURE)) {
+            call = gerritAPI.loadMeasures("status:open");
 
-                String query =
-                        "insert into zkh_actofdefect (CreateDate, Author, Adress) values ("
-                                + "Now()" + ","
-                                + act.getUser().getServerId() + ","
-                                + act.getAddress().getServerId() + ")";
-                call = gerritAPI.saveAct(query);
-                break;
-            case SAVE_DEFECT:
-                Defect defect = new Defect((Defect) argument);
-                query =
-                        "insert into zkh_actofdefectdetail (Header, Name, DefectType, Grand, Floor, Flat, Text, Measure, CntDefect) values ("
-                                + defect.getAct().getServerId() + ","
-                                + defect.getConstructiveElement().getServerId() + ","
-                                + defect.getType().getServerId() + ","
-                                + defect.getPorch() + ","
-                                + defect.getFloor() + ","
-                                + defect.getFlat() + ",'"
-                                + defect.getDescription() + "',"
-                                + defect.getMeasure().getServerId() + ","
-                                + defect.getCurrency() + ")";
-                call = gerritAPI.saveDefect(query);
-                break;
-            case SAVE_PHOTO:
-                Photo photo = new Photo((Photo) argument);
+        } else if (typeOfObject.equals(LOAD_STATIC_CONSTRUCTIVE_ELEMENT)) {
+            call = gerritAPI.loadConstructiveElements("status:open");
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                options.inPurgeable = true;
+        } else if (typeOfObject.equals(LOAD_STATIC_TYPE)) {
+            call = gerritAPI.loadTypes("status:open");
 
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        } else if (typeOfObject.equals(LOAD_ACTS)) {
+            call = gerritAPI.loadActs("status:open");
 
-                Bitmap bitmap = photo.getImage();
+        } else if (typeOfObject.equals(LOAD_DEFECTS)) {
+            call = gerritAPI.loadDefects("status:open");
 
-                bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth()/2, bitmap.getHeight()/2, false);
+        } else if (typeOfObject.equals(CHECK_USER)) {
+            call = gerritAPI.checkUser((String) argument);
 
-                bitmap.compress(Bitmap.CompressFormat.JPEG,40,baos);
+        } else if (typeOfObject.equals(SAVE_ACT)) {
+            Act act = new Act((Act) argument);
+
+            //java.text.SimpleDateFormat sdf =
+            //        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //String сreateDate = sdf.format(act.getCreateDate());
+
+            String query =
+                    "insert into zkh_actofdefect (CreateDate, Author, Adress) values ("
+                            + "Now()" + ","
+                            + act.getUser().getServerId() + ","
+                            + act.getAddress().getServerId() + ")";
+            call = gerritAPI.saveAct(query);
+
+        } else if (typeOfObject.equals(SAVE_DEFECT)) {
+            String query;
+            Defect defect = new Defect((Defect) argument);
+            query =
+                    "insert into zkh_actofdefectdetail (Header, Name, DefectType, Grand, Floor, Flat, Text, Measure, CntDefect) values ("
+                            + defect.getAct().getServerId() + ","
+                            + defect.getConstructiveElement().getServerId() + ","
+                            + defect.getType().getServerId() + ","
+                            + defect.getPorch() + ","
+                            + defect.getFloor() + ","
+                            + defect.getFlat() + ",'"
+                            + defect.getDescription() + "',"
+                            + defect.getMeasure().getServerId() + ","
+                            + defect.getCurrency() + ")";
+            call = gerritAPI.saveDefect(query);
+
+        } else if (typeOfObject.equals("ASDASD")) {
+            Photo photo = new Photo((Photo) argument);
+            File file = new File(photo.getPath());
+
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse("multipart/form-data"), file);
+
+            // MultipartBody.Part используется, чтобы передать имя файла
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("picture", file.getName(), requestFile);
+
+            // Добавляем описание
+            String descriptionString = "hello, this is description speaking";
+            RequestBody description =
+                    RequestBody.create(
+                            MediaType.parse("multipart/form-data"), descriptionString);
+
+            // Выполняем запрос
+            call = gerritAPI.fastSave(description, body);
 
 
-                String encodedImage =Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+        } else if (typeOfObject.equals(SAVE_PHOTO)) {
+            Photo photo;
+            photo = new Photo((Photo) argument);
 
-                Integer len = encodedImage.length();
-                Integer packager = 5000;
-                packagesCount = len/packager+1;
-                Integer mod = len % packager;
-                for (int i = 0; i < packagesCount-1; i++) {
-                    imageParts.add(encodedImage.substring(i*packager,(i+1)*packager));
-                }
-                imageParts.add(encodedImage.substring(len - mod, len));
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 4;
+            options.inPurgeable = true;
 
-                call = gerritAPI.savePhotoInfo(len);
-                break;
-            case SAVE_PHOTO_PART:
-                TextView tvPocketsCount = (TextView) ((PhotoLibrary) context).findViewById(R.id.tvPocketsCount);
-                tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
-                ProgressBar pbSendPhoto = (ProgressBar) ((PhotoLibrary) context).findViewById(R.id.pbSendPhoto);
-                pbSendPhoto.setMax(packagesCount);
-                pbSendPhoto.setProgress(packagesCount - imageParts.size());
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-                String string = imageParts.remove(0);
-                call = gerritAPI.savePhoto(string);
-                break;
+            Bitmap bitmap = photo.getImage();
+
+            bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth() / 2, bitmap.getHeight() / 2, false);
+
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 40, baos);
+
+
+            String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+            Integer len = encodedImage.length();
+            Integer packager = 5000;
+            packagesCount = len / packager + 1;
+            Integer mod = len % packager;
+            for (int i = 0; i < packagesCount - 1; i++) {
+                imageParts.add(encodedImage.substring(i * packager, (i + 1) * packager));
+            }
+            imageParts.add(encodedImage.substring(len - mod, len));
+
+            call = gerritAPI.savePhotoInfo(len);
+
+        } else if (typeOfObject.equals(SAVE_PHOTO_PART)) {
+            TextView tvPocketsCount = (TextView) ((PhotoLibrary) context).findViewById(R.id.tvPocketsCount);
+            tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
+            ProgressBar pbSendPhoto = (ProgressBar) ((PhotoLibrary) context).findViewById(R.id.pbSendPhoto);
+            pbSendPhoto.setMax(packagesCount);
+            pbSendPhoto.setProgress(packagesCount - imageParts.size());
+
+            String string = imageParts.remove(0);
+            call = gerritAPI.savePhoto(string);
+
         }
         call.enqueue(this);
 
@@ -177,70 +208,77 @@ public class Controller implements Callback<Object> {
     @Override
     public void onResponse(Call<Object> call, Response<Object> response) {
         if(response.isSuccessful()) {
-            switch (typeOfObject) {
-                case LOAD_STATIC_ADDRESS:
-                    ArrayList<StaticValue> staticValueArrayList = onGetStaticValues((List<List<String>>)response.body());
-                    DeleteMethods.deleteAdresses(context);
-                    WriteMethods.setAddresses(context, staticValueArrayList);
+            if (typeOfObject.equals(LOAD_STATIC_ADDRESS)) {
+                ArrayList<StaticValue> staticValueArrayList = onGetStaticValues((List<List<String>>) response.body());
+                DeleteMethods.deleteAdresses(context);
+                WriteMethods.setAddresses(context, staticValueArrayList);
 
-                    typeOfObject = LOAD_STATIC_MEASURE; start();
-                    break;
-                case LOAD_STATIC_MEASURE:
-                    staticValueArrayList = onGetStaticValues((List<List<String>>)response.body());
-                    DeleteMethods.deleteMeasures(context);
-                    WriteMethods.setMeasures(context, staticValueArrayList);
+                typeOfObject = LOAD_STATIC_MEASURE;
+                start();
 
-                    typeOfObject = LOAD_STATIC_CONSTRUCTIVE_ELEMENT; start();
-                    break;
-                case LOAD_STATIC_CONSTRUCTIVE_ELEMENT:
-                    staticValueArrayList = onGetStaticValues((List<List<String>>)response.body());
-                    DeleteMethods.deleteConstructiveElements(context);
-                    WriteMethods.setConstructiveElements(context, staticValueArrayList);
+            } else if (typeOfObject.equals(LOAD_STATIC_MEASURE)) {
+                ArrayList<StaticValue> staticValueArrayList;
+                staticValueArrayList = onGetStaticValues((List<List<String>>) response.body());
+                DeleteMethods.deleteMeasures(context);
+                WriteMethods.setMeasures(context, staticValueArrayList);
 
-                    typeOfObject = LOAD_STATIC_TYPE; start();
-                    break;
-                case LOAD_STATIC_TYPE:
-                    staticValueArrayList = onGetStaticValues((List<List<String>>)response.body());
-                    DeleteMethods.deleteTypes(context);
-                    WriteMethods.setTypes(context, staticValueArrayList);
+                typeOfObject = LOAD_STATIC_CONSTRUCTIVE_ELEMENT;
+                start();
 
-                    typeOfObject = LOAD_ACTS; start();
-                    break;
-                case LOAD_ACTS:
-                    ArrayList<Act> actArrayList = onGetActs((List<List<String>>)response.body());
-                    DeleteMethods.deleteActs(context);
-                    WriteMethods.setActs(context, actArrayList);
+            } else if (typeOfObject.equals(LOAD_STATIC_CONSTRUCTIVE_ELEMENT)) {
+                ArrayList<StaticValue> staticValueArrayList;
+                staticValueArrayList = onGetStaticValues((List<List<String>>) response.body());
+                DeleteMethods.deleteConstructiveElements(context);
+                WriteMethods.setConstructiveElements(context, staticValueArrayList);
 
-                    typeOfObject = LOAD_DEFECTS; start();
-                    break;
-                case LOAD_DEFECTS:
-                    ArrayList<Defect> defectArrayList = onGetDefects((List<List<String>>)response.body());
-                    DeleteMethods.deleteDefects(context);
-                    WriteMethods.setDefects(context, defectArrayList);
+                typeOfObject = LOAD_STATIC_TYPE;
+                start();
 
-                    //Скрываем прогрес бар и делаем кнопки активными
-                    AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-                    //appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
-                    //appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
-                    appCompatActivity.findViewById(R.id.main_menu_listview).setEnabled(true);
-                    appCompatActivity.findViewById(R.id.sync_button).setEnabled(true);
-                    appCompatActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
-                    break;
-                case SAVE_ACT:
-                    onActSaved(((Double)response.body()).intValue());
-                    break;
-                case SAVE_DEFECT:
-                    onDefectSaved(((Double)response.body()).intValue());
-                    break;
-                case SAVE_PHOTO:
-                    onPhotoSavedStart(((Double)response.body()).intValue());
-                    break;
-                case SAVE_PHOTO_PART:
-                    onPhotoSaved(((Double)response.body()).intValue());
-                    break;
-                case CHECK_USER:
-                    onCheckUser(((Double)response.body()).intValue());
-                    break;
+            } else if (typeOfObject.equals(LOAD_STATIC_TYPE)) {
+                ArrayList<StaticValue> staticValueArrayList;
+                staticValueArrayList = onGetStaticValues((List<List<String>>) response.body());
+                DeleteMethods.deleteTypes(context);
+                WriteMethods.setTypes(context, staticValueArrayList);
+
+                typeOfObject = LOAD_ACTS;
+                start();
+
+            } else if (typeOfObject.equals(LOAD_ACTS)) {
+                ArrayList<Act> actArrayList = onGetActs((List<List<String>>) response.body());
+                DeleteMethods.deleteActs(context);
+                WriteMethods.setActs(context, actArrayList);
+
+                typeOfObject = LOAD_DEFECTS;
+                start();
+
+            } else if (typeOfObject.equals(LOAD_DEFECTS)) {
+                ArrayList<Defect> defectArrayList = onGetDefects((List<List<String>>) response.body());
+                DeleteMethods.deleteDefects(context);
+                WriteMethods.setDefects(context, defectArrayList);
+
+                //Скрываем прогрес бар и делаем кнопки активными
+                AppCompatActivity appCompatActivity = (AppCompatActivity) context;
+                //appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
+                //appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
+                appCompatActivity.findViewById(R.id.main_menu_listview).setEnabled(true);
+                appCompatActivity.findViewById(R.id.sync_button).setEnabled(true);
+                appCompatActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
+
+            } else if (typeOfObject.equals(SAVE_ACT)) {
+                onActSaved(((Double) response.body()).intValue());
+
+            } else if (typeOfObject.equals(SAVE_DEFECT)) {
+                onDefectSaved(((Double) response.body()).intValue());
+
+            } else if (typeOfObject.equals(SAVE_PHOTO)) {
+                onPhotoSavedStart(((Double) response.body()).intValue());
+
+            } else if (typeOfObject.equals(SAVE_PHOTO_PART)) {
+                onPhotoSaved(((Double) response.body()).intValue());
+
+            } else if (typeOfObject.equals(CHECK_USER)) {
+                onCheckUser(((Double) response.body()).intValue());
+
             }
 
         } else {
@@ -255,30 +293,28 @@ public class Controller implements Callback<Object> {
 
     public ArrayList<StaticValue> onGetStaticValues(List<List<String>> response){
         StaticValue staticValue = null;
-        ArrayList<StaticValue> staticValueArrayList = new ArrayList<>();
+        ArrayList<StaticValue> staticValueArrayList = new ArrayList<StaticValue>();
         for (List<String> list:response) {
-            switch (typeOfObject) {
-                case LOAD_STATIC_ADDRESS:
-                    staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), ADDRESS_TABLE_NAME, ADDRESS);
-                    break;
-                case LOAD_STATIC_CONSTRUCTIVE_ELEMENT:
-                    staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
-                    break;
-                case LOAD_STATIC_MEASURE:
-                    staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE);
-                    break;
-                case LOAD_STATIC_TYPE:
-                    staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_TYPE_TABLE_NAME, DEFECT_TYPE);
-                    break;
+            if (typeOfObject.equals(LOAD_STATIC_ADDRESS)) {
+                staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), ADDRESS_TABLE_NAME, ADDRESS);
+
+            } else if (typeOfObject.equals(LOAD_STATIC_CONSTRUCTIVE_ELEMENT)) {
+                staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
+
+            } else if (typeOfObject.equals(LOAD_STATIC_MEASURE)) {
+                staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE);
+
+            } else if (typeOfObject.equals(LOAD_STATIC_TYPE)) {
+                staticValue = new StaticValue(list.get(1), Integer.parseInt(list.get(0)), DEFECT_TYPE_TABLE_NAME, DEFECT_TYPE);
+
             }
             staticValueArrayList.add(staticValue);
         }
         return staticValueArrayList;
     }
 
-
     public ArrayList<Act> onGetActs(List<List<String>> response) {
-        ArrayList<Act> actArrayList = new ArrayList<>();
+        ArrayList<Act> actArrayList = new ArrayList<Act>();
         for (List<String> list:response) {
             actArrayList.add(Act.fromStringList(list,context));
         }
@@ -286,7 +322,7 @@ public class Controller implements Callback<Object> {
     }
 
     public ArrayList<Defect> onGetDefects(List<List<String>> response) {
-        ArrayList<Defect> defectArrayList = new ArrayList<>();
+        ArrayList<Defect> defectArrayList = new ArrayList<Defect>();
         for (List<String> list:response) {
             defectArrayList.add(Defect.fromStringList(list, context));
         }

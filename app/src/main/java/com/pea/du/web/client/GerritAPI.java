@@ -3,12 +3,11 @@ package com.pea.du.web.client;
 
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 
 public interface GerritAPI {
@@ -37,7 +36,12 @@ public interface GerritAPI {
     Call<Object> saveDefect(@Query("query") String query);
 
     @POST("message/photo/")
-    Call<Object> savePhoto(@Query("encodedPart") String encodedPart);
+    Call<Object> savePhoto(@Query("encodedPart") String encodedPart);;
+
+    @Multipart
+    @POST("message/fastphoto/")
+    Call<Object> fastSave(@Part("description") RequestBody description,
+                            @Part MultipartBody.Part file);
 
     @POST("message/photoInfo/")
     Call<Object> savePhotoInfo(@Query("length") Integer length);
