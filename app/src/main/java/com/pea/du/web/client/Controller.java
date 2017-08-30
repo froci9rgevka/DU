@@ -2,7 +2,10 @@ package com.pea.du.web.client;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 import com.google.gson.Gson;
@@ -11,10 +14,8 @@ import com.pea.du.R;
 import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.actyvities.defects.address.act.AddActActivity;
 import com.pea.du.actyvities.defects.address.act.DefectActivity;
-import com.pea.du.data.Act;
-import com.pea.du.data.Defect;
-import com.pea.du.data.StaticValue;
-import com.pea.du.data.User;
+import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
+import com.pea.du.data.*;
 import com.pea.du.db.methods.DeleteMethods;
 import com.pea.du.db.methods.WriteMethods;
 import retrofit2.Call;
@@ -23,6 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -123,6 +125,21 @@ public class Controller implements Callback<Object> {
                                 + defect.getCurrency() + ")";
                 call = gerritAPI.saveDefect(query);
                 break;
+            case SAVE_PHOTO:
+                Photo photo = new Photo((Photo) argument);
+
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 4;
+                options.inPurgeable = true;
+
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                photo.getImage().compress(Bitmap.CompressFormat.JPEG,40,baos);
+
+                String encodedImage =Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+
+                call = gerritAPI.saveDefect(encodedImage);
+                break;
         }
         call.enqueue(this);
 
@@ -185,6 +202,9 @@ public class Controller implements Callback<Object> {
                     break;
                 case SAVE_DEFECT:
                     onDefectSaved(((Double)response.body()).intValue());
+                    break;
+                case SAVE_PHOTO:
+                    onPhotoSaved(((Double)response.body()).intValue());
                     break;
                 case CHECK_USER:
                     onCheckUser(((Double)response.body()).intValue());
@@ -256,7 +276,13 @@ public class Controller implements Callback<Object> {
         WriteMethods.setDefect(context, (Defect)argument);
 
         ((AddActActivity) context).onBackPressed();
-        //DO SNTHING addressArrayList
+    }
+
+    public void onPhotoSaved(Integer response){
+        ((Photo) argument).setServerId(response);
+        WriteMethods.setDefectPhoto(context, (Photo)argument);
+
+        ((PhotoLibrary) context).loadPhotosInGrid();
     }
 
     public void onCheckUser(Integer response){

@@ -1,7 +1,6 @@
 package com.pea.du.actyvities.defects.address.act.photo;
 
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
@@ -79,7 +78,7 @@ public class PhotoLibrary extends AppCompatActivity {
             }
         });
 
-        fillGrid();
+        loadPhotosInGrid();
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -104,7 +103,7 @@ public class PhotoLibrary extends AppCompatActivity {
     }
 
 
-    private void fillGrid() {
+    public void loadPhotosInGrid() {
         loadPhotos();
         gridViewAdapter = new GridViewAdapter(this, R.layout.activity_photo_library_item, getData());
         gridView.setAdapter(gridViewAdapter);
@@ -146,7 +145,6 @@ public class PhotoLibrary extends AppCompatActivity {
 
     public void savePhoto() {
         WriteMethods.setDefectPhoto(this, newPhoto);
-
     }
 
 
@@ -199,12 +197,12 @@ public class PhotoLibrary extends AppCompatActivity {
 
             savePhoto();
 
-            fillGrid();
+            loadPhotosInGrid();
 
         }
 
         if (requestCode == REQUEST_REFRESH_PHOTO){
-            fillGrid();
+            loadPhotosInGrid();
         }
     }
 

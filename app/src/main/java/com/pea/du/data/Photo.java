@@ -22,11 +22,12 @@ public class Photo implements Parcelable{
     public Photo() {
     }
 
-    public Photo(Integer id, Defect defect, String path, Bitmap image) {
-        this.id = id;
-        this.defect = new Defect(defect);
-        this.path = path;
-        this.image = image;
+    public Photo(Photo photo) {
+        this.id = photo.getId();
+        this.serverId = photo.getServerId();
+        this.defect = new Defect(photo.getDefect());
+        this.path = photo.getPath();
+        this.image = photo.getImage();
     }
 
     public Photo(Parcel source) {

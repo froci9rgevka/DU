@@ -13,6 +13,8 @@ public final class Contract {
     public static final String SAVE_ACT = "saveAct" ;
     public static final String SAVE_DEFECT = "saveDefect" ;
 
+    public static final String SAVE_PHOTO = "savePhoto" ;
+
     private Contract() {
     }
 }
