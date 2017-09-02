@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
 import com.pea.du.R;
+import com.pea.du.actyvities.MainActivity;
 import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.data.User;
 import com.pea.du.db.methods.WriteMethods;
@@ -54,7 +55,7 @@ public class Login extends AppCompatActivity {
         currentUser.setId(WriteMethods.setUser(this, currentUser));
 
         //Create intent
-        Intent intent = new Intent(Login.this, AddressActivity.class);
+        Intent intent = new Intent(Login.this, MainActivity.class);
         intent.putExtra("User", currentUser);
 
         startActivity(intent);

@@ -12,8 +12,11 @@ import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
 
+
 import java.util.ArrayList;
 
+import static com.pea.du.actyvities.defects.address.act.AddActActivity.EXISTING;
+import static com.pea.du.actyvities.defects.address.act.AddActActivity.NEW;
 import static com.pea.du.data.Defect.getDefectsByAct;
 
 
@@ -52,8 +55,10 @@ public class DefectActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
                                     long id) {
-                Intent intent = new Intent(DefectActivity.this, PhotoLibrary.class);
+                Intent intent = new Intent(DefectActivity.this, AddActActivity.class);
+                intent.putExtra("Act", currentAct);
                 intent.putExtra("Defect", (Defect) defectsList.get(position));
+                intent.putExtra("Flag", EXISTING);
                 startActivity(intent);
             }
         });
@@ -70,6 +75,7 @@ public class DefectActivity extends AppCompatActivity {
     public void onAddButtonClick(View view) {
         Intent intent = new Intent(DefectActivity.this, AddActActivity.class);
         intent.putExtra("Act", currentAct);
+        intent.putExtra("Flag", NEW);
         startActivityForResult(intent, 0);
     }
 

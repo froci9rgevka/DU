@@ -42,6 +42,7 @@ public final class Contract {
         //tDefectPhoto
         public final static String DEFECT_ID = "defect_id";
         public final static String PATH = "path";
+        public final static String URL = "url";
 
         //tAddress
         public final static String ADDRESS = "address";

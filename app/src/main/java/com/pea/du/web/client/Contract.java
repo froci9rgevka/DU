@@ -7,6 +7,7 @@ public final class Contract {
     public static final String LOAD_STATIC_TYPE = "loadTypes" ;
     public static final String LOAD_ACTS = "loadActs" ;
     public static final String LOAD_DEFECTS= "loadDefects" ;
+    public static final String LOAD_PHOTOS= "loadPhotos" ;
 
     public static final String CHECK_USER = "checkUser" ;
 

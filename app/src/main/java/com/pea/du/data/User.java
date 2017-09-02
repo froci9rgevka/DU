@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Toast;
+import com.pea.du.actyvities.MainActivity;
 import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.db.data.Contract;
 import com.pea.du.db.methods.ReadMethods;
@@ -68,7 +69,7 @@ public class User implements Parcelable {
             serverId = userList.get(0).getServerId();
 
             Toast.makeText(context, "Авторизированный пользователь " +nickname, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(context, AddressActivity.class);
+            Intent intent = new Intent(context, MainActivity.class);
             intent.putExtra("User", this);
 
             context.startActivity(intent);

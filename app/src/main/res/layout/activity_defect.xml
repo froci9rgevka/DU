@@ -5,25 +5,25 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+
         tools:context=".actyvities.defects.address.act.DefectActivity">
 
-    <ScrollView
-            android:id="@+id/scrollView4"
+    <RelativeLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="4dp"
+            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
             tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:orientation="vertical"
-                tools:layout_editor_absoluteX="8dp"
-                tools:layout_editor_absoluteY="8dp">
-
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <android.support.v7.widget.Toolbar
                     android:id="@+id/defect_toolbar"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"
                     android:clickable="true"
                     android:minHeight="?attr/actionBarSize"
@@ -31,18 +31,32 @@
                     app:title="@string/defect_toolbar_title"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="0dp"/>
-
-            <ListView
+            <ScrollView
+                    android:id="@+id/scrollView4"
                     android:layout_width="match_parent"
-                    android:layout_height="381dp" android:id="@+id/defect_acts_list"/>
+                    android:layout_height="match_parent" tools:layout_editor_absoluteY="4dp"
+                    tools:layout_editor_absoluteX="8dp">
 
-            <Button
-                    android:id="@+id/activity_defect_addButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:onClick="onAddButtonClick"
-                    android:text="ДОБАВИТЬ АКТ"/>
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp">
 
+                    <ListView
+                            android:layout_width="match_parent"
+                            android:layout_height="381dp" android:id="@+id/defect_acts_list"/>
+
+                    <Button
+                            android:id="@+id/activity_defect_addButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:onClick="onAddButtonClick"
+                            android:text="ДОБАВИТЬ АКТ"/>
+
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-    </ScrollView>
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

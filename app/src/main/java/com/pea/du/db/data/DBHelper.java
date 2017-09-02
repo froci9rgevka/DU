@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
     /**
      * Версия базы данных. При изменении схемы увеличить на единицу
      */
-    private static final int DATABASE_VERSION = 19;
+    private static final int DATABASE_VERSION = 28;
 
 
     /**
@@ -65,7 +65,8 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Contract.GuestEntry.SERVER_ID + " INTEGER, "
                 + Contract.GuestEntry.DEFECT_ID + " INTEGER NOT NULL, "
-                + Contract.GuestEntry.PATH + " TEXT NOT NULL);";
+                + Contract.GuestEntry.URL + " TEXT, "
+                + Contract.GuestEntry.PATH + " TEXT);";
 
         String SQL_CREATE_ADDRESS_TABLE = "CREATE TABLE " + Contract.GuestEntry.ADDRESS_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

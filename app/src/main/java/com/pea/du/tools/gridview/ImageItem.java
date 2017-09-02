@@ -1,23 +1,48 @@
 package com.pea.du.tools.gridview;
 
-import android.graphics.Bitmap;
 
 public class ImageItem {
-    private Bitmap image;
+    public static final String ITEM_PATH = "PATH";
+    public static final String ITEM_URL = "URL";
+
+    private int id;
+    private String path;
+    private String url;
     private String title;
 
-    public ImageItem(Bitmap image, String title) {
-        super();
-        this.image = image;
-        this.title = title;
+    public ImageItem(int id) {
+        this.id = id;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public ImageItem(String pathORurl, String flag) {
+        if (flag == ITEM_PATH)
+            this.path = pathORurl;
+        else
+            this.url = pathORurl;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

@@ -179,7 +179,8 @@ public class ReadMethods {
             defect.setServerId(cursor.getInt(2));
             photo.setDefect(defect);
 
-            photo.setPath(cursor.getString(3));
+            photo.setUrl(cursor.getString(3));
+            photo.setPath(cursor.getString(4));
 
             result.add(photo);
         }

@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.pea.du.data.Photo.getPhotosByDefect;
+import static com.pea.du.tools.gridview.ImageItem.ITEM_PATH;
+import static com.pea.du.tools.gridview.ImageItem.ITEM_URL;
 import static com.pea.du.web.client.Contract.LOAD_STATIC_ADDRESS;
 import static com.pea.du.web.client.Contract.SAVE_PHOTO;
 
@@ -102,27 +104,28 @@ public class PhotoLibrary extends AppCompatActivity {
 
             }
         });
-
     }
-
 
     public void loadPhotosInGrid() {
         loadPhotos();
-        gridViewAdapter = new GridViewAdapter(this, R.layout.activity_photo_library_item, getData());
+        gridViewAdapter = new GridViewAdapter(this, R.layout.simple_list_view_item, getData());
         gridView.setAdapter(gridViewAdapter);
     }
 
     // Подготовка картинок с текстом для gridView
     private ArrayList<ImageItem> getData() {
-        final ArrayList<ImageItem> imageItems = new ArrayList<>();
+        final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
         //TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
         for (int i = 0; i < photoList.size(); i++) { //img.length
             //Drawable d = getResources().getDrawable(imgs.getResourceId(i, -1));
             //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imgs.getResourceId(i, -1));
            // Bitmap bitmap = drawableToBitmap(d);
             Photo photo = (Photo) photoList.get(i);
-            photo.getImageFromPath();
-            imageItems.add(new ImageItem(photo.getImage(), "Image#" + i));
+            //photo.getImageFromPath();
+            if (!(photo.getPath() == null))
+                imageItems.add(new ImageItem(photo.getPath(), ITEM_PATH));
+            else
+                imageItems.add(new ImageItem(photo.getUrl(), ITEM_URL));
         }
         return imageItems;
     }
@@ -198,8 +201,8 @@ public class PhotoLibrary extends AppCompatActivity {
             newPhoto.setDefect(currentDefect);
             newPhoto.getImageFromPath();
 
-            //savePhoto();
-            //loadPhotosInGrid();
+            savePhoto();
+            loadPhotosInGrid();
 
             Controller controller = new Controller(this, SAVE_PHOTO, newPhoto); // последовательно загружаются все статичные данные
             controller.start();

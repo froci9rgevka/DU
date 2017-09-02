@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.pea.du.R;
 import com.pea.du.data.Photo;
 import com.pea.du.db.methods.DeleteMethods;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 
@@ -23,6 +24,7 @@ public class PhotoDetails extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_photo_details);
 
         title = getIntent().getStringExtra("title");
@@ -33,8 +35,19 @@ public class PhotoDetails extends ActionBarActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.photo_details_image);
 
-        currentPhoto.getImageFromPath(); //???????????
-        imageView.setImageBitmap(currentPhoto.getImage());
+
+        if (!(currentPhoto.getUrl()==null))
+            Picasso
+                    .with(this)
+                    .load(currentPhoto.getUrl())
+                    .into(imageView);
+        else
+            Picasso
+                    .with(this)
+                    .load(new File(currentPhoto.getPath()))
+                    //.resize(250, 200)
+                    .into(imageView);
+
 
         deleteButton = (Button) findViewById(R.id.photo_details_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {

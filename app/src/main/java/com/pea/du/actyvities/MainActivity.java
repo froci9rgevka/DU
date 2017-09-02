@@ -1,36 +1,31 @@
 package com.pea.du.actyvities;
 
 
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
-import android.widget.ListView;
+import android.widget.*;
 import com.pea.du.R;
+import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.actyvities.inspect.InspectionActivity;
-import com.pea.du.actyvities.defects.Login;
+import com.pea.du.data.User;
 import com.pea.du.tools.gridview.GridViewAdapter;
 import com.pea.du.tools.gridview.ImageItem;
 import com.pea.du.web.client.Controller;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static com.pea.du.web.client.Contract.*;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
 
-    private ListView listView;
+    private GridView gridView;
     private ArrayAdapter<ImageItem> listViewAdapter;
+    private User currentUser;
+
+    private SeekBar seekBar;
+    private android.support.v7.widget.Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,18 +33,9 @@ public class MainActivity extends AppCompatActivity{
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
 
+        objInit();
 
-        ArrayList<ImageItem> imageItems = new ArrayList();
-        listView = (ListView) findViewById(R.id.main_menu_listview);
-        imageItems.add(new ImageItem(BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.comission), "Осмотр комиссией общего имущества"));
-        imageItems.add(new ImageItem(BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.defect), "Составление акта дефектации"));
-        imageItems.add(new ImageItem(BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.new_item), "Раздел в разработке"));
-        imageItems.add(new ImageItem(BitmapFactory.decodeResource(getBaseContext().getResources(), R.mipmap.new_item), "Раздел в разработке"));
-        listViewAdapter = new GridViewAdapter(this, R.layout.simple_list_view_item, imageItems);
-        listView.setAdapter(listViewAdapter);
-
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
@@ -62,6 +48,81 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
+
+
+        dbConnect();
+
+        currentUser = getIntent().getParcelableExtra("User");
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        objInit();
+    }
+
+    public void objInit(){
+        ArrayList<ImageItem> imageItems = new ArrayList();
+
+
+        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.main_toolbar);
+        toolbar.setTitle("Меню");
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+
+        gridView = (GridView) findViewById(R.id.main_menu_gridview);
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(this);
+
+        if (seekBar.getProgress()==0) {
+            imageItems.add(new ImageItem(R.mipmap.comission));
+            imageItems.add(new ImageItem(R.mipmap.defect));
+            imageItems.add(new ImageItem(R.mipmap.new_item));
+            imageItems.add(new ImageItem(R.mipmap.new_item));
+            imageItems.add(new ImageItem(R.mipmap.new_item));
+            imageItems.add(new ImageItem(R.mipmap.new_item));
+
+            gridView.setNumColumns(2);
+        }
+        else
+            if (seekBar.getProgress()==1){
+                imageItems.add(new ImageItem(R.mipmap.big_comission_button));
+                imageItems.add(new ImageItem(R.mipmap.big_defect_button));
+                imageItems.add(new ImageItem(R.mipmap.big_begin_button));
+                imageItems.add(new ImageItem(R.mipmap.big_mid_button));
+                imageItems.add(new ImageItem(R.mipmap.big_end_button));
+                imageItems.add(new ImageItem(R.mipmap.big_new_button));
+
+                gridView.setNumColumns(2);
+            }
+        else
+            if (seekBar.getProgress()==2){
+                imageItems.add(new ImageItem(R.mipmap.small_comission_button));
+                imageItems.add(new ImageItem(R.mipmap.small_defect_button));
+                imageItems.add(new ImageItem(R.mipmap.small_begin_button));
+                imageItems.add(new ImageItem(R.mipmap.small_mid_button));
+                imageItems.add(new ImageItem(R.mipmap.small_end_button));
+                imageItems.add(new ImageItem(R.mipmap.small_new_button));
+
+                gridView.setNumColumns(1);
+            }
+
+
+
+        listViewAdapter = new GridViewAdapter(this, R.layout.simple_list_view_item, imageItems);
+        gridView.setAdapter(listViewAdapter);
     }
 
     public void onInspectionButtonClick() {
@@ -70,21 +131,26 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void onDefectButtonClick() {
-        Intent intent = new Intent(MainActivity.this, Login.class);
+        Intent intent = new Intent(MainActivity.this, AddressActivity.class);
+        intent.putExtra("User", currentUser);
         startActivity(intent);
     }
 
     public void onLoginButtonClick(View view) {
+    }
 
+    public void dbConnect(){
         findViewById(R.id.menuProgressBar).setVisibility(View.VISIBLE);
         //findViewById(R.id.inspection_button).setEnabled(false);
         //findViewById(R.id.defection_button).setEnabled(false);
-        findViewById(R.id.main_menu_listview).setEnabled(false);
+        findViewById(R.id.main_menu_gridview).setEnabled(false);
         findViewById(R.id.sync_button).setEnabled(false);
 
         Controller controller = new Controller(this, LOAD_STATIC_ADDRESS); // последовательно загружаются все статичные данные
         controller.start();
+    }
 
+    public void onChangeBar(){
 
     }
 

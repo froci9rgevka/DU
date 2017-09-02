@@ -11,12 +11,19 @@ import com.pea.du.db.data.Contract;
 import com.pea.du.db.methods.ReadMethods;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.pea.du.db.data.Contract.GuestEntry.*;
+import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE;
+import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME;
+import static java.lang.Integer.parseInt;
 
 public class Photo implements Parcelable{
     private Integer id;
     private Integer serverId;
     private Defect defect;
     private String path;
+    private String url;
     private Bitmap image;
 
     public Photo() {
@@ -27,6 +34,7 @@ public class Photo implements Parcelable{
         this.serverId = photo.getServerId();
         this.defect = new Defect(photo.getDefect());
         this.path = photo.getPath();
+        this.url = photo.getUrl();
         this.image = photo.getImage();
     }
 
@@ -39,7 +47,8 @@ public class Photo implements Parcelable{
         serverId = (Integer) data[1];
         defect = (Defect) data[2];
         path = (String) data[3];
-        image = (Bitmap) data[4];
+        url = (String) data[4];
+        image = (Bitmap) data[5];
     }
 
 
@@ -85,6 +94,20 @@ public class Photo implements Parcelable{
     }
 
 
+    public static Photo fromStringList(List<String> list, Context context){
+        Photo photo = new Photo();
+
+        photo.setServerId(parseInt(list.get(0)));
+
+        Defect defect = new Defect();
+        defect.setServerId(parseInt(list.get(1)));
+        photo.setDefect(defect);
+
+        photo.setUrl(list.get(2));
+
+        return photo;
+    }
+
     ///////////////////////////////////////Parcelable/////////////////////////////////////////////////////////
 
     @Override
@@ -95,12 +118,13 @@ public class Photo implements Parcelable{
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        Object[] array = new Object[5];
+        Object[] array = new Object[6];
         array[0] = id;
         array[1] = serverId;
         array[2] = defect;
         array[3] = path;
-        array[4] = image;
+        array[4] = url;
+        array[5] = image;
 
         dest.writeArray(array);
     }
@@ -159,5 +183,13 @@ public class Photo implements Parcelable{
 
     public void setServerId(Integer serverId) {
         this.serverId = serverId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

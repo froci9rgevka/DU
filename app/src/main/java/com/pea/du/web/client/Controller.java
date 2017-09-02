@@ -4,17 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pea.du.R;
+import com.pea.du.actyvities.MainActivity;
 import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.actyvities.defects.address.act.AddActActivity;
 import com.pea.du.actyvities.defects.address.act.DefectActivity;
@@ -25,7 +25,6 @@ import com.pea.du.db.methods.WriteMethods;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,22 +33,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 import static com.pea.du.actyvities.defects.Login.currentUser;
-import static com.pea.du.data.Defect.fromStringList;
 import static com.pea.du.db.data.Contract.GuestEntry.*;
 import static com.pea.du.web.client.Contract.*;
-import static java.lang.Integer.parseInt;
 
 public class Controller implements Callback<Object> {
 
@@ -105,6 +95,9 @@ public class Controller implements Callback<Object> {
 
         } else if (typeOfObject.equals(LOAD_DEFECTS)) {
             call = gerritAPI.loadDefects("status:open");
+
+        } else if (typeOfObject.equals(LOAD_PHOTOS)) {
+            call = gerritAPI.loadPhotos("status:open");
 
         } else if (typeOfObject.equals(CHECK_USER)) {
             call = gerritAPI.checkUser((String) argument);
@@ -188,15 +181,9 @@ public class Controller implements Callback<Object> {
             }
             imageParts.add(encodedImage.substring(len - mod, len));
 
-            call = gerritAPI.savePhotoInfo(len);
+            call = gerritAPI.savePhotoInfo(len, photo.getDefect().getServerId());
 
         } else if (typeOfObject.equals(SAVE_PHOTO_PART)) {
-            TextView tvPocketsCount = (TextView) ((PhotoLibrary) context).findViewById(R.id.tvPocketsCount);
-            tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
-            ProgressBar pbSendPhoto = (ProgressBar) ((PhotoLibrary) context).findViewById(R.id.pbSendPhoto);
-            pbSendPhoto.setMax(packagesCount);
-            pbSendPhoto.setProgress(packagesCount - imageParts.size());
-
             String string = imageParts.remove(0);
             call = gerritAPI.savePhoto(string);
 
@@ -256,11 +243,19 @@ public class Controller implements Callback<Object> {
                 DeleteMethods.deleteDefects(context);
                 WriteMethods.setDefects(context, defectArrayList);
 
+                typeOfObject = LOAD_PHOTOS;
+                start();
+
+            } else if (typeOfObject.equals(LOAD_PHOTOS)) {
+                ArrayList<Photo> photoArrayList = onGetPhotos((List<List<String>>) response.body());
+                DeleteMethods.deletePhotos(context);
+                WriteMethods.setDefectPhotos(context, photoArrayList);
+
                 //Скрываем прогрес бар и делаем кнопки активными
                 AppCompatActivity appCompatActivity = (AppCompatActivity) context;
                 //appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
                 //appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
-                appCompatActivity.findViewById(R.id.main_menu_listview).setEnabled(true);
+                appCompatActivity.findViewById(R.id.main_menu_gridview).setEnabled(true);
                 appCompatActivity.findViewById(R.id.sync_button).setEnabled(true);
                 appCompatActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
 
@@ -329,6 +324,14 @@ public class Controller implements Callback<Object> {
         return defectArrayList;
     }
 
+    public ArrayList<Photo> onGetPhotos(List<List<String>> response) {
+        ArrayList<Photo> photoArrayList = new ArrayList<Photo>();
+        for (List<String> list:response) {
+            photoArrayList.add(Photo.fromStringList(list, context));
+        }
+        return photoArrayList;
+    }
+
     public void onActSaved(Integer response){
         Act act = new Act((Act) argument);
         act.setServerId(response);
@@ -342,22 +345,31 @@ public class Controller implements Callback<Object> {
     public void onDefectSaved(Integer response){
         ((Defect) argument).setServerId(response);
         WriteMethods.setDefect(context, (Defect)argument);
-
-        ((AddActActivity) context).onBackPressed();
     }
 
     public void onPhotoSavedStart(Integer response){
+       // ((Photo) argument).setServerId(response);
+       // WriteMethods.setDefectPhoto(context, (Photo)argument);
+
+       // ((PhotoLibrary) context).loadPhotosInGrid();
+
         typeOfObject = SAVE_PHOTO_PART; start();
     }
 
     public void onPhotoSaved(Integer response){
-        if (response==0)
-            start();
-        else{
-            ((Photo) argument).setServerId(response);
-            WriteMethods.setDefectPhoto(context, (Photo)argument);
+        TextView tvPocketsCount = (TextView) ((AddActActivity) context).findViewById(R.id.tvPocketsCount);
+        tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
+        ProgressBar pbSendPhoto = (ProgressBar) ((AddActActivity) context).findViewById(R.id.pbSendPhoto);
+        pbSendPhoto.setMax(packagesCount);
+        pbSendPhoto.setProgress(packagesCount - imageParts.size());
 
-            ((PhotoLibrary) context).loadPhotosInGrid();
+        if (response==0) {
+
+            start();
+        }
+        else{
+            Button bAddPhoto = (Button) ((AddActActivity) context).findViewById(R.id.activity_defect_addPhoto);
+            bAddPhoto.setEnabled(true);
         }
     }
 
@@ -372,7 +384,7 @@ public class Controller implements Callback<Object> {
         currentUser.setId(WriteMethods.setUser(context, currentUser));
 
         // Если юзер есть в базе, то запускаем активити
-        Intent intent = new Intent(context, AddressActivity.class);
+        Intent intent = new Intent(context, MainActivity.class);
         intent.putExtra("User", currentUser);
 
         context.startActivity(intent);

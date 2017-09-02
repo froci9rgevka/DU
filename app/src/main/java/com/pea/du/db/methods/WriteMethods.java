@@ -164,6 +164,7 @@ public class WriteMethods {
             //values.put(Contract.GuestEntry.SERVER_ID, photo.getId());
             values.put(Contract.GuestEntry.DEFECT_ID, photo.getDefect().getServerId());
             values.put(Contract.GuestEntry.PATH, photo.getPath());
+            values.put(Contract.GuestEntry.URL, photo.getUrl());
 
             result.add((int) db_write.insert(Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, null, values));
         }

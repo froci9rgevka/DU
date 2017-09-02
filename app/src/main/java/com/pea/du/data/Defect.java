@@ -168,12 +168,15 @@ public class Defect implements Parcelable{
 
     @Override
     public String toString() {
-        return constructiveElement.toString() +
-                ". Тип дефекта:" + type.toString() +
-                ". Парадная №" + porch +
-                ". Этаж " + floor +
-                ". Квартира " + flat + "."
-                ;
+        if (id == null)
+            return "";
+        else
+            return constructiveElement.toString() +
+                    ". Тип дефекта:" + type.toString() +
+                    ". Парадная №" + porch +
+                    ". Этаж " + floor +
+                    ". Квартира " + flat + "."
+                    ;
     }
 
     public Act getAct() {

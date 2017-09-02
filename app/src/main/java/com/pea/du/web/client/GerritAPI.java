@@ -24,6 +24,8 @@ public interface GerritAPI {
     Call<Object> loadActs(@Query("q") String status);
     @GET("message/defects/")
     Call<Object> loadDefects(@Query("q") String status);
+    @GET("message/photos/")
+    Call<Object> loadPhotos(@Query("q") String status);
 
     @GET("message/checkUser/")
     Call<Object> checkUser(@Query("username") String username);
@@ -35,6 +37,9 @@ public interface GerritAPI {
     @POST("message/defect/")
     Call<Object> saveDefect(@Query("query") String query);
 
+    @POST("message/photoInfo/")
+    Call<Object> savePhotoInfo(@Query("length") Integer length, @Query("defectId") Integer defectId);
+
     @POST("message/photo/")
     Call<Object> savePhoto(@Query("encodedPart") String encodedPart);;
 
@@ -42,7 +47,4 @@ public interface GerritAPI {
     @POST("message/fastphoto/")
     Call<Object> fastSave(@Part("description") RequestBody description,
                             @Part MultipartBody.Part file);
-
-    @POST("message/photoInfo/")
-    Call<Object> savePhotoInfo(@Query("length") Integer length);
 }

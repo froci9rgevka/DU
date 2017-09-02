@@ -17,16 +17,17 @@
     //////////////////////////////////////////////////////
     <application
             android:allowBackup="true"
+
+
             android:icon="@mipmap/ic_domain_black_48dp"
             android:label="@string/app_name"
+
+            android:largeHeap="true"
+
+
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".actyvities.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
         <activity
                 android:name=".actyvities.inspect.InspectionActivity"
@@ -59,6 +60,11 @@
         </provider>
 
         <activity android:name=".actyvities.defects.Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".actyvities.defects.address.AddressActivity">
         </activity>
