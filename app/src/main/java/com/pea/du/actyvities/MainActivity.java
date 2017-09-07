@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import com.pea.du.R;
-import com.pea.du.actyvities.defects.address.AddressActivity;
+import com.pea.du.actyvities.addresses.AddressesActivity;
 import com.pea.du.actyvities.inspect.InspectionActivity;
 import com.pea.du.data.User;
 import com.pea.du.tools.gridview.GridViewAdapter;
@@ -19,6 +19,11 @@ import java.util.ArrayList;
 import static com.pea.du.web.client.Contract.*;
 
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
+
+    final static public String DEFECT = "Defect";
+    final static public String BEGIN_WORK = "Begin";
+    final static public String DURING_WORK = "During";
+    final static public String END_WORK = "End";
 
     private GridView gridView;
     private ArrayAdapter<ImageItem> listViewAdapter;
@@ -131,8 +136,9 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     }
 
     public void onDefectButtonClick() {
-        Intent intent = new Intent(MainActivity.this, AddressActivity.class);
+        Intent intent = new Intent(MainActivity.this, AddressesActivity.class);
         intent.putExtra("User", currentUser);
+        intent.putExtra("Work_Type", DEFECT);
         startActivity(intent);
     }
 
@@ -150,8 +156,5 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         controller.start();
     }
 
-    public void onChangeBar(){
-
-    }
 
 }

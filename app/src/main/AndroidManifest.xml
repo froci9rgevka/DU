@@ -17,14 +17,9 @@
     //////////////////////////////////////////////////////
     <application
             android:allowBackup="true"
-
-
             android:icon="@mipmap/ic_domain_black_48dp"
             android:label="@string/app_name"
-
             android:largeHeap="true"
-
-
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity android:name=".actyvities.MainActivity">
@@ -39,14 +34,12 @@
                 android:label="@string/title_activity_content_results_child">
         </activity>
         <activity
-                android:name=".actyvities.defects.address.act.DefectActivity"
+                android:name=".actyvities.addresses.works.WorksActivity"
                 android:label="@string/title_activity_defect">
         </activity>
-        <activity android:name=".actyvities.defects.address.act.photo.PhotoLibrary">
+        <activity android:name=".actyvities.addresses.works.photo.PhotoLibraryItem">
         </activity>
-        <activity android:name=".actyvities.defects.address.act.photo.PhotoLibraryItem">
-        </activity>
-        <activity android:name=".actyvities.defects.address.act.photo.PhotoDetails">
+        <activity android:name=".actyvities.addresses.works.photo.PhotoDetails">
         </activity>
 
         <provider
@@ -59,14 +52,14 @@
                     android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".actyvities.defects.Login">
+        <activity android:name=".actyvities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".actyvities.defects.address.AddressActivity">
+        <activity android:name=".actyvities.addresses.AddressesActivity">
         </activity>
 
         <service android:name=".web.stubAuthenticator.AuthenticatorService">
@@ -97,7 +90,9 @@
                 android:exported="false"
                 android:syncable="true"/>
 
-        <activity android:name=".actyvities.defects.address.act.AddActActivity">
+        <activity android:name=".actyvities.addresses.works.defectation.AddActActivity">
+        </activity>
+        <activity android:name=".actyvities.addresses.another.StageWork">
         </activity>
     </application>
 

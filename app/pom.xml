@@ -10,54 +10,10 @@
 
 
     <repositories>
-        <repository>
-            <id>ossrh</id>
-            <url>https://oss.sonatype.org/content/repositories/ksoap2-android-releases/</url>
-        </repository>
-
-        <repository>
-            <id>gcm-server-repository</id>
-            <url>https://raw.githubusercontent.com/slorber/gcm-server-repository/master/releases/</url>
-        </repository>
     </repositories>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
-        <dependency>
-            <groupId>org.xerial</groupId>
-            <artifactId>sqlite-jdbc</artifactId>
-            <version>3.19.3</version>
-            <scope>test</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.39</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.code.ksoap2-android</groupId>
-            <artifactId>ksoap2-android</artifactId>
-            <version>3.6.2</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.ksoap2-android</groupId>
-            <artifactId>ksoap2-extra-ntlm</artifactId>
-            <version>3.6.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.android.gcm</groupId>
-            <artifactId>gcm-server</artifactId>
-            <version>1.0.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.android.gcm</groupId>
-            <artifactId>gcm-client</artifactId>
-            <version>1.0.2</version>
-        </dependency>
     </dependencies>
 
 </project>

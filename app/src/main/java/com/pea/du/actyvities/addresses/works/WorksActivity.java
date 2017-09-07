@@ -1,26 +1,26 @@
-package com.pea.du.actyvities.defects.address.act;
+package com.pea.du.actyvities.addresses.works;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 
 import com.pea.du.R;
-import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
+import com.pea.du.actyvities.addresses.works.defectation.AddActActivity;
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
 
 
 import java.util.ArrayList;
 
-import static com.pea.du.actyvities.defects.address.act.AddActActivity.EXISTING;
-import static com.pea.du.actyvities.defects.address.act.AddActActivity.NEW;
+import static com.pea.du.actyvities.addresses.works.defectation.AddActActivity.EXISTING;
+import static com.pea.du.actyvities.addresses.works.defectation.AddActActivity.NEW;
 import static com.pea.du.data.Defect.getDefectsByAct;
 
 
-public class DefectActivity extends AppCompatActivity {
+public class WorksActivity extends AppCompatActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
     private ListView listView;
@@ -28,6 +28,8 @@ public class DefectActivity extends AppCompatActivity {
     private ArrayList<Defect> defectsList;
 
     private Act currentAct;
+
+    private String currentWorkType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class DefectActivity extends AppCompatActivity {
         listView = (ListView)findViewById(R.id.defect_acts_list);
 
         currentAct = getIntent().getParcelableExtra("Act");
+        currentWorkType = getIntent().getStringExtra("Work_Type");
 
         toolbar.setTitle(currentAct.getAddress().getName());
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -49,31 +52,43 @@ public class DefectActivity extends AppCompatActivity {
             }
         });
 
-        fillList();
+        LoadActs loadActs = new LoadActs();
+        loadActs.execute("");
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
                                     long id) {
-                Intent intent = new Intent(DefectActivity.this, AddActActivity.class);
+                Intent intent = new Intent(WorksActivity.this, AddActActivity.class);
                 intent.putExtra("Act", currentAct);
                 intent.putExtra("Defect", (Defect) defectsList.get(position));
-                intent.putExtra("Flag", EXISTING);
+                intent.putExtra("isExist", EXISTING);
                 startActivity(intent);
             }
         });
     }
 
-    public void fillList () {
-        defectsList = getDefectsByAct(this, currentAct);
 
-        final ArrayAdapter<Defect> adapter = new ArrayAdapter<Defect>(this,
-                android.R.layout.simple_list_item_1, defectsList);
-        listView.setAdapter(adapter);
+    private class LoadActs extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            defectsList = getDefectsByAct(WorksActivity.this, currentAct);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String r)
+        {
+            final ArrayAdapter<Defect> adapter = new ArrayAdapter<Defect>(WorksActivity.this,
+                    android.R.layout.simple_list_item_1, defectsList);
+            listView.setAdapter(adapter);
+        }
     }
 
     public void onAddButtonClick(View view) {
-        Intent intent = new Intent(DefectActivity.this, AddActActivity.class);
+        Intent intent = new Intent(WorksActivity.this, AddActActivity.class);
         intent.putExtra("Act", currentAct);
         intent.putExtra("Flag", NEW);
         startActivityForResult(intent, 0);
@@ -81,7 +96,9 @@ public class DefectActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        fillList();
+        LoadActs loadActs = new LoadActs();
+        loadActs.execute("");
     }
+
 
 }

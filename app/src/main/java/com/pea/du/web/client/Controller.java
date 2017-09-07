@@ -15,15 +15,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pea.du.R;
 import com.pea.du.actyvities.MainActivity;
-import com.pea.du.actyvities.defects.address.AddressActivity;
-import com.pea.du.actyvities.defects.address.act.AddActActivity;
-import com.pea.du.actyvities.defects.address.act.DefectActivity;
-import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
+import com.pea.du.actyvities.addresses.works.defectation.AddActActivity;
+import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.data.*;
 import com.pea.du.db.methods.DeleteMethods;
 import com.pea.du.db.methods.WriteMethods;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,9 +34,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
-import static com.pea.du.actyvities.defects.Login.currentUser;
+import static com.pea.du.actyvities.Login.currentUser;
 import static com.pea.du.db.data.Contract.GuestEntry.*;
 import static com.pea.du.web.client.Contract.*;
 
@@ -70,7 +70,13 @@ public class Controller implements Callback<Object> {
                 .setLenient()
                 .create();
 
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(60, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
+                .client(okHttpClient)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
@@ -337,7 +343,7 @@ public class Controller implements Callback<Object> {
         act.setServerId(response);
 
         act.setId(WriteMethods.setAct(context, act));
-        Intent intent = new Intent(context, DefectActivity.class);
+        Intent intent = new Intent(context, WorksActivity.class);
         intent.putExtra("Act", act);
         context.startActivity(intent);
     }

@@ -1,8 +1,8 @@
-package com.pea.du.actyvities.defects.address.act;
+package com.pea.du.actyvities.addresses.works.defectation;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.opengl.Visibility;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
@@ -11,9 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
 import com.pea.du.R;
-import com.pea.du.actyvities.defects.address.AddressActivity;
-import com.pea.du.actyvities.defects.address.act.photo.PhotoDetails;
-import com.pea.du.actyvities.defects.address.act.photo.PhotoLibrary;
+import com.pea.du.actyvities.addresses.works.photo.PhotoDetails;
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
 import com.pea.du.data.Photo;
@@ -77,10 +75,12 @@ public class AddActActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_add_act);
 
-        objInit();
 
         currentAct = getIntent().getParcelableExtra("Act");
-        flag = getIntent().getStringExtra("Flag");
+        flag = getIntent().getStringExtra("isExist");
+
+        objInit();
+
 
         if (flag.equals(NEW)) {
             bAddPhoto.setVisibility(View.GONE);
@@ -90,13 +90,17 @@ public class AddActActivity extends AppCompatActivity {
             bAddAct.setVisibility(View.GONE);
             currentDefect = getIntent().getParcelableExtra("Defect");
             fillFields();
-            loadPhotosInGrid();
+            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
+            loadPhotosInGrid.execute("");
         }
     }
 
+
+
+
     private void objInit(){
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.add_act_toolbar);
-        toolbar.setTitle("Акт дефектации");
+        toolbar.setTitle(currentAct.getAddress().getName());
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,11 +204,24 @@ public class AddActActivity extends AppCompatActivity {
     }
 
 
-    public void loadPhotosInGrid() {
-        loadPhotos();
-        gridViewAdapter = new GridViewAdapter(this, R.layout.simple_list_view_item, getData());
-        gridView.setAdapter(gridViewAdapter);
+    private class LoadPhotosInGrid extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            loadPhotos();
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String r)
+        {
+            gridViewAdapter = new GridViewAdapter(AddActActivity.this, R.layout.simple_list_view_item, getData());
+            gridView.setAdapter(gridViewAdapter);
+        }
     }
+
 
     // Подготовка картинок с текстом для gridView
     private ArrayList<ImageItem> getData() {
@@ -278,7 +295,9 @@ public class AddActActivity extends AppCompatActivity {
             newPhoto.getImageFromPath();
 
             savePhoto();
-            loadPhotosInGrid();
+            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
+            loadPhotosInGrid.execute("");
+
 
             bAddPhoto.setEnabled(false);
 
@@ -288,7 +307,8 @@ public class AddActActivity extends AppCompatActivity {
         }
 
         if (requestCode == REQUEST_REFRESH_PHOTO){
-            loadPhotosInGrid();
+            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
+            loadPhotosInGrid.execute("");
         }
     }
 

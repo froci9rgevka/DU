@@ -1,6 +1,7 @@
-package com.pea.du.actyvities.defects.address;
+package com.pea.du.actyvities.addresses;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.pea.du.R;
-import com.pea.du.actyvities.defects.address.act.DefectActivity;
+import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.data.Act;
 import com.pea.du.data.StaticValue;
 import com.pea.du.data.User;
@@ -22,15 +23,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import static com.pea.du.actyvities.MainActivity.*;
 import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS;
 import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static com.pea.du.web.client.Contract.SAVE_ACT;
 
-public class AddressActivity extends AppCompatActivity {
+public class AddressesActivity extends AppCompatActivity {
 
     private android.support.v7.widget.Toolbar toolbar;
     private ListView listView;
     private EditText addressText;
+
+    public static String flag = null;
 
     private ArrayList<String> currentAddressList = new ArrayList<String>();
     private ArrayList<String> defaultAddressList = new ArrayList<String>();
@@ -47,6 +51,10 @@ public class AddressActivity extends AppCompatActivity {
         addressText = (EditText)findViewById(R.id.address_edittext);
 
         final User user = getIntent().getParcelableExtra("User");
+        flag = getIntent().getStringExtra("Work_Type");
+
+        LoadAddresses loadAddresses = new LoadAddresses();
+        loadAddresses.execute("");
 
         toolbar.setTitle("Адреса");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
@@ -57,14 +65,6 @@ public class AddressActivity extends AppCompatActivity {
             }
         });
 
-
-        staticValueList = ReadMethods.getStaticValues(this, ADDRESS_TABLE_NAME, null, null);
-        for (StaticValue staticValue: staticValueList) {
-            currentAddressList.add(staticValue.getName());
-        }
-        Collections.sort(currentAddressList);
-        defaultAddressList.addAll(currentAddressList);
-        fillList();
 
         // Делаем поиск по адресам
         addressText.addTextChangedListener(new TextWatcher() {
@@ -86,22 +86,47 @@ public class AddressActivity extends AppCompatActivity {
                 // Переводим название в объект адрес
                 StaticValue staticValue = new StaticValue(ADDRESS_TABLE_NAME, ADDRESS);
                 staticValue.setName(currentAddressList.get(position));
-                staticValue.getStaticByName(getBaseContext());
+                staticValue.getStaticByName(AddressesActivity.this);
 
                 Act currentAct = new Act(user, staticValue);
 
-                if (!currentAct.isActInDB(getApplicationContext())) {
-                    currentAct.setCreateDate(new Date());
-                    Controller controller = new Controller(getBaseContext(), SAVE_ACT, currentAct); // последовательно загружаются все статичные данные
-                    controller.start();
-                    return;
+                if (flag.equals(DEFECT)) {
+                    if (!currentAct.isActInDB(getApplicationContext())) {
+                        currentAct.setCreateDate(new Date());
+                        Controller controller = new Controller(AddressesActivity.this, SAVE_ACT, currentAct); // последовательно загружаются все статичные данные
+                        controller.start();
+                        return;
+                    }
                 }
 
-                Intent intent = new Intent(AddressActivity.this, DefectActivity.class);
+                Intent intent = new Intent(AddressesActivity.this, WorksActivity.class);
                 intent.putExtra("Act", currentAct);
+                intent.putExtra("Work_Type", flag);
                 startActivity(intent);
             }
         });
+    }
+
+    private class LoadAddresses extends AsyncTask<String,String,String>{
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            staticValueList = ReadMethods.getStaticValues(AddressesActivity.this, ADDRESS_TABLE_NAME, null, null);
+            for (StaticValue staticValue: staticValueList) {
+                currentAddressList.add(staticValue.getName());
+            }
+            Collections.sort(currentAddressList);
+            defaultAddressList.addAll(currentAddressList);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String r)
+        {
+            fillList();
+        }
     }
 
     private void fillList() {

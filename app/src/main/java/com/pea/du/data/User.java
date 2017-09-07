@@ -8,7 +8,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Toast;
 import com.pea.du.actyvities.MainActivity;
-import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.db.data.Contract;
 import com.pea.du.db.methods.ReadMethods;
 import com.pea.du.web.client.Controller;

@@ -1,4 +1,4 @@
-package com.pea.du.actyvities.defects.address.act.photo;
+package com.pea.du.actyvities.addresses.works.photo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

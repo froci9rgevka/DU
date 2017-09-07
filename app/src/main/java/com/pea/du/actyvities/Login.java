@@ -1,14 +1,11 @@
-package com.pea.du.actyvities.defects;
+package com.pea.du.actyvities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.widget.TextView;
 import com.pea.du.R;
-import com.pea.du.actyvities.MainActivity;
-import com.pea.du.actyvities.defects.address.AddressActivity;
 import com.pea.du.data.User;
 import com.pea.du.db.methods.WriteMethods;
 

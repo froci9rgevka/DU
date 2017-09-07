@@ -9,7 +9,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
 
-        tools:context="com.pea.du.actyvities.defects.address.AddressActivity">
+        tools:context="com.pea.du.actyvities.addresses.AddressesActivity">
 
     <RelativeLayout
             android:layout_width="0dp"
