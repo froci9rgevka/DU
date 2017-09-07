@@ -77,10 +77,32 @@ public class Defect implements Parcelable{
         currency = (String) data[10];
     }
 
-    public static ArrayList<Defect> getDefectsByAct(Context context, Act act) {
+    public void assignDefect(Defect defect) {
+        this.act = new Act(defect.getAct());
+        this.id = defect.getId();
+        this.serverId = defect.getServerId();
+        this.type = new StaticValue(defect.getType());
+        this.constructiveElement = new StaticValue(defect.getConstructiveElement());
+        this.porch = defect.getPorch();
+        this.floor = defect.getFloor();
+        this.flat = defect.getFlat();
+        this.description = defect.getDescription();
+        this.measure = new StaticValue(defect.getMeasure());
+        this.currency = defect.getCurrency();
+    }
+
+    public void getDefectById(Context context){
+        ArrayList<Defect> defectArrayList = ReadMethods.getDefects(context,
+                Contract.GuestEntry.SERVER_ID + " = ?",
+                new String[]{serverId.toString()});
+        if (defectArrayList.size() > 0)
+            assignDefect(defectArrayList.get(0));
+    }
+
+    public static ArrayList<Defect> getDefectsByAct(Context context, Integer actId) {
         ArrayList<Defect> defectList = ReadMethods.getDefects(context,
                 Contract.GuestEntry.ACT_ID + " = ?",
-                new String[]{act.getServerId().toString()});
+                new String[]{actId.toString()});
         return defectList;
     }
 

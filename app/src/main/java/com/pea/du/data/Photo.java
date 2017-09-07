@@ -55,10 +55,10 @@ public class Photo implements Parcelable{
     }
 
 
-    public static ArrayList<Photo> getPhotosByDefect(Context context, Defect defect) {
+    public static ArrayList<Photo> getPhotosByDefect(Context context, Integer defectId) {
         ArrayList<Photo> photoList = ReadMethods.getDefectPhotos(context,
                 Contract.GuestEntry.DEFECT_ID + " = ?",
-                new String[]{defect.getServerId().toString()});
+                new String[]{defectId.toString()});
         return photoList;
     }
 

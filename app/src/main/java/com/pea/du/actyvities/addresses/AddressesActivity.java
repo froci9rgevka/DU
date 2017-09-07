@@ -26,6 +26,7 @@ import java.util.Date;
 import static com.pea.du.actyvities.MainActivity.*;
 import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS;
 import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+import static com.pea.du.flags.Flags.*;
 import static com.pea.du.web.client.Contract.SAVE_ACT;
 
 public class AddressesActivity extends AppCompatActivity {
@@ -34,7 +35,6 @@ public class AddressesActivity extends AppCompatActivity {
     private ListView listView;
     private EditText addressText;
 
-    private String currentWorkType = null;
 
     private ArrayList<String> currentAddressList = new ArrayList<String>();
     private ArrayList<String> defaultAddressList = new ArrayList<String>();
@@ -49,9 +49,6 @@ public class AddressesActivity extends AppCompatActivity {
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.adress_toolbar);
         listView = (ListView)findViewById(R.id.address_listview);
         addressText = (EditText)findViewById(R.id.address_edittext);
-
-        final User user = getIntent().getParcelableExtra("User");
-        currentWorkType = getIntent().getStringExtra("Work_Type");
 
         LoadAddresses loadAddresses = new LoadAddresses();
         loadAddresses.execute("");
@@ -78,7 +75,7 @@ public class AddressesActivity extends AppCompatActivity {
         });
 
 
-        // вызываем активити акта при выборе акта
+        // вызываем активити акта при выборе адреса
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
@@ -88,9 +85,11 @@ public class AddressesActivity extends AppCompatActivity {
                 staticValue.setName(currentAddressList.get(position));
                 staticValue.getStaticByName(AddressesActivity.this);
 
+                User user = new User();
+                user.setServerId(authorId);
                 Act currentAct = new Act(user, staticValue);
 
-                if (currentWorkType.equals(DEFECT)) {
+                if (workType.equals(DEFECT)) {
                     if (!currentAct.isActInDB(getApplicationContext())) {
                         currentAct.setCreateDate(new Date());
                         Controller controller = new Controller(AddressesActivity.this, SAVE_ACT, currentAct); // последовательно загружаются все статичные данные
@@ -99,9 +98,9 @@ public class AddressesActivity extends AppCompatActivity {
                     }
                 }
 
+                addressId = currentAct.getAddress().getServerId();
+                actId = currentAct.getServerId();
                 Intent intent = new Intent(AddressesActivity.this, WorksActivity.class);
-                intent.putExtra("Act", currentAct);
-                intent.putExtra("Work_Type", currentWorkType);
                 startActivity(intent);
             }
         });

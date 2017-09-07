@@ -53,6 +53,16 @@ public class StaticValue implements Parcelable {
 
     }
 
+    public static String getNameById(Context context, String tableName, Integer id){
+        ArrayList<StaticValue> staticValueArrayList = ReadMethods.getStaticValues(context, tableName,
+                Contract.GuestEntry.SERVER_ID + " = ?",
+                new String[]{id.toString()});
+        if (staticValueArrayList.size() > 0)
+            return staticValueArrayList.get(0).getName();
+        else
+            return null;
+    }
+
     public void assignStaticValue(StaticValue staticValue){
         this.setServerId(staticValue.getServerId());
         this.setId(staticValue.getId());

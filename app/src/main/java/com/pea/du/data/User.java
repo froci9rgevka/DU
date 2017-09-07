@@ -14,6 +14,7 @@ import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
 
+import static com.pea.du.flags.Flags.authorId;
 import static com.pea.du.web.client.Contract.CHECK_USER;
 
 public class User implements Parcelable {
@@ -69,7 +70,8 @@ public class User implements Parcelable {
 
             Toast.makeText(context, "Авторизированный пользователь " +nickname, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, MainActivity.class);
-            intent.putExtra("User", this);
+
+            authorId = serverId;
 
             context.startActivity(intent);
         } else {

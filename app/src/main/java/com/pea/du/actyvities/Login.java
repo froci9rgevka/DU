@@ -45,6 +45,7 @@ public class Login extends AppCompatActivity {
         currentUser.isUserInDB(this);
     }
 
+    /*
     // Кнопка добавления нового юзера в базу
     public void onNewButtonClick(View view){
         getUserFromFields();
@@ -57,4 +58,5 @@ public class Login extends AppCompatActivity {
 
         startActivity(intent);
     }
+    */
 }

@@ -39,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.pea.du.actyvities.Login.currentUser;
 import static com.pea.du.db.data.Contract.GuestEntry.*;
+import static com.pea.du.flags.Flags.*;
 import static com.pea.du.web.client.Contract.*;
 
 public class Controller implements Callback<Object> {
@@ -160,8 +161,7 @@ public class Controller implements Callback<Object> {
 
 
         } else if (typeOfObject.equals(SAVE_PHOTO)) {
-            Photo photo;
-            photo = new Photo((Photo) argument);
+            Photo photo = (Photo) argument;
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inSampleSize = 4;
@@ -343,14 +343,19 @@ public class Controller implements Callback<Object> {
         act.setServerId(response);
 
         act.setId(WriteMethods.setAct(context, act));
+
+        addressId = act.getAddress().getServerId();
+        actId = act.getServerId();
+
         Intent intent = new Intent(context, WorksActivity.class);
-        intent.putExtra("Act", act);
         context.startActivity(intent);
     }
 
     public void onDefectSaved(Integer response){
         ((Defect) argument).setServerId(response);
         WriteMethods.setDefect(context, (Defect)argument);
+
+        workId = ((Defect) argument).getServerId();
     }
 
     public void onPhotoSavedStart(Integer response){
@@ -389,10 +394,10 @@ public class Controller implements Callback<Object> {
 
         currentUser.setId(WriteMethods.setUser(context, currentUser));
 
+        authorId = currentUser.getServerId();
+
         // Если юзер есть в базе, то запускаем активити
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra("User", currentUser);
-
         context.startActivity(intent);
     }
 }

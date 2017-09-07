@@ -16,18 +16,15 @@ import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
 
+import static com.pea.du.flags.Flags.DEFECT;
+import static com.pea.du.flags.Flags.workType;
 import static com.pea.du.web.client.Contract.*;
 
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
 
-    final static public String DEFECT = "Defect";
-    final static public String BEGIN_WORK = "Begin";
-    final static public String DURING_WORK = "During";
-    final static public String END_WORK = "End";
 
     private GridView gridView;
     private ArrayAdapter<ImageItem> listViewAdapter;
-    private User currentUser;
 
     private SeekBar seekBar;
     private android.support.v7.widget.Toolbar toolbar;
@@ -57,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
         dbConnect();
 
-        currentUser = getIntent().getParcelableExtra("User");
     }
 
     @Override
@@ -136,9 +132,8 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     }
 
     public void onDefectButtonClick() {
+        workType = DEFECT;
         Intent intent = new Intent(MainActivity.this, AddressesActivity.class);
-        intent.putExtra("User", currentUser);
-        intent.putExtra("Work_Type", DEFECT);
         startActivity(intent);
     }
 

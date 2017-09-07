@@ -29,7 +29,11 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static com.pea.du.data.Photo.getPhotosByDefect;
+import static com.pea.du.data.StaticValue.getNameById;
 import static com.pea.du.db.data.Contract.GuestEntry.*;
+import static com.pea.du.flags.Flags.actId;
+import static com.pea.du.flags.Flags.addressId;
+import static com.pea.du.flags.Flags.workId;
 import static com.pea.du.tools.gridview.ImageItem.ITEM_PATH;
 import static com.pea.du.tools.gridview.ImageItem.ITEM_URL;
 import static com.pea.du.web.client.Contract.*;
@@ -58,10 +62,6 @@ public class DefectActivity extends AppCompatActivity {
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
 
-    private Act currentAct;
-    private Defect currentDefect;
-    private String flag;
-
     // Список фото
     ArrayList photoList;
 
@@ -76,31 +76,15 @@ public class DefectActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_act);
 
 
-        currentAct = getIntent().getParcelableExtra("Act");
-        flag = getIntent().getStringExtra("isExist");
-
         objInit();
 
 
-        if (flag.equals(NEW)) {
-            bAddPhoto.setVisibility(View.GONE);
-            bAddAct.setVisibility(View.VISIBLE);
-        } else {
-            bAddPhoto.setVisibility(View.VISIBLE);
-            bAddAct.setVisibility(View.GONE);
-            currentDefect = getIntent().getParcelableExtra("Defect");
-            fillFields();
-            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
-            loadPhotosInGrid.execute("");
-        }
+        LoadData loadData = new LoadData();
+        loadData.execute("");
     }
-
-
-
 
     private void objInit(){
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.add_act_toolbar);
-        toolbar.setTitle(currentAct.getAddress().getName());
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +120,68 @@ public class DefectActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(onItemClickListener);
     }
 
+    private class LoadData extends AsyncTask<String,String,String> {
+
+        private String address = null;
+
+
+        @Override
+        protected void onPreExecute()
+        {
+            // Наполняем активити контентом
+            if (workId==-1) {
+                // Если создаём новый дефект
+                bAddPhoto.setVisibility(View.GONE);
+                bAddAct.setVisibility(View.VISIBLE);
+            }
+            else {
+                // Если редактируем старый дефект
+                bAddPhoto.setVisibility(View.VISIBLE);
+                bAddAct.setVisibility(View.GONE);
+                // Заполняем поля в активити полями редактируемого дефекта
+                fillFields();
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+
+            // Загружаем адрес используя id
+            address = getNameById(DefectActivity.this, ADDRESS_TABLE_NAME, addressId);
+
+            // Загружаем данные
+            if (workId==-1) {
+            } else {
+                // Загружаем фотографии
+                loadPhotos();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String r)
+        {
+            // Отображаем адресс
+            toolbar.setTitle(address);
+
+            // Наполняем активити загруженным контентом
+            if (workId==-1) {
+            }
+            else {
+                gridViewAdapter = new GridViewAdapter(DefectActivity.this, R.layout.simple_list_view_item, getImageItems());
+                gridView.setAdapter(gridViewAdapter);
+            }
+        }
+    }
+
+
     private void fillFields(){
+        Defect currentDefect = new Defect();
+
+        currentDefect.setServerId(workId);
+        currentDefect.getDefectById(this);
+
         sDefect_type.setSelection(currentDefect.getType().getServerId()-1);
         sConstructiveElement.setSelection(currentDefect.getConstructiveElement().getServerId()-1);
         etPorch.setText(currentDefect.getPorch());
@@ -181,8 +226,11 @@ public class DefectActivity extends AppCompatActivity {
         measure.setName(sMeasure.getSelectedItem().toString());
         measure.getStaticByName(this);
 
+        Act act = new Act();
+        act.setServerId(actId);
+
         Defect defect = new Defect(
-                currentAct,
+                act,
                 type,
                 constructiveElement,
                 etPorch.getText().toString(),
@@ -196,43 +244,16 @@ public class DefectActivity extends AppCompatActivity {
         Controller controller = new Controller(this, SAVE_DEFECT, defect); // последовательно загружаются все статичные данные
         controller.start();
 
-        currentDefect = defect;
-
         bAddPhoto.setVisibility(View.VISIBLE);
         bAddAct.setVisibility(View.GONE);
 
     }
 
-
-    private class LoadPhotosInGrid extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            loadPhotos();
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String r)
-        {
-            gridViewAdapter = new GridViewAdapter(DefectActivity.this, R.layout.simple_list_view_item, getData());
-            gridView.setAdapter(gridViewAdapter);
-        }
-    }
-
-
     // Подготовка картинок с текстом для gridView
-    private ArrayList<ImageItem> getData() {
+    private ArrayList<ImageItem> getImageItems() {
         final ArrayList<ImageItem> imageItems = new ArrayList<ImageItem>();
-        //TypedArray imgs = getResources().obtainTypedArray(R.array.image_ids);
-        for (int i = 0; i < photoList.size(); i++) { //img.length
-            //Drawable d = getResources().getDrawable(imgs.getResourceId(i, -1));
-            //Bitmap bitmap = BitmapFactory.decodeResource(getResources(), imgs.getResourceId(i, -1));
-            // Bitmap bitmap = drawableToBitmap(d);
+        for (int i = 0; i < photoList.size(); i++) {
             Photo photo = (Photo) photoList.get(i);
-            //photo.getImageFromPath();
             if (!(photo.getPath() == null))
                 imageItems.add(new ImageItem(photo.getPath(), ITEM_PATH));
             else
@@ -251,7 +272,7 @@ public class DefectActivity extends AppCompatActivity {
     public void loadPhotos () {
 
         // Массив для хранения списка актов, загружаем в него из базы акты
-        photoList = getPhotosByDefect(this, currentDefect);
+        photoList = getPhotosByDefect(this, workId);
     }
 
     ////////////////////////////////////////РАБОТА С КМЕРОЙ//////////////////////////////////////
@@ -269,6 +290,7 @@ public class DefectActivity extends AppCompatActivity {
             // Create the File where the photo should go
             File photoFile = null;
             try {
+                // Выдаем уникальный путь к фото
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
@@ -283,32 +305,6 @@ public class DefectActivity extends AppCompatActivity {
             }
 
             startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            galleryAddPic();
-
-            newPhoto.setDefect(currentDefect);
-            newPhoto.getImageFromPath();
-
-            savePhoto();
-            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
-            loadPhotosInGrid.execute("");
-
-
-            bAddPhoto.setEnabled(false);
-
-            Controller controller = new Controller(this, SAVE_PHOTO, newPhoto); // последовательно загружаются все статичные данные
-            controller.start();
-
-        }
-
-        if (requestCode == REQUEST_REFRESH_PHOTO){
-            LoadPhotosInGrid loadPhotosInGrid = new LoadPhotosInGrid();
-            loadPhotosInGrid.execute("");
         }
     }
 
@@ -329,6 +325,35 @@ public class DefectActivity extends AppCompatActivity {
         return image;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            galleryAddPic();
+
+            Defect defect = new Defect();
+            defect.setServerId(workId);
+            newPhoto.setDefect(defect);
+            newPhoto.getImageFromPath();
+
+            savePhoto();
+            LoadData loadData = new LoadData();
+            loadData.execute("");
+
+
+            bAddPhoto.setEnabled(false);
+
+            Controller controller = new Controller(this, SAVE_PHOTO, newPhoto); // последовательно загружаются все статичные данные
+            controller.start();
+
+        }
+
+        if (requestCode == REQUEST_REFRESH_PHOTO){
+            LoadData loadData = new LoadData();
+            loadData.execute("");
+        }
+    }
+
+
     private void galleryAddPic() {
         Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(newPhoto.getPath());
@@ -336,6 +361,5 @@ public class DefectActivity extends AppCompatActivity {
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
-
 
 }
