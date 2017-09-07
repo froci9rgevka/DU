@@ -34,7 +34,7 @@ import static com.pea.du.tools.gridview.ImageItem.ITEM_PATH;
 import static com.pea.du.tools.gridview.ImageItem.ITEM_URL;
 import static com.pea.du.web.client.Contract.*;
 
-public class AddActActivity extends AppCompatActivity {
+public class DefectActivity extends AppCompatActivity {
 
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_REFRESH_PHOTO = 2;
@@ -158,7 +158,7 @@ public class AddActActivity extends AppCompatActivity {
 
             ImageItem item = (ImageItem) parent.getItemAtPosition(position);
             //Create intent
-            Intent intent = new Intent(AddActActivity.this, PhotoDetails.class);
+            Intent intent = new Intent(DefectActivity.this, PhotoDetails.class);
             intent.putExtra("title", item.getTitle());
             intent.putExtra("image", currentPhoto); //item.getImage()
 
@@ -217,7 +217,7 @@ public class AddActActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r)
         {
-            gridViewAdapter = new GridViewAdapter(AddActActivity.this, R.layout.simple_list_view_item, getData());
+            gridViewAdapter = new GridViewAdapter(DefectActivity.this, R.layout.simple_list_view_item, getData());
             gridView.setAdapter(gridViewAdapter);
         }
     }

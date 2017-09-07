@@ -9,7 +9,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
 
-        tools:context=".actyvities.addresses.works.defectation.AddActActivity">
+        tools:context=".actyvities.addresses.works.defectation.DefectActivity">
 
     <RelativeLayout
             android:layout_width="0dp"

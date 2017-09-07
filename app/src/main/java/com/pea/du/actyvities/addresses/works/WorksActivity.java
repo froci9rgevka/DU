@@ -8,15 +8,17 @@ import android.view.View;
 import android.widget.*;
 
 import com.pea.du.R;
-import com.pea.du.actyvities.addresses.works.defectation.AddActActivity;
+import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
+import com.pea.du.actyvities.addresses.works.stagework.StageActivity;
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
 
 
 import java.util.ArrayList;
 
-import static com.pea.du.actyvities.addresses.works.defectation.AddActActivity.EXISTING;
-import static com.pea.du.actyvities.addresses.works.defectation.AddActActivity.NEW;
+import static com.pea.du.actyvities.MainActivity.DEFECT;
+import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.EXISTING;
+import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.NEW;
 import static com.pea.du.data.Defect.getDefectsByAct;
 
 
@@ -59,11 +61,20 @@ public class WorksActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View itemClicked, int position,
                                     long id) {
-                Intent intent = new Intent(WorksActivity.this, AddActActivity.class);
-                intent.putExtra("Act", currentAct);
-                intent.putExtra("Defect", (Defect) defectsList.get(position));
-                intent.putExtra("isExist", EXISTING);
-                startActivity(intent);
+                if (currentWorkType.equals(DEFECT)) {
+                    Intent intent = new Intent(WorksActivity.this, DefectActivity.class);
+                    intent.putExtra("Act", currentAct);
+                    intent.putExtra("Defect", (Defect) defectsList.get(position));
+                    intent.putExtra("isExist", EXISTING);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(WorksActivity.this, StageActivity.class);
+                    intent.putExtra("Act", currentAct);
+                    intent.putExtra("Defect", (Defect) defectsList.get(position));
+                    intent.putExtra("isExist", EXISTING);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -88,7 +99,7 @@ public class WorksActivity extends AppCompatActivity {
     }
 
     public void onAddButtonClick(View view) {
-        Intent intent = new Intent(WorksActivity.this, AddActActivity.class);
+        Intent intent = new Intent(WorksActivity.this, DefectActivity.class);
         intent.putExtra("Act", currentAct);
         intent.putExtra("Flag", NEW);
         startActivityForResult(intent, 0);

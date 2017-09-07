@@ -90,9 +90,11 @@
                 android:exported="false"
                 android:syncable="true"/>
 
-        <activity android:name=".actyvities.addresses.works.defectation.AddActActivity">
+        <activity android:name=".actyvities.addresses.works.defectation.DefectActivity">
         </activity>
         <activity android:name=".actyvities.addresses.another.StageWork">
+        </activity>
+        <activity android:name=".actyvities.addresses.works.stagework.StageActivity">
         </activity>
     </application>
 

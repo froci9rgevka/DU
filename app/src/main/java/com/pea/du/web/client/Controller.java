@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pea.du.R;
 import com.pea.du.actyvities.MainActivity;
-import com.pea.du.actyvities.addresses.works.defectation.AddActActivity;
+import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.data.*;
 import com.pea.du.db.methods.DeleteMethods;
@@ -363,9 +363,9 @@ public class Controller implements Callback<Object> {
     }
 
     public void onPhotoSaved(Integer response){
-        TextView tvPocketsCount = (TextView) ((AddActActivity) context).findViewById(R.id.tvPocketsCount);
+        TextView tvPocketsCount = (TextView) ((DefectActivity) context).findViewById(R.id.tvPocketsCount);
         tvPocketsCount.setText("Количество отправленных пакетов: " + (packagesCount - imageParts.size()) + "из" + packagesCount);
-        ProgressBar pbSendPhoto = (ProgressBar) ((AddActActivity) context).findViewById(R.id.pbSendPhoto);
+        ProgressBar pbSendPhoto = (ProgressBar) ((DefectActivity) context).findViewById(R.id.pbSendPhoto);
         pbSendPhoto.setMax(packagesCount);
         pbSendPhoto.setProgress(packagesCount - imageParts.size());
 
@@ -374,7 +374,7 @@ public class Controller implements Callback<Object> {
             start();
         }
         else{
-            Button bAddPhoto = (Button) ((AddActActivity) context).findViewById(R.id.activity_defect_addPhoto);
+            Button bAddPhoto = (Button) ((DefectActivity) context).findViewById(R.id.activity_defect_addPhoto);
             bAddPhoto.setEnabled(true);
         }
     }

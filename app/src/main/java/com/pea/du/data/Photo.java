@@ -22,6 +22,7 @@ public class Photo implements Parcelable{
     private Integer id;
     private Integer serverId;
     private Defect defect;
+    private Work work;
     private String path;
     private String url;
     private Bitmap image;
@@ -33,6 +34,7 @@ public class Photo implements Parcelable{
         this.id = photo.getId();
         this.serverId = photo.getServerId();
         this.defect = new Defect(photo.getDefect());
+        this.work = new Work(photo.getWork());
         this.path = photo.getPath();
         this.url = photo.getUrl();
         this.image = photo.getImage();
@@ -46,9 +48,10 @@ public class Photo implements Parcelable{
         id = (Integer) data[0];
         serverId = (Integer) data[1];
         defect = (Defect) data[2];
-        path = (String) data[3];
-        url = (String) data[4];
-        image = (Bitmap) data[5];
+        work = (Work) data[3];
+        path = (String) data[4];
+        url = (String) data[5];
+        image = (Bitmap) data[6];
     }
 
 
@@ -118,13 +121,14 @@ public class Photo implements Parcelable{
     @TargetApi(Build.VERSION_CODES.KITKAT)
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        Object[] array = new Object[6];
+        Object[] array = new Object[7];
         array[0] = id;
         array[1] = serverId;
         array[2] = defect;
-        array[3] = path;
-        array[4] = url;
-        array[5] = image;
+        array[3] = work;
+        array[4] = path;
+        array[5] = url;
+        array[6] = image;
 
         dest.writeArray(array);
     }
@@ -191,5 +195,13 @@ public class Photo implements Parcelable{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Work getWork() {
+        return work;
+    }
+
+    public void setWork(Work work) {
+        this.work = work;
     }
 }

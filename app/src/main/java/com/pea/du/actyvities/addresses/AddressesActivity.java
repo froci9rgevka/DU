@@ -34,7 +34,7 @@ public class AddressesActivity extends AppCompatActivity {
     private ListView listView;
     private EditText addressText;
 
-    public static String flag = null;
+    private String currentWorkType = null;
 
     private ArrayList<String> currentAddressList = new ArrayList<String>();
     private ArrayList<String> defaultAddressList = new ArrayList<String>();
@@ -51,7 +51,7 @@ public class AddressesActivity extends AppCompatActivity {
         addressText = (EditText)findViewById(R.id.address_edittext);
 
         final User user = getIntent().getParcelableExtra("User");
-        flag = getIntent().getStringExtra("Work_Type");
+        currentWorkType = getIntent().getStringExtra("Work_Type");
 
         LoadAddresses loadAddresses = new LoadAddresses();
         loadAddresses.execute("");
@@ -90,7 +90,7 @@ public class AddressesActivity extends AppCompatActivity {
 
                 Act currentAct = new Act(user, staticValue);
 
-                if (flag.equals(DEFECT)) {
+                if (currentWorkType.equals(DEFECT)) {
                     if (!currentAct.isActInDB(getApplicationContext())) {
                         currentAct.setCreateDate(new Date());
                         Controller controller = new Controller(AddressesActivity.this, SAVE_ACT, currentAct); // последовательно загружаются все статичные данные
@@ -101,7 +101,7 @@ public class AddressesActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AddressesActivity.this, WorksActivity.class);
                 intent.putExtra("Act", currentAct);
-                intent.putExtra("Work_Type", flag);
+                intent.putExtra("Work_Type", currentWorkType);
                 startActivity(intent);
             }
         });
