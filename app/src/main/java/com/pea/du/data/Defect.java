@@ -194,8 +194,7 @@ public class Defect implements Parcelable{
 
     @Override
     public String toString() {
-        if (id == null)
-            return "";
+        if (id == null) return "";
         else
             return constructiveElement.toString() +
                     ". Тип дефекта:" + type.toString() +

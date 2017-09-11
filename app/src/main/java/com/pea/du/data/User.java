@@ -10,12 +10,11 @@ import android.widget.Toast;
 import com.pea.du.actyvities.MainActivity;
 import com.pea.du.db.local.data.Contract;
 import com.pea.du.db.local.methods.ReadMethods;
-import com.pea.du.web.client.Controller;
+import com.pea.du.db.remote.methods.CheckLogin;
 
 import java.util.ArrayList;
 
 import static com.pea.du.flags.Flags.authorId;
-import static com.pea.du.web.client.Contract.CHECK_USER;
 
 public class User implements Parcelable {
 
@@ -62,26 +61,9 @@ public class User implements Parcelable {
     }
 
 
-    public void isUserInDB(Context context) {
-        ArrayList<User> userList = ReadMethods.getUsers(context,
-                Contract.GuestEntry.NICKNAME + " = ? AND " + Contract.GuestEntry.PASSWORD + " = ?",
-                new String[]{nickname, password});
-
-        //Если пользователь есть в локальной базе
-        if (userList.size() > 0) {
-            id = userList.get(0).getId();
-            serverId = userList.get(0).getServerId();
-
-            Intent intent = new Intent(context, MainActivity.class);
-
-            authorId = serverId;
-
-            context.startActivity(intent);
-        } else {
-            //Запрашиваем в базе сервера
-            Controller controller = new Controller(context, CHECK_USER, nickname);
-            controller.start();
-        }
+    public void isUserInDB() {
+        CheckLogin checkLogin = new CheckLogin(nickname, password);
+        checkLogin.execute("");
     }
 
     public static User getUserById(Context context, Integer userId){

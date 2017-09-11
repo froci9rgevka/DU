@@ -17,6 +17,7 @@ import static com.pea.du.db.local.data.Contract.GuestEntry.*;
 import static com.pea.du.db.local.methods.DeleteMethods.deleteAnything;
 import static com.pea.du.db.local.methods.WriteMethods.*;
 import static com.pea.du.db.remote.MysqlConnection.getConnection;
+import static com.pea.du.flags.Flags.DEFECT;
 
 /*
         И загружает из MySQL, и сохраняет в локальную бд.
@@ -52,7 +53,7 @@ public class LoadData extends AsyncTask<String,String,String> {
     protected void onPreExecute()
     {
         lockMainActivity();
-        Toast.makeText(context , "Синхронизация данных..." , Toast.LENGTH_LONG).show();
+        Toast.makeText(context , "Синхронизация" , Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -65,11 +66,11 @@ public class LoadData extends AsyncTask<String,String,String> {
         setActs(context,acts);
         setDefects(context,defects);
         setWorks(context,works);
-        setDefectPhotos(context,photos);
+        setPhotos(context, photos);
 
         if(isSuccess)
         {
-            Toast.makeText(context , "Данные синхронизированы!" , Toast.LENGTH_LONG).show();
+            Toast.makeText(context , "Данные синхронизированы" , Toast.LENGTH_LONG).show();
         }
         unlockMainActivity();
     }
@@ -93,7 +94,8 @@ public class LoadData extends AsyncTask<String,String,String> {
                 LoadActTable();
                 LoadDefectTable();
                 LoadWorkTable();
-                LoadPhotoTable();
+                LoadDefectPhotoTable();
+                LoadStagesPhotoTable();
 
                 if(!staticValues.isEmpty())
                 {
@@ -187,7 +189,7 @@ public class LoadData extends AsyncTask<String,String,String> {
         }
     }
 
-    private void LoadPhotoTable() throws SQLException {
+    private void LoadDefectPhotoTable() throws SQLException {
         String query = "select Id, Header, DefectFileLink from zkh_actofdefectphoto";
         Statement stmt = con.createStatement();
         ResultSet rs = stmt.executeQuery(query);
@@ -197,6 +199,20 @@ public class LoadData extends AsyncTask<String,String,String> {
             photo.setServerId(rs.getInt("Id"));
             photo.setDefect(new Defect(rs.getInt("Header")));
             photo.setUrl(rs.getString("DefectFileLink"));
+            photos.add(photo);
+        }
+    }
+
+    private void LoadStagesPhotoTable() throws SQLException {
+        String query = "select Id, Header, Name, ServiceName from hsg_dataworktapefile";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            Photo photo = new Photo();
+            photo.setServerId(rs.getInt("Id"));
+            photo.setWork(new Work(rs.getInt("Header")));
+            photo.setUrl(rs.getString("Name"));
             photos.add(photo);
         }
     }

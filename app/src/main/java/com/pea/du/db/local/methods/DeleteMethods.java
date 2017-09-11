@@ -81,13 +81,13 @@ public class DeleteMethods {
     public static boolean deletePhotos(Context context)
     {
         SQLiteDatabase db_write = getDBfromContext(context);
-        return db_write.delete(Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, null, null) > 0;
+        return db_write.delete(Contract.GuestEntry.PHOTO_TABLE_NAME, null, null) > 0;
     }
 
     public static boolean deletePhoto(Context context, Photo photo)
     {
         SQLiteDatabase db_write = getDBfromContext(context);
-        return db_write.delete(Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, Contract.GuestEntry.PATH + "='" + photo.getPath() + "'", null) > 0;
+        return db_write.delete(Contract.GuestEntry.PHOTO_TABLE_NAME, Contract.GuestEntry.PATH + "='" + photo.getPath() + "'", null) > 0;
     }
 
 

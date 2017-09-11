@@ -2,18 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.pea.du">
 
-    <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.READ_PROFILE"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS"/>
     ///////////////////////
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS"/>
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
-    ////////////////////////
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="com.pea.du.fileprovider.READ"/>
     //////////////////////////////////////////////////////
     <application
             android:allowBackup="true"
@@ -62,41 +52,10 @@
         <activity android:name=".actyvities.addresses.AddressesActivity">
         </activity>
 
-        <service android:name=".web.stubAuthenticator.AuthenticatorService">
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator"/>
-            </intent-filter>
-
-            <meta-data
-                    android:name="android.accounts.AccountAuthenticator"
-                    android:resource="@xml/authenticator"/>
-        </service>
-        <service
-                android:name=".web.stubAuthenticator.syncAdapter.SyncService"
-                android:exported="true"
-                android:process=":sync">
-            <intent-filter>
-                <action android:name="android.content.SyncAdapter"/>
-            </intent-filter>
-
-            <meta-data
-                    android:name="android.content.SyncAdapter"
-                    android:resource="@xml/syncadapter"/>
-        </service>
-
-        <provider
-                android:name=".web.stubAuthenticator.provider.StubProvider"
-                android:authorities="com.pea.du.android.datasync.provider"
-                android:exported="false"
-                android:syncable="true"/>
 
         <activity android:name=".actyvities.addresses.works.defectation.DefectActivity">
         </activity>
-        <activity android:name=".actyvities.addresses.another.StageWork">
-        </activity>
         <activity android:name=".actyvities.addresses.works.stagework.StageActivity">
-        </activity>
-        <activity android:name=".actyvities.addresses.works.photo.PhotoGrid">
         </activity>
     </application>
 

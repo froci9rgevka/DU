@@ -1,18 +1,12 @@
 package com.pea.du.db.remote.methods;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 import com.jcraft.jsch.*;
-import com.pea.du.R;
-import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
-import com.pea.du.data.Act;
 import com.pea.du.data.Photo;
-import com.pea.du.db.local.methods.WriteMethods;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,9 +15,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import static com.pea.du.db.remote.MysqlConnection.getConnection;
-import static com.pea.du.flags.Flags.actId;
-import static com.pea.du.flags.Flags.addressId;
-import static com.pea.du.flags.Flags.workId;
+import static com.pea.du.flags.Flags.*;
+import static com.pea.du.flags.Flags.DEFECT;
 
 /*
         Сохраняет в MySQL, и сохраняет в локальную бд. Хранит объект private photo.
@@ -54,8 +47,7 @@ public class SavePhoto extends AsyncTask<String,String,String> {
     {
 
         Toast.makeText(context, r, Toast.LENGTH_SHORT).show();
-        Button bAddPhoto = (Button) ((DefectActivity) context).findViewById(R.id.activity_defect_addPhoto);
-        bAddPhoto.setEnabled(true);
+        isPhotoSending = false;
     }
 
     @Override
@@ -71,13 +63,23 @@ public class SavePhoto extends AsyncTask<String,String,String> {
             else
             {
                 Integer newID = 0;
-                String query = "SELECT MAX(id) from zkh_actofdefectphoto";
+                String query = null;
+
+                if (workType.equals(DEFECT))
+                    query = "SELECT MAX(id) from zkh_actofdefectphoto";
+                else
+                    query = "SELECT MAX(id) from hsg_dataworktapefile";
+
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 if(rs.next()){ newID = (rs.getInt(1)) + 1;}
 
-                query = "INSERT INTO zkh_actofdefectphoto (Header, DefectFileLink) " +
-                        "VALUES (" + workId + ",'http://78.47.195.208/MSK3/DeffectAct/" + workId + "/" + newID +".jpg')";
+                if (workType.equals(DEFECT))
+                    query = "INSERT INTO zkh_actofdefectphoto (Header, DefectFileLink) " +
+                            "VALUES (" + workId + ",'http://78.47.195.208/MSK3/DeffectAct/DefectPhotos/" + workId + "/" + newID +".jpg')";
+                else
+                    query = "INSERT INTO hsg_dataworktapefile (Header, Name, ServiceName) " +
+                            "VALUES (" + workId + ",'http://78.47.195.208/MSK3/DeffectAct/StagesPhotos/" + workId + "/" + newID +".jpg','ServiceName')";
                 stmt.executeUpdate(query);
                 photo.setServerId(newID);
 
@@ -98,7 +100,12 @@ public class SavePhoto extends AsyncTask<String,String,String> {
         int SFTPPORT = 22;
         String SFTPUSER = "root";
         String SFTPPASS = "he7TRt2fFwycUD";
-        String SFTPWORKINGDIR = "/var/www/html/MSK3/DeffectAct";
+        String SFTPWORKINGDIR = null;
+
+        if (workType.equals(DEFECT))
+            SFTPWORKINGDIR = "/var/www/html/MSK3/DeffectAct/DefectPhotos";
+        else
+            SFTPWORKINGDIR = "/var/www/html/MSK3/DeffectAct/StagesPhotos";
 
         Session session = null;
         Channel channel = null;

@@ -12,7 +12,7 @@ public final class Contract {
         public final static String ACT_TABLE_NAME = "tAct";
         public final static String DEFECT_TABLE_NAME = "tDefect";
         public final static String WORK_TABLE_NAME = "tWork";
-        public final static String DEFECT_PHOTO_TABLE_NAME = "tDefectPhoto";
+        public final static String PHOTO_TABLE_NAME = "tDefectPhoto";
         public final static String ADDRESS_TABLE_NAME = "tAddress";
         public final static String DEFECT_MEASURE_TABLE_NAME = "tMeasure";
         public final static String DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME = "tConstructiveElement";
@@ -55,8 +55,9 @@ public final class Contract {
         public final static String CONTRACTOR_ID = "contractor_id";
         public final static String DOCDATE = "docdate";
 
-        //tDefectPhoto
-        public final static String DEFECT_ID = "defect_id";
+        //tPhoto
+        public final static String WORK_ID = "work_id";
+        public final static String WORKTYPE = "worktype";
         public final static String PATH = "path";
         public final static String URL = "url";
 

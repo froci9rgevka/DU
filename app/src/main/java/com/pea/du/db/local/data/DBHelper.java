@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
     /**
      * Версия базы данных. При изменении схемы увеличить на единицу
      */
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 32;
 
 
     /**
@@ -72,13 +72,14 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.MEASURE_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.DESCR + " TEXT NOT NULL, "
                 + Contract.GuestEntry.SUBCONTRACT + " BOOLEAN NOT NULL, "
-                + Contract.GuestEntry.CONTRACTOR_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.CONTRACTOR_ID + " INTEGER, "
                 + Contract.GuestEntry.DOCDATE + " DATETIME NOT NULL);";
 
-        String SQL_CREATE_DEFECT_PHOTO_TABLE = "CREATE TABLE " + Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME + " ("
+        String SQL_CREATE_PHOTO_TABLE = "CREATE TABLE " + Contract.GuestEntry.PHOTO_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Contract.GuestEntry.SERVER_ID + " INTEGER, "
-                + Contract.GuestEntry.DEFECT_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.WORKTYPE + " TEXT NOT NULL, "
+                + Contract.GuestEntry.WORK_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.URL + " TEXT, "
                 + Contract.GuestEntry.PATH + " TEXT);";
 
@@ -122,7 +123,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_ACT_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_TABLE);
         db.execSQL(SQL_CREATE_WORK_TABLE);
-        db.execSQL(SQL_CREATE_DEFECT_PHOTO_TABLE);
+        db.execSQL(SQL_CREATE_PHOTO_TABLE);
         db.execSQL(SQL_CREATE_ADDRESS_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_MEASURE_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_CONSTRUCTIVE_ELEMENT_TABLE);
@@ -145,7 +146,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.ACT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.WORK_TABLE_NAME);
-        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.PHOTO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.ADDRESS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME);

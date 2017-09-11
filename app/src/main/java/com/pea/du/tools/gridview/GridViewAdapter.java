@@ -59,33 +59,4 @@ public class GridViewAdapter extends ArrayAdapter {
         return convertView;
     }
 
-    /*
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        ViewHolder holder = null;
-
-        if (row == null) {
-            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            row = inflater.inflate(layoutResourceId, parent, false);
-            holder = new ViewHolder();
-            holder.imageTitle = (TextView) row.findViewById(R.id.grid_item_title);
-            holder.image = (ImageView) row.findViewById(R.id.grid_item_image);
-            //row.setTag(holder);
-            Picasso.with(context).load("http://78.47.195.208/MSK3/DeffectAct/17/50.jpg").into(row);
-        } else {
-            holder = (ViewHolder) row.getTag();
-        }
-
-        ImageItem item = (ImageItem) data.get(position);
-        holder.imageTitle.setText(item.getTitle());
-        holder.image.setImageBitmap(item.getImage());
-        return row;
-    }
-    */
-
-    static class ViewHolder {
-        TextView imageTitle;
-        ImageView image;
-    }
 }

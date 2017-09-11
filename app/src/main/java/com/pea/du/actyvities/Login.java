@@ -2,14 +2,16 @@ package com.pea.du.actyvities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 import com.pea.du.R;
 import com.pea.du.data.User;
+import com.pea.du.flags.Flags;
 
 public class Login extends AppCompatActivity {
 
-    public static User currentUser;
+    private static User currentUser;
 
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -19,7 +21,9 @@ public class Login extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
-        toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.login_toolbar);
+        Flags.currentContext=this;
+
+        toolbar = (Toolbar) findViewById(R.id.login_toolbar);
         toolbar.setTitle("Вход");
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -40,21 +44,6 @@ public class Login extends AppCompatActivity {
         getUserFromFields();
 
         // Отправляем запрос
-        currentUser.isUserInDB(this);
+        currentUser.isUserInDB();
     }
-
-    /*
-    // Кнопка добавления нового юзера в базу
-    public void onNewButtonClick(View view){
-        getUserFromFields();
-
-        currentUser.setId(WriteMethods.setUser(this, currentUser));
-
-        //Create intent
-        Intent intent = new Intent(Login.this, MainActivity.class);
-        intent.putExtra("User", currentUser);
-
-        startActivity(intent);
-    }
-    */
 }

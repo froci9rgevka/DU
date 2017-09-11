@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import static com.pea.du.data.User.getUserById;
 import static com.pea.du.db.local.data.Contract.GuestEntry.*;
+import static com.pea.du.flags.Flags.DEFECT;
 
 public class ReadMethods {
 
@@ -166,7 +167,7 @@ public class ReadMethods {
         return result;
     }
 
-    public static ArrayList<Defect> getWorks(Context context, String selection, String[] selectionArgs){
+    public static ArrayList<Work> getWorks(Context context, String selection, String[] selectionArgs){
         SQLiteDatabase db = getDBFromContext(context);
         ArrayList result = new ArrayList();
 
@@ -230,26 +231,31 @@ public class ReadMethods {
         return result;
     }
 
-    public static ArrayList<Photo> getDefectPhotos(Context context, String selection, String[] selectionArgs){
+    public static ArrayList<Photo> getPhotos(Context context, String selection, String[] selectionArgs){
         SQLiteDatabase db = getDBFromContext(context);
 
         ArrayList result = new ArrayList();
 
         Cursor cursor = db.query(
-                Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
+                Contract.GuestEntry.PHOTO_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
 
         while (cursor.moveToNext()) {
             Photo photo = new Photo();
-            Defect defect = new Defect();
 
             photo.setId(cursor.getInt(0));
-            //photo.setServerId(cursor.getInt(1));
+            photo.setServerId(cursor.getInt(1));
 
-            defect.setServerId(cursor.getInt(2));
-            photo.setDefect(defect);
+            if (cursor.getString(2).equals(DEFECT)) {
+                photo.setDefect(new Defect(cursor.getInt(3)));
+            }
+            else {
+                Work work = new Work();
+                work.setServerId(cursor.getInt(3));
+                photo.setWork(work);
+            }
 
-            photo.setUrl(cursor.getString(3));
-            photo.setPath(cursor.getString(4));
+            photo.setUrl(cursor.getString(4));
+            photo.setPath(cursor.getString(5));
 
             result.add(photo);
         }

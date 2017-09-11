@@ -13,6 +13,9 @@ import com.pea.du.db.local.methods.ReadMethods;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.pea.du.flags.Flags.currentContext;
+import static com.pea.du.flags.Flags.workId;
+import static com.pea.du.flags.Flags.workType;
 import static java.lang.Integer.parseInt;
 
 public class Photo implements Parcelable{
@@ -52,10 +55,11 @@ public class Photo implements Parcelable{
     }
 
 
-    public static ArrayList<Photo> getPhotosByDefect(Context context, Integer defectId) {
-        ArrayList<Photo> photoList = ReadMethods.getDefectPhotos(context,
-                Contract.GuestEntry.DEFECT_ID + " = ?",
-                new String[]{defectId.toString()});
+    public static ArrayList<Photo> getPhotos() {
+        ArrayList<Photo> photoList = ReadMethods.getPhotos(currentContext,
+                Contract.GuestEntry.WORK_ID + " = ? AND "
+                + Contract.GuestEntry.WORKTYPE + " = ?",
+                new String[]{workId.toString(), workType});
         return photoList;
     }
 

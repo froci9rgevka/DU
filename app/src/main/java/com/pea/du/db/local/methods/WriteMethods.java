@@ -11,6 +11,10 @@ import com.pea.du.db.local.data.DBHelper;
 
 import java.util.ArrayList;
 
+import static com.pea.du.data.Work.getWorkById;
+import static com.pea.du.flags.Flags.DEFECT;
+import static com.pea.du.flags.Flags.currentContext;
+
 public class WriteMethods {
 
     private static SQLiteDatabase getDBfromContext(Context context) {
@@ -227,7 +231,10 @@ public class WriteMethods {
             values.put(Contract.GuestEntry.MEASURE_ID, work.getMeasure().getServerId());
             values.put(Contract.GuestEntry.DESCR, work.getDescr());
             values.put(Contract.GuestEntry.SUBCONTRACT, work.getSubcontract());
-            values.put(Contract.GuestEntry.CONTRACTOR_ID, work.getContractor().getServerId());
+
+            if(work.getSubcontract())
+                values.put(Contract.GuestEntry.CONTRACTOR_ID, work.getContractor().getServerId());
+
             values.put(Contract.GuestEntry.DOCDATE,"Now()");    // work.getDocdate().toString()
 
             result.add((int) db_write.insert(Contract.GuestEntry.WORK_TABLE_NAME, null, values));
@@ -236,24 +243,35 @@ public class WriteMethods {
     }
 
 
-    public static Integer setDefectPhoto(Context context, Photo photo) {
+    public static Integer setPhoto(Context context, Photo photo) {
         ArrayList<Photo> photoArrayList = new ArrayList<>();
         photoArrayList.add(photo);
-        return setDefectPhotos(context, photoArrayList).get(0);
+        return setPhotos(context, photoArrayList).get(0);
     }
 
-    public static ArrayList<Integer> setDefectPhotos(Context context,  ArrayList<Photo> photoArrayList) {
+    public static ArrayList<Integer> setPhotos(Context context, ArrayList<Photo> photoArrayList) {
         SQLiteDatabase db_write = getDBfromContext(context);
         ArrayList<Integer> result = new ArrayList<>();
         for (Photo photo : photoArrayList
                 ) {
             ContentValues values = new ContentValues();
-            //values.put(Contract.GuestEntry.SERVER_ID, photo.getId());
-            values.put(Contract.GuestEntry.DEFECT_ID, photo.getDefect().getServerId());
+            values.put(Contract.GuestEntry.SERVER_ID, photo.getServerId());
+
+            if (photo.getWork() == null){
+                values.put(Contract.GuestEntry.WORKTYPE, DEFECT);
+                values.put(Contract.GuestEntry.WORK_ID, photo.getDefect().getServerId());
+            }
+            else {
+                Work work = getWorkById(photo.getWork().getServerId());
+                work.getStage().getStaticById(currentContext);
+                values.put(Contract.GuestEntry.WORKTYPE, work.getStage().getName());
+                values.put(Contract.GuestEntry.WORK_ID, photo.getWork().getServerId());
+            }
+
             values.put(Contract.GuestEntry.PATH, photo.getPath());
             values.put(Contract.GuestEntry.URL, photo.getUrl());
 
-            result.add((int) db_write.insert(Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, null, values));
+            result.add((int) db_write.insert(Contract.GuestEntry.PHOTO_TABLE_NAME, null, values));
         }
         return result;
     }

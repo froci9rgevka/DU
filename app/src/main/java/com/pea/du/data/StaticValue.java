@@ -21,6 +21,10 @@ public class StaticValue implements Parcelable {
     public StaticValue() {
     }
 
+    public StaticValue(Integer serverId) {
+        this.serverId = serverId;
+    }
+
     public StaticValue(String tableName, String columnName) {
         this.tableName = tableName;
         this.columnName = columnName;

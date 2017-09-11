@@ -18,7 +18,7 @@ import com.pea.du.data.StaticValue;
 import com.pea.du.data.User;
 import com.pea.du.db.local.methods.ReadMethods;
 import com.pea.du.db.remote.methods.SaveAct;
-import com.pea.du.web.client.Controller;
+import com.pea.du.flags.Flags;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,6 @@ import java.util.Date;
 import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS;
 import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static com.pea.du.flags.Flags.*;
-import static com.pea.du.web.client.Contract.SAVE_ACT;
 
 public class AddressesActivity extends AppCompatActivity {
 
@@ -45,6 +44,8 @@ public class AddressesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_address);
+
+        Flags.currentContext=this;
 
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.adress_toolbar);
         listView = (ListView)findViewById(R.id.address_listview);

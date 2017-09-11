@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import com.pea.du.actyvities.addresses.works.WorksActivity;
+import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
 import com.pea.du.db.local.methods.WriteMethods;
@@ -36,19 +37,17 @@ public class SaveDefect extends AsyncTask<String,String,String> {
     }
 
     @Override
-    protected void onPreExecute()
-    {
-        //Toast.makeText(context , "Создание нового дефекта..." , Toast.LENGTH_LONG).show();
-    }
-
-    @Override
     protected void onPostExecute(String r)
     {
         Toast.makeText(context, r, Toast.LENGTH_SHORT).show();
 
-        defect.setId(WriteMethods.setDefect(context, defect));
+        if (isSuccess) {
+            defect.setId(WriteMethods.setDefect(context, defect));
 
-        workId = defect.getServerId();
+            workId = defect.getServerId();
+
+            ((DefectActivity) context).setDefectActivityContent();
+        }
     }
 
     @Override

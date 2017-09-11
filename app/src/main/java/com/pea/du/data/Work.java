@@ -1,11 +1,20 @@
 package com.pea.du.data;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 
+import java.util.ArrayList;
 import java.util.Date;
+
+import static com.pea.du.db.local.data.Contract.GuestEntry.STAGE;
+import static com.pea.du.db.local.data.Contract.GuestEntry.STAGE_TABLE_NAME;
+import static com.pea.du.flags.Flags.currentContext;
+import static com.pea.du.flags.Flags.workType;
 
 public class Work implements Parcelable {
     private Integer id;
@@ -22,6 +31,22 @@ public class Work implements Parcelable {
     private Date docdate;
 
     public Work() {
+    }
+
+    public Work(Integer serverId) {
+        this.serverId = serverId;
+    }
+
+    public Work(User user, StaticValue address, StaticValue name, StaticValue stage, String cnt, StaticValue measure, String descr, Boolean subcontract, StaticValue contractor) {
+        this.user = user;
+        this.address = address;
+        this.name = name;
+        this.stage = stage;
+        this.cnt = cnt;
+        this.measure = measure;
+        this.descr = descr;
+        this.subcontract = subcontract;
+        this.contractor = contractor;
     }
 
     public Work(Work work) {
@@ -57,6 +82,29 @@ public class Work implements Parcelable {
         subcontract = (Boolean) data[7];
         contractor = (StaticValue) data[10];
         docdate = (Date) data[11];
+    }
+
+
+
+    public static Work getWorkById(Integer id){
+        ArrayList<Work> workArrayList = ReadMethods.getWorks(currentContext,
+                Contract.GuestEntry.SERVER_ID + " = ?",
+                new String[]{id.toString()});
+        if (workArrayList.size() > 0)
+            return (workArrayList.get(0));
+        return null;
+    }
+
+    public static ArrayList<Work> getWorksByAddressAndUser(Integer addressId, Integer userId) {
+        StaticValue stage = new StaticValue(STAGE_TABLE_NAME,STAGE);
+        stage.setName(workType);
+        stage.getStaticByName(currentContext);
+        ArrayList<Work> workArrayList = ReadMethods.getWorks(currentContext,
+                Contract.GuestEntry.ADDRESS_ID + " = ? AND " +
+                        Contract.GuestEntry.USER_ID + " = ? AND " +
+                        Contract.GuestEntry.STAGE_ID + " = ?",
+                new String[]{addressId.toString(), userId.toString(), stage.getServerId().toString()});
+        return workArrayList;
     }
 
     ///////////////////////////////////////Parcelable/////////////////////////////////////////////////////////
@@ -100,6 +148,17 @@ public class Work implements Parcelable {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+
+    @Override
+    public String toString() {
+        if (id == null)
+            return "";
+        else
+            return name.toString() +
+                    ". Количество: " + cnt +
+                    " " + measure +
+                    ". Описание: " + descr;
+    }
 
     public Integer getId() {
         return id;

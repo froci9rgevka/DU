@@ -11,12 +11,15 @@ import com.pea.du.R;
 import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.actyvities.addresses.works.stagework.StageActivity;
 import com.pea.du.data.Defect;
+import com.pea.du.data.Work;
+import com.pea.du.flags.Flags;
 
 
 import java.util.ArrayList;
 
 import static com.pea.du.data.Defect.getDefectsByAct;
 import static com.pea.du.data.StaticValue.getNameById;
+import static com.pea.du.data.Work.getWorksByAddressAndUser;
 import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static com.pea.du.flags.Flags.*;
 
@@ -28,6 +31,9 @@ public class WorksActivity extends AppCompatActivity {
 
     private ArrayList<String> content;
     private ArrayList<Defect> defectsList;
+    private ArrayList<Work> workList;
+
+    Button addButton;
 
 
     @Override
@@ -36,16 +42,17 @@ public class WorksActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_works);
 
+        Flags.currentContext=this;
+
         objInit();
 
-        LoadActs loadActs = new LoadActs();
-        loadActs.execute("");
-
+        setContent();
     }
 
     private void objInit(){
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.defect_toolbar);
-        listView = (ListView)findViewById(R.id.defect_acts_list);
+        listView = (ListView) findViewById(R.id.defect_acts_list);
+        addButton = (Button) findViewById(R.id.activity_defect_addButton);
 
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -64,6 +71,36 @@ public class WorksActivity extends AppCompatActivity {
         });
     }
 
+    private void setContent(){
+        // Загружаем адрес используя id
+        String address = getNameById(WorksActivity.this, ADDRESS_TABLE_NAME, addressId);
+        // Отображаем адресс
+        toolbar.setTitle(address);
+
+        if (workType.equals(DEFECT)) {
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAddDefectButtonClick();
+                }
+            });
+            addButton.setText("ДОБАВИТЬ ДЕФЕКТ");
+        }
+        else {
+
+            addButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAddWorkButtonClick();
+                }
+            });
+            addButton.setText("ДОБАВИТЬ РАБОТУ");
+        }
+
+        LoadWorks loadWorks = new LoadWorks();
+        loadWorks.execute("");
+    }
+
     //Действие при нажатии на элемент
     private void onClick(int position){
 
@@ -74,10 +111,7 @@ public class WorksActivity extends AppCompatActivity {
             startActivity(intent);
         }
         else {
-
-
-
-
+            workId = workList.get(position).getServerId();
 
             Intent intent = new Intent(WorksActivity.this, StageActivity.class);
             startActivity(intent);
@@ -88,7 +122,7 @@ public class WorksActivity extends AppCompatActivity {
 
 
     // Загрузка контента на активити
-    private class LoadActs extends AsyncTask<String,String,String> {
+    private class LoadWorks extends AsyncTask<String,String,String> {
 
         private String address = null;
 
@@ -102,13 +136,7 @@ public class WorksActivity extends AppCompatActivity {
             if(workType.equals(DEFECT))
                 defectsList = getDefectsByAct(WorksActivity.this, actId);
             else
-            {
-
-
-
-
-
-            }
+                workList = getWorksByAddressAndUser(addressId, authorId);
 
             return null;
         }
@@ -127,27 +155,31 @@ public class WorksActivity extends AppCompatActivity {
             }
             else
             {
-
-
-
-
-
-
+                ArrayAdapter<Work> adapter = new ArrayAdapter<Work>(WorksActivity.this,
+                        android.R.layout.simple_list_item_1, workList);
+                listView.setAdapter(adapter);
             }
         }
     }
 
-    public void onAddButtonClick(View view) {
+    public void onAddDefectButtonClick() {
         workId = -1;
 
         Intent intent = new Intent(WorksActivity.this, DefectActivity.class);
         startActivityForResult(intent, 0);
     }
 
+    public void onAddWorkButtonClick() {
+        workId = -1;
+
+        Intent intent = new Intent(WorksActivity.this, StageActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        LoadActs loadActs = new LoadActs();
-        loadActs.execute("");
+        LoadWorks loadWorks = new LoadWorks();
+        loadWorks.execute("");
     }
 
 

@@ -10,14 +10,13 @@ import com.pea.du.R;
 import com.pea.du.actyvities.addresses.AddressesActivity;
 import com.pea.du.actyvities.inspect.InspectionActivity;
 import com.pea.du.db.remote.methods.LoadData;
+import com.pea.du.flags.Flags;
 import com.pea.du.tools.gridview.GridViewAdapter;
 import com.pea.du.tools.gridview.ImageItem;
-import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
 
 import static com.pea.du.flags.Flags.*;
-import static com.pea.du.web.client.Contract.*;
 
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
 
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
+
+        Flags.currentContext=this;
 
         objInit();
 

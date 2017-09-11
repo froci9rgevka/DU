@@ -6,16 +6,15 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.GridView;
+import android.view.ViewGroup;
+import android.widget.*;
 import com.pea.du.R;
-import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.data.Defect;
 import com.pea.du.data.Photo;
+import com.pea.du.data.Work;
 import com.pea.du.db.local.methods.WriteMethods;
 import com.pea.du.db.remote.methods.SavePhoto;
 import com.pea.du.tools.gridview.GridViewAdapter;
@@ -27,15 +26,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.pea.du.data.Photo.getPhotosByDefect;
-import static com.pea.du.data.StaticValue.getNameById;
-import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
-import static com.pea.du.flags.Flags.addressId;
-import static com.pea.du.flags.Flags.workId;
+import static android.app.Activity.RESULT_OK;
+import static com.pea.du.data.Photo.getPhotos;
+import static com.pea.du.flags.Flags.*;
 import static com.pea.du.tools.gridview.ImageItem.ITEM_PATH;
 import static com.pea.du.tools.gridview.ImageItem.ITEM_URL;
 
-public class PhotoGrid extends AppCompatActivity {
+public class PhotoGridFragment extends android.support.v4.app.Fragment {
 
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int REQUEST_REFRESH_PHOTO = 2;
@@ -46,36 +43,58 @@ public class PhotoGrid extends AppCompatActivity {
     // Новое фото
     private Photo newPhoto = new Photo();
 
+    View view;
     Button bAddPhoto;
-    private android.support.v7.widget.Toolbar toolbar;
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_photo_grid);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                Bundle savedInstanceState) {
+
+        if(workId == -1){
+            view = inflater.inflate(R.layout.empty_layout,
+                    container, false);
+            return view;}
+
+        view = inflater.inflate(R.layout.activity_photo_grid,
+                container, false);
+
+        objInit();
+
+        setContent();
+
+        return view;
+
     }
 
-    private class LoadData extends AsyncTask<String,String,String> {
+    private void objInit(){
+        bAddPhoto = (Button) view.findViewById(R.id.addPhoto_button);
 
-        private String address = null;
+        gridView = (GridView) view.findViewById(R.id.photo_gridView);
+        gridView.setOnItemClickListener(onItemClickListener);
+    }
 
-
-        @Override
-        protected void onPreExecute()
-        {
-        }
-
-        @Override
-        protected String doInBackground(String... strings) {
-
-            // Загружаем данные
-            if (workId==-1) {
-            } else {
-                // Загружаем фотографии
-                loadPhotos();
+    private void setContent(){
+        bAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
             }
+        });
+        bAddPhoto.setEnabled(!isPhotoSending);
+
+        LoadPhotoInGrid loadPhotoInGrid = new LoadPhotoInGrid();
+        loadPhotoInGrid.execute("");
+    }
+
+
+    private class LoadPhotoInGrid extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... strings)
+        {
+            loadPhotos();
 
             return null;
         }
@@ -83,14 +102,8 @@ public class PhotoGrid extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r)
         {
-
-            // Наполняем активити загруженным контентом
-            if (workId==-1) {
-            }
-            else {
-                gridViewAdapter = new GridViewAdapter(PhotoGrid.this, R.layout.simple_list_view_item, getImageItems());
-                gridView.setAdapter(gridViewAdapter);
-            }
+            gridViewAdapter = new GridViewAdapter(currentContext, R.layout.simple_list_view_item, getImageItems());
+            gridView.setAdapter(gridViewAdapter);
         }
     }
 
@@ -105,7 +118,7 @@ public class PhotoGrid extends AppCompatActivity {
 
             ImageItem item = (ImageItem) parent.getItemAtPosition(position);
             //Create intent
-            Intent intent = new Intent(PhotoGrid.this, PhotoDetails.class);
+            Intent intent = new Intent(currentContext, PhotoDetails.class);
             intent.putExtra("title", item.getTitle());
             intent.putExtra("image", currentPhoto); //item.getImage()
 
@@ -130,28 +143,23 @@ public class PhotoGrid extends AppCompatActivity {
     /////////////////////////////////////РАБОТА С БД////////////////////////////////////////////
 
     public void savePhoto() {
-        WriteMethods.setDefectPhoto(this, newPhoto);
+        WriteMethods.setPhoto(currentContext, newPhoto);
     }
 
 
     public void loadPhotos () {
 
         // Массив для хранения списка актов, загружаем в него из базы акты
-        photoList = getPhotosByDefect(this, workId);
+        photoList = getPhotos();
     }
 
     ////////////////////////////////////////РАБОТА С КМЕРОЙ//////////////////////////////////////
-
-    // Кнопка добавления фото
-    public void onAddPhotoClick(View v) {
-        dispatchTakePictureIntent();
-    }
 
     //Запускаем камеру
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+        if (takePictureIntent.resolveActivity(currentContext.getPackageManager()) != null) {
             // Create the File where the photo should go
             File photoFile = null;
             try {
@@ -159,11 +167,11 @@ public class PhotoGrid extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-
+                Toast.makeText(currentContext, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
+                Uri photoURI = FileProvider.getUriForFile(currentContext,
                         "com.pea.du.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -178,7 +186,7 @@ public class PhotoGrid extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = currentContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -191,33 +199,34 @@ public class PhotoGrid extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             galleryAddPic();
 
-            Defect defect = new Defect();
-            defect.setServerId(workId);
-            newPhoto.setDefect(defect);
-            newPhoto.getImageFromPath();
+            if (workType.equals(DEFECT))
+                newPhoto.setDefect(new Defect(workId));
+            else
+                newPhoto.setWork(new Work(workId));
 
             savePhoto();
-            PhotoGrid.LoadData loadData = new PhotoGrid.LoadData();
-            loadData.execute("");
+            PhotoGridFragment.LoadPhotoInGrid loadPhotoInGrid = new PhotoGridFragment.LoadPhotoInGrid();
+            loadPhotoInGrid.execute("");
 
-
-            bAddPhoto.setEnabled(false);
 
             //Controller controller = new Controller(this, SAVE_PHOTO, newPhoto); // последовательно загружаются все статичные данные
             //controller.start();
 
-            SavePhoto savePhoto = new SavePhoto(this, newPhoto);
+            isPhotoSending = true;
+            //bAddPhoto.setEnabled(!isPhotoSending);
+
+            SavePhoto savePhoto = new SavePhoto(currentContext, newPhoto);
             savePhoto.execute("");
 
         }
 
         if (requestCode == REQUEST_REFRESH_PHOTO){
-            PhotoGrid.LoadData loadData = new PhotoGrid.LoadData();
-            loadData.execute("");
+            PhotoGridFragment.LoadPhotoInGrid loadPhotoInGrid = new PhotoGridFragment.LoadPhotoInGrid();
+            loadPhotoInGrid.execute("");
         }
     }
 
@@ -227,7 +236,7 @@ public class PhotoGrid extends AppCompatActivity {
         File f = new File(newPhoto.getPath());
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
+        currentContext.sendBroadcast(mediaScanIntent);
     }
 
 }
