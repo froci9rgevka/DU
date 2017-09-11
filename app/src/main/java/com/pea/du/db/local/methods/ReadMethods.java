@@ -1,4 +1,4 @@
-package com.pea.du.db.methods;
+package com.pea.du.db.local.methods;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,13 +6,18 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pea.du.data.*;
 import com.pea.du.data.StaticValue;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.data.DBHelper;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.data.DBHelper;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import static com.pea.du.data.User.getUserById;
-import static com.pea.du.db.data.Contract.GuestEntry.*;
+import static com.pea.du.db.local.data.Contract.GuestEntry.*;
 
 public class ReadMethods {
 
@@ -156,6 +161,70 @@ public class ReadMethods {
             defect.setCurrency(cursor.getString(10));
 
             result.add(defect);
+        }
+
+        return result;
+    }
+
+    public static ArrayList<Defect> getWorks(Context context, String selection, String[] selectionArgs){
+        SQLiteDatabase db = getDBFromContext(context);
+        ArrayList result = new ArrayList();
+
+
+        Cursor cursor = db.query(
+                Contract.GuestEntry.WORK_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);
+
+        while (cursor.moveToNext()) {
+            Work work = new Work();
+            User user = new User();
+            StaticValue address = new StaticValue(ADDRESS_TABLE_NAME, ADDRESS);
+            StaticValue name = new StaticValue(WORK_NAME_TABLE_NAME, WORK_NAME);
+            StaticValue stage = new StaticValue(STAGE_TABLE_NAME, STAGE);
+            StaticValue measure = new StaticValue(DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE);
+            StaticValue contractor = new StaticValue(CONTRACTOR_TABLE_NAME, CONTRACTOR);
+
+            work.setId(cursor.getInt(0));
+            work.setServerId(cursor.getInt(1));
+
+            user.setServerId(cursor.getInt(2));
+            work.setUser(user);
+
+            address.setServerId(cursor.getInt(3));
+            address.getStaticById(context);
+            work.setAddress(address);
+
+            name.setServerId(cursor.getInt(4));
+            name.getStaticById(context);
+            work.setName(name);
+
+            stage.setServerId(cursor.getInt(5));
+            stage.getStaticById(context);
+            work.setStage(stage);
+
+            work.setCnt(cursor.getString(6));
+
+            measure.setServerId(cursor.getInt(7));
+            measure.getStaticById(context);
+            work.setMeasure(measure);
+
+            work.setDescr(cursor.getString(8));
+
+            work.setSubcontract(Boolean.valueOf(cursor.getString(9)));
+
+            contractor.setServerId(cursor.getInt(10));
+            contractor.getStaticById(context);
+            work.setContractor(contractor);
+
+            DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+            Date date = null;
+            try {
+                date = format.parse(cursor.getString(11));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            work.setDocdate(date);
+
+            result.add(work);
         }
 
         return result;

@@ -10,19 +10,14 @@ import android.widget.*;
 import com.pea.du.R;
 import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.actyvities.addresses.works.stagework.StageActivity;
-import com.pea.du.data.Act;
 import com.pea.du.data.Defect;
-import com.pea.du.data.StaticValue;
 
 
 import java.util.ArrayList;
 
-import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.EXISTING;
-import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.NEW;
 import static com.pea.du.data.Defect.getDefectsByAct;
 import static com.pea.du.data.StaticValue.getNameById;
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS;
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static com.pea.du.flags.Flags.*;
 
 
@@ -39,7 +34,7 @@ public class WorksActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_defect);
+        setContentView(R.layout.activity_works);
 
         objInit();
 

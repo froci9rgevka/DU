@@ -5,15 +5,15 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pea.du.db.data.Contract.GuestEntry.*;
-import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE;
-import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME;
+import static com.pea.du.db.local.data.Contract.GuestEntry.*;
+import static com.pea.du.db.local.data.Contract.GuestEntry.DEFECT_MEASURE;
+import static com.pea.du.db.local.data.Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME;
 import static java.lang.Integer.parseInt;
 
 public class Defect implements Parcelable{
@@ -31,6 +31,10 @@ public class Defect implements Parcelable{
     private String currency;
 
     public Defect()  {
+    }
+
+    public Defect(Integer serverId)  {
+        this.serverId = serverId;
     }
 
     public Defect(Defect defect) {

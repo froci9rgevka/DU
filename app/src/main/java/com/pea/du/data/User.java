@@ -8,8 +8,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.widget.Toast;
 import com.pea.du.actyvities.MainActivity;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
@@ -26,6 +26,10 @@ public class User implements Parcelable {
 
 
     public User() {
+    }
+
+    public User(Integer serverId) {
+        this.serverId = serverId;
     }
 
     public User(Integer id, String nickname, String password) {
@@ -68,7 +72,6 @@ public class User implements Parcelable {
             id = userList.get(0).getId();
             serverId = userList.get(0).getServerId();
 
-            Toast.makeText(context, "Авторизированный пользователь " +nickname, Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(context, MainActivity.class);
 
             authorId = serverId;

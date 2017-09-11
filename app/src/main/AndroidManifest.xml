@@ -96,6 +96,8 @@
         </activity>
         <activity android:name=".actyvities.addresses.works.stagework.StageActivity">
         </activity>
+        <activity android:name=".actyvities.addresses.works.photo.PhotoGrid">
+        </activity>
     </application>
 
 </manifest>

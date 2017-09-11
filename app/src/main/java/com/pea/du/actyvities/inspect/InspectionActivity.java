@@ -26,11 +26,11 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.ViewFlipper;
 import com.pea.du.R;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.methods.ReadMethods;
 
 import java.util.ArrayList;
 
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 
 
 @TargetApi(Build.VERSION_CODES.N)

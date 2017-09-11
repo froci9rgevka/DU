@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -16,8 +16,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS;
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static java.lang.Integer.parseInt;
 
 public class Act implements Parcelable{
@@ -29,6 +29,10 @@ public class Act implements Parcelable{
 
 
     public Act() {
+    }
+
+    public Act(Integer serverId) {
+        this.serverId = serverId;
     }
 
     public Act(Act act) {
@@ -57,6 +61,12 @@ public class Act implements Parcelable{
         this.createDate = createDate;
         this.user = user;
         this.address = address;
+    }
+
+    public Act(Integer serverId, Integer userId, Integer addressId) {
+        this.serverId = serverId;
+        this.user = new User(userId);
+        this.address = new StaticValue(addressId, ADDRESS_TABLE_NAME, ADDRESS);
     }
 
     public Act(Parcel source) {

@@ -1,4 +1,4 @@
-package com.pea.du.db.data;
+package com.pea.du.db.local.data;
 
 import android.provider.BaseColumns;
 
@@ -11,11 +11,15 @@ public final class Contract {
         public final static String USER_TABLE_NAME = "tUser";
         public final static String ACT_TABLE_NAME = "tAct";
         public final static String DEFECT_TABLE_NAME = "tDefect";
+        public final static String WORK_TABLE_NAME = "tWork";
         public final static String DEFECT_PHOTO_TABLE_NAME = "tDefectPhoto";
         public final static String ADDRESS_TABLE_NAME = "tAddress";
         public final static String DEFECT_MEASURE_TABLE_NAME = "tMeasure";
         public final static String DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME = "tConstructiveElement";
         public final static String DEFECT_TYPE_TABLE_NAME = "tType";
+        public final static String WORK_NAME_TABLE_NAME = "tWorkName";
+        public final static String STAGE_TABLE_NAME = "tStage";
+        public final static String CONTRACTOR_TABLE_NAME = "tContractor";
 
         public final static String _ID = BaseColumns._ID;
         public final static String SERVER_ID = "server_id";
@@ -39,6 +43,18 @@ public final class Contract {
         public final static String DEFECT_MEASURE_ID = "defect_measure_id";
         public final static String CURRENCY = "cntDefect";
 
+        //tWork
+        //public final static String USER_ID = "user_id";
+        //public final static String ADDRESS_ID = "address_id";
+        public final static String WORK_NAME_ID = "work_name_id";
+        public final static String STAGE_ID = "stage_id";
+        public final static String CNT = "cnt";
+        public final static String MEASURE_ID = "measure_id";
+        public final static String DESCR = "descr";
+        public final static String SUBCONTRACT = "subcontract";
+        public final static String CONTRACTOR_ID = "contractor_id";
+        public final static String DOCDATE = "docdate";
+
         //tDefectPhoto
         public final static String DEFECT_ID = "defect_id";
         public final static String PATH = "path";
@@ -55,6 +71,16 @@ public final class Contract {
 
         //tType
         public final static String DEFECT_TYPE = "Type";
+
+        //tWorkName
+        public final static String WORK_NAME = "WorkName";
+
+        //tStage
+        public final static String STAGE = "Stage";
+
+        //tContractor
+        public final static String CONTRACTOR = "Contractor";
+
 
     }
 }

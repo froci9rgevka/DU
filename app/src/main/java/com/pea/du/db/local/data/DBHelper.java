@@ -1,4 +1,4 @@
-package com.pea.du.db.data;
+package com.pea.du.db.local.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
     /**
      * Версия базы данных. При изменении схемы увеличить на единицу
      */
-    private static final int DATABASE_VERSION = 29;
+    private static final int DATABASE_VERSION = 30;
 
 
     /**
@@ -61,6 +61,20 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.DEFECT_MEASURE_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.CURRENCY + " TEXT NOT NULL);";
 
+        String SQL_CREATE_WORK_TABLE = "CREATE TABLE " + Contract.GuestEntry.WORK_TABLE_NAME + " ("
+                + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.USER_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.ADDRESS_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.WORK_NAME_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.STAGE_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.CNT + " TEXT NOT NULL, "
+                + Contract.GuestEntry.MEASURE_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.DESCR + " TEXT NOT NULL, "
+                + Contract.GuestEntry.SUBCONTRACT + " BOOLEAN NOT NULL, "
+                + Contract.GuestEntry.CONTRACTOR_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.DOCDATE + " DATETIME NOT NULL);";
+
         String SQL_CREATE_DEFECT_PHOTO_TABLE = "CREATE TABLE " + Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Contract.GuestEntry.SERVER_ID + " INTEGER, "
@@ -88,15 +102,34 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.DEFECT_TYPE + " TEXT NOT NULL);";
 
+        String SQL_CREATE_WORK_NAME_TABLE = "CREATE TABLE " + Contract.GuestEntry.WORK_NAME_TABLE_NAME + " ("
+                + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.WORK_NAME + " TEXT NOT NULL);";
+
+        String SQL_CREATE_STAGE_TABLE = "CREATE TABLE " + Contract.GuestEntry.STAGE_TABLE_NAME + " ("
+                + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.STAGE + " TEXT NOT NULL);";
+
+        String SQL_CREATE_CONTRACTOR_TYPE_TABLE = "CREATE TABLE " + Contract.GuestEntry.CONTRACTOR_TABLE_NAME + " ("
+                + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.CONTRACTOR + " TEXT NOT NULL);";
+
         // Запускаем создание таблиц
         db.execSQL(SQL_CREATE_USER_TABLE);
         db.execSQL(SQL_CREATE_ACT_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_TABLE);
+        db.execSQL(SQL_CREATE_WORK_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_PHOTO_TABLE);
         db.execSQL(SQL_CREATE_ADDRESS_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_MEASURE_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_CONSTRUCTIVE_ELEMENT_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_TYPE_TABLE);
+        db.execSQL(SQL_CREATE_WORK_NAME_TABLE);
+        db.execSQL(SQL_CREATE_STAGE_TABLE);
+        db.execSQL(SQL_CREATE_CONTRACTOR_TYPE_TABLE);
     }
 
     /**
@@ -111,11 +144,15 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.USER_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.ACT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.WORK_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.ADDRESS_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_TYPE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.WORK_NAME_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.STAGE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.CONTRACTOR_TABLE_NAME);
 
         // Создаём новую таблицу
         onCreate(db);

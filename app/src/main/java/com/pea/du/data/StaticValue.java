@@ -6,8 +6,8 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 
 import java.util.ArrayList;
 
@@ -34,6 +34,13 @@ public class StaticValue implements Parcelable {
     }
 
     public StaticValue(String name, Integer serverId, String tableName, String columnName) {
+        this.name = name;
+        this.serverId = serverId;
+        this.tableName = tableName;
+        this.columnName = columnName;
+    }
+
+    public StaticValue(Integer serverId, String tableName, String columnName) {
         this.name = name;
         this.serverId = serverId;
         this.tableName = tableName;

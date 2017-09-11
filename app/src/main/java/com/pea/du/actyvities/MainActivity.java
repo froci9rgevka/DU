@@ -9,21 +9,20 @@ import android.widget.*;
 import com.pea.du.R;
 import com.pea.du.actyvities.addresses.AddressesActivity;
 import com.pea.du.actyvities.inspect.InspectionActivity;
-import com.pea.du.data.User;
+import com.pea.du.db.remote.methods.LoadData;
 import com.pea.du.tools.gridview.GridViewAdapter;
 import com.pea.du.tools.gridview.ImageItem;
 import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
 
-import static com.pea.du.flags.Flags.DEFECT;
-import static com.pea.du.flags.Flags.workType;
+import static com.pea.du.flags.Flags.*;
 import static com.pea.du.web.client.Contract.*;
 
 public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBarChangeListener{
 
-
-    private GridView gridView;
+    public static ProgressBar mainProgressBar = null;
+    public static GridView mainGridView = null;
     private ArrayAdapter<ImageItem> listViewAdapter;
 
     private SeekBar seekBar;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
 
         objInit();
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mainGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
@@ -45,6 +44,19 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
                         MainActivity.this.onInspectionButtonClick();
                         break;
                     case 1:
+                        workType = DEFECT;
+                        MainActivity.this.onDefectButtonClick();
+                        break;
+                    case 2:
+                        workType = BEGIN_WORK;
+                        MainActivity.this.onDefectButtonClick();
+                        break;
+                    case 3:
+                        workType = DURING_WORK;
+                        MainActivity.this.onDefectButtonClick();
+                        break;
+                    case 4:
+                        workType = END_WORK;
                         MainActivity.this.onDefectButtonClick();
                         break;
                 }
@@ -83,19 +95,22 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
             }
         });
 
-        gridView = (GridView) findViewById(R.id.main_menu_gridview);
+
+        mainProgressBar = (ProgressBar) findViewById(R.id.menuProgressBar);
+        mainGridView = (GridView) findViewById(R.id.main_menu_gridview);
+
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(this);
 
         if (seekBar.getProgress()==0) {
             imageItems.add(new ImageItem(R.mipmap.comission));
             imageItems.add(new ImageItem(R.mipmap.defect));
-            imageItems.add(new ImageItem(R.mipmap.new_item));
-            imageItems.add(new ImageItem(R.mipmap.new_item));
-            imageItems.add(new ImageItem(R.mipmap.new_item));
+            imageItems.add(new ImageItem(R.mipmap.work_start));
+            imageItems.add(new ImageItem(R.mipmap.work_progress));
+            imageItems.add(new ImageItem(R.mipmap.work_finish));
             imageItems.add(new ImageItem(R.mipmap.new_item));
 
-            gridView.setNumColumns(2);
+            mainGridView.setNumColumns(2);
         }
         else
             if (seekBar.getProgress()==1){
@@ -106,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
                 imageItems.add(new ImageItem(R.mipmap.big_end_button));
                 imageItems.add(new ImageItem(R.mipmap.big_new_button));
 
-                gridView.setNumColumns(2);
+                mainGridView.setNumColumns(2);
             }
         else
             if (seekBar.getProgress()==2){
@@ -117,13 +132,13 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
                 imageItems.add(new ImageItem(R.mipmap.small_end_button));
                 imageItems.add(new ImageItem(R.mipmap.small_new_button));
 
-                gridView.setNumColumns(1);
+                mainGridView.setNumColumns(1);
             }
 
 
 
         listViewAdapter = new GridViewAdapter(this, R.layout.simple_list_view_item, imageItems);
-        gridView.setAdapter(listViewAdapter);
+        mainGridView.setAdapter(listViewAdapter);
     }
 
     public void onInspectionButtonClick() {
@@ -132,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     }
 
     public void onDefectButtonClick() {
-        workType = DEFECT;
         Intent intent = new Intent(MainActivity.this, AddressesActivity.class);
         startActivity(intent);
     }
@@ -140,15 +154,27 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
     public void onLoginButtonClick(View view) {
     }
 
-    public void dbConnect(){
-        findViewById(R.id.menuProgressBar).setVisibility(View.VISIBLE);
-        //findViewById(R.id.inspection_button).setEnabled(false);
-        //findViewById(R.id.defection_button).setEnabled(false);
-        findViewById(R.id.main_menu_gridview).setEnabled(false);
-        findViewById(R.id.sync_button).setEnabled(false);
+    public static void lockMainActivity(){
+        mainProgressBar.setVisibility(View.VISIBLE);
+        mainGridView.setEnabled(false);
+    }
 
-        Controller controller = new Controller(this, LOAD_STATIC_ADDRESS); // последовательно загружаются все статичные данные
-        controller.start();
+    public static void unlockMainActivity(){
+        mainProgressBar.setVisibility(View.GONE);
+        mainGridView.setEnabled(true);
+    }
+
+    public void dbConnect(){
+
+
+        LoadData loadData = new LoadData(this);
+        loadData.execute("");
+
+        //lockMainActivity();
+
+        //Controller controller = new Controller(this, LOAD_STATIC_ADDRESS); // последовательно загружаются все статичные данные
+        //controller.start();
+
     }
 
 

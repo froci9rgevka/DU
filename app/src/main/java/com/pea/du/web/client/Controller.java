@@ -18,8 +18,9 @@ import com.pea.du.actyvities.MainActivity;
 import com.pea.du.actyvities.addresses.works.defectation.DefectActivity;
 import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.data.*;
-import com.pea.du.db.methods.DeleteMethods;
-import com.pea.du.db.methods.WriteMethods;
+import com.pea.du.db.local.methods.DeleteMethods;
+import com.pea.du.db.local.methods.WriteMethods;
+import com.pea.du.db.remote.methods.LoadData;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -38,7 +39,8 @@ import java.util.concurrent.TimeUnit;
 
 
 import static com.pea.du.actyvities.Login.currentUser;
-import static com.pea.du.db.data.Contract.GuestEntry.*;
+import static com.pea.du.actyvities.MainActivity.unlockMainActivity;
+import static com.pea.du.db.local.data.Contract.GuestEntry.*;
 import static com.pea.du.flags.Flags.*;
 import static com.pea.du.web.client.Contract.*;
 
@@ -258,12 +260,8 @@ public class Controller implements Callback<Object> {
                 WriteMethods.setDefectPhotos(context, photoArrayList);
 
                 //Скрываем прогрес бар и делаем кнопки активными
-                AppCompatActivity appCompatActivity = (AppCompatActivity) context;
-                //appCompatActivity.findViewById(R.id.inspection_button).setEnabled(true);
-                //appCompatActivity.findViewById(R.id.defection_button).setEnabled(true);
-                appCompatActivity.findViewById(R.id.main_menu_gridview).setEnabled(true);
-                appCompatActivity.findViewById(R.id.sync_button).setEnabled(true);
-                appCompatActivity.findViewById(R.id.menuProgressBar).setVisibility(View.GONE);
+                unlockMainActivity();
+
 
             } else if (typeOfObject.equals(SAVE_ACT)) {
                 onActSaved(((Double) response.body()).intValue());

@@ -16,16 +16,16 @@ import com.pea.du.actyvities.addresses.works.WorksActivity;
 import com.pea.du.data.Act;
 import com.pea.du.data.StaticValue;
 import com.pea.du.data.User;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.methods.ReadMethods;
+import com.pea.du.db.remote.methods.SaveAct;
 import com.pea.du.web.client.Controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
-import static com.pea.du.actyvities.MainActivity.*;
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS;
-import static com.pea.du.db.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS;
+import static com.pea.du.db.local.data.Contract.GuestEntry.ADDRESS_TABLE_NAME;
 import static com.pea.du.flags.Flags.*;
 import static com.pea.du.web.client.Contract.SAVE_ACT;
 
@@ -44,7 +44,7 @@ public class AddressesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
-        setContentView(R.layout.activity_adress);
+        setContentView(R.layout.activity_address);
 
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.adress_toolbar);
         listView = (ListView)findViewById(R.id.address_listview);
@@ -92,8 +92,11 @@ public class AddressesActivity extends AppCompatActivity {
                 if (workType.equals(DEFECT)) {
                     if (!currentAct.isActInDB(getApplicationContext())) {
                         currentAct.setCreateDate(new Date());
-                        Controller controller = new Controller(AddressesActivity.this, SAVE_ACT, currentAct); // последовательно загружаются все статичные данные
-                        controller.start();
+
+                        SaveAct saveAct = new SaveAct(AddressesActivity.this, currentAct);
+                        saveAct.execute("");
+                        //Controller controller = new Controller(AddressesActivity.this, SAVE_ACT, currentAct);
+                        //controller.start();
                         return;
                     }
                 }

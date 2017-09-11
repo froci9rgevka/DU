@@ -9,7 +9,7 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
 
-        tools:context=".actyvities.addresses.works.WorksActivity">
+        tools:context=".actyvities.addresses.works.defectation.DefectActivity">
 
     <RelativeLayout
             android:layout_width="0dp"
@@ -21,7 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
             <android.support.v7.widget.Toolbar
-                    android:id="@+id/defect_toolbar"
+                    android:id="@+id/add_act_toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="?attr/colorPrimary"
@@ -34,27 +34,160 @@
             <ScrollView
                     android:id="@+id/scrollView4"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" tools:layout_editor_absoluteY="4dp"
+                    android:layout_height="match_parent" tools:layout_editor_absoluteY="8dp"
                     tools:layout_editor_absoluteX="8dp">
-
                 <LinearLayout
+                        android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp">
-
-                    <ListView
+                    <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="381dp" android:id="@+id/defect_acts_list"/>
+                            android:layout_height="match_parent">
+                        <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent">
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Конструктивный" android:id="@+id/textView18"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="27dp"
+                                    android:text="элемент" android:id="@+id/textView8" android:layout_weight="0.15"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="5dp"
+                                    android:layout_weight="0.97"
+                                    android:text="@string/activity_defect_type" android:id="@+id/textView10"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="0.94"
+                                    android:text="@string/activity_defect_porch" android:id="@+id/textView11"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1.08"
+                                    android:text="@string/activity_defect_floor" android:id="@+id/textView12"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="10dp"
+                                    android:layout_weight="0.68"
+                                    android:text="@string/activity_defect_flat" android:id="@+id/textView14"/>
+                            <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/activity_defect_currency" android:id="@+id/textView15"
+                                    android:layout_weight="0.27"/>
+                        </LinearLayout>
+                        <LinearLayout
+                                android:orientation="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                            <Spinner
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:id="@+id/activity_defect_constructive_element"
+                                    android:layout_weight="1"/>
+                            <Spinner
+                                    android:layout_width="match_parent"
+                                    android:layout_height="43dp" android:id="@+id/activity_defect_type"
+                                    android:layout_weight="1"/>
+                            <EditText
+                                    android:id="@+id/activity_defect_porch"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="textPersonName" android:layout_weight="1"/>
+                            <EditText
+                                    android:id="@+id/activity_defect_floor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="textPersonName" android:layout_weight="1"/>
+                            <EditText
+                                    android:id="@+id/activity_defect_flat"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:ems="10"
+                                    android:inputType="textPersonName" android:layout_weight="1"/>
+                            <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal" android:layout_weight="1">
 
-                    <Button
-                            android:id="@+id/activity_defect_addButton"
+
+                                <EditText
+                                        android:id="@+id/activity_defect_currency"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:ems="10"
+                                        android:inputType="textPersonName" android:layout_weight="1"/>
+                                <Spinner
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content" android:id="@+id/activity_defect_measure"
+                                        android:layout_weight="1"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:onClick="onAddButtonClick"
-                            android:text="ДОБАВИТЬ АКТ"/>
-
+                            android:layout_weight="1"
+                            android:text="@string/activity_defect_description" android:id="@+id/textView16"/>
+                    <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="102dp"
+                            android:inputType="textMultiLine"
+                            android:ems="10"
+                            android:id="@+id/activity_defect_description" android:layout_weight="1"/>
+                    <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                        <Button
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.05"
+                                android:onClick="onAddActButtonClick"
+                                android:text="ДОБАВИТЬ ДЕФЕКТ" android:id="@+id/activity_defect_addAct"/>
+                        <Button
+                                android:id="@+id/activity_defect_addPhoto"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.05"
+                                android:onClick="onAddPhotoClick"
+                                android:text="ДОБАВИТЬ ФОТО"/>
+                        <TextView
+                                android:text="Количество отправленных пакетов"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" android:id="@+id/tvPocketsCount"
+                                android:layout_weight="0.05"/>
+                        <ProgressBar
+                                style="?android:attr/progressBarStyleHorizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/pbSendPhoto" android:layout_weight="0.05"/>
+                    </LinearLayout>
+                    <ScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" android:layout_weight="0.05">
+                        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                                      android:orientation="vertical">
+                            <GridView
+                                    android:id="@+id/activity_defect_gridView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="600dp"
+                                    android:horizontalSpacing="10dp"
+                                    android:verticalSpacing="10dp"
+                                    android:numColumns="2">
+                            </GridView>
+                        </LinearLayout>
+                    </ScrollView>
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

@@ -1,4 +1,4 @@
-package com.pea.du.db.methods;
+package com.pea.du.db.local.methods;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,8 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.pea.du.data.*;
 import com.pea.du.data.StaticValue;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.data.DBHelper;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.data.DBHelper;
 
 import java.util.ArrayList;
 
@@ -56,6 +56,59 @@ public class WriteMethods {
         }
         return result;
     }
+
+    public static ArrayList<Integer> setWorkNames(Context context, ArrayList<StaticValue> staticValueArrayList){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (StaticValue staticValue : staticValueArrayList
+                ) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.GuestEntry.WORK_NAME, staticValue.getName());
+            values.put(Contract.GuestEntry.SERVER_ID, staticValue.getServerId());
+            result.add((int) db_write.insert(Contract.GuestEntry.WORK_NAME_TABLE_NAME, null, values));
+        }
+        return result;
+    }
+
+    public static ArrayList<Integer> setStages(Context context, ArrayList<StaticValue> staticValueArrayList){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (StaticValue staticValue : staticValueArrayList
+                ) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.GuestEntry.STAGE, staticValue.getName());
+            values.put(Contract.GuestEntry.SERVER_ID, staticValue.getServerId());
+            result.add((int) db_write.insert(Contract.GuestEntry.STAGE_TABLE_NAME, null, values));
+        }
+        return result;
+    }
+
+    public static ArrayList<Integer> setContractors(Context context, ArrayList<StaticValue> staticValueArrayList){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (StaticValue staticValue : staticValueArrayList
+                ) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.GuestEntry.CONTRACTOR, staticValue.getName());
+            values.put(Contract.GuestEntry.SERVER_ID, staticValue.getServerId());
+            result.add((int) db_write.insert(Contract.GuestEntry.CONTRACTOR_TABLE_NAME, null, values));
+        }
+        return result;
+    }
+
+    public static ArrayList<Integer> setStaticValues(Context context, ArrayList<StaticValue> staticValueArrayList){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (StaticValue staticValue : staticValueArrayList
+                ) {
+            ContentValues values = new ContentValues();
+            values.put(staticValue.getColumnName(), staticValue.getName());
+            values.put(Contract.GuestEntry.SERVER_ID, staticValue.getServerId());
+            result.add((int) db_write.insert(staticValue.getTableName(), null, values));
+        }
+        return result;
+    }
+
 
     public static Integer setAddress(Context context, StaticValue address){
         ArrayList<StaticValue> staticValueArrayList = new ArrayList<>();
@@ -148,6 +201,40 @@ public class WriteMethods {
         }
         return result;
     }
+
+
+
+
+    public static Integer setWork(Context context, Work work){
+        ArrayList<Work> workArrayList = new ArrayList<>();
+        workArrayList.add(work);
+        return setWorks(context, workArrayList).get(0);
+    }
+
+
+    public static ArrayList<Integer> setWorks(Context context, ArrayList<Work> workArrayList){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Work work : workArrayList
+                ) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.GuestEntry.SERVER_ID, work.getServerId());
+            values.put(Contract.GuestEntry.USER_ID, work.getUser().getServerId());
+            values.put(Contract.GuestEntry.ADDRESS_ID, work.getAddress().getServerId());
+            values.put(Contract.GuestEntry.WORK_NAME_ID, work.getName().getServerId());
+            values.put(Contract.GuestEntry.STAGE_ID, work.getStage().getServerId());
+            values.put(Contract.GuestEntry.CNT, work.getCnt());
+            values.put(Contract.GuestEntry.MEASURE_ID, work.getMeasure().getServerId());
+            values.put(Contract.GuestEntry.DESCR, work.getDescr());
+            values.put(Contract.GuestEntry.SUBCONTRACT, work.getSubcontract());
+            values.put(Contract.GuestEntry.CONTRACTOR_ID, work.getContractor().getServerId());
+            values.put(Contract.GuestEntry.DOCDATE,"Now()");    // work.getDocdate().toString()
+
+            result.add((int) db_write.insert(Contract.GuestEntry.WORK_TABLE_NAME, null, values));
+        }
+        return result;
+    }
+
 
     public static Integer setDefectPhoto(Context context, Photo photo) {
         ArrayList<Photo> photoArrayList = new ArrayList<>();

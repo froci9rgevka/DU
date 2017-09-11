@@ -63,6 +63,11 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile fileTree(include: ['*.jar'], dir: 'libs')
+
+    compile group: 'net.sourceforge.jtds', name: 'jtds', version: '1.2' // Connect to mysql
+
+    compile group: 'com.jcraft', name: 'jsch', version: '0.1.44-1' // SSH - protocol
+
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
     compile 'com.android.support:support-v4:25.3.1'
@@ -73,8 +78,10 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'mysql:mysql-connector-java:5.1.24'
     testCompile 'junit:junit:4.12'
 }
+
 
 
 

@@ -7,15 +7,12 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.methods.ReadMethods;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.methods.ReadMethods;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.pea.du.db.data.Contract.GuestEntry.*;
-import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE;
-import static com.pea.du.db.data.Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME;
 import static java.lang.Integer.parseInt;
 
 public class Photo implements Parcelable{

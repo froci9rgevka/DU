@@ -1,10 +1,10 @@
-package com.pea.du.db.methods;
+package com.pea.du.db.local.methods;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import com.pea.du.data.Photo;
-import com.pea.du.db.data.Contract;
-import com.pea.du.db.data.DBHelper;
+import com.pea.du.db.local.data.Contract;
+import com.pea.du.db.local.data.DBHelper;
 
 public class DeleteMethods {
 
@@ -13,6 +13,7 @@ public class DeleteMethods {
         DBHelper dbHelper = new DBHelper(context);
         return dbHelper.getWritableDatabase();
     }
+
 
 
     public static boolean deleteAdresses(Context context)
@@ -39,6 +40,26 @@ public class DeleteMethods {
         return db_write.delete(Contract.GuestEntry.DEFECT_TYPE_TABLE_NAME, null, null) > 0;
     }
 
+    public static boolean deleteWorkNames(Context context)
+    {
+        SQLiteDatabase db_write = getDBfromContext(context);
+        return db_write.delete(Contract.GuestEntry.WORK_NAME_TABLE_NAME, null, null) > 0;
+    }
+
+    public static boolean deleteStages(Context context)
+    {
+        SQLiteDatabase db_write = getDBfromContext(context);
+        return db_write.delete(Contract.GuestEntry.STAGE_TABLE_NAME, null, null) > 0;
+    }
+
+    public static boolean deleteContractors(Context context)
+    {
+        SQLiteDatabase db_write = getDBfromContext(context);
+        return db_write.delete(Contract.GuestEntry.CONTRACTOR_TABLE_NAME, null, null) > 0;
+    }
+
+
+
     public static boolean deleteActs(Context context)
     {
         SQLiteDatabase db_write = getDBfromContext(context);
@@ -49,6 +70,12 @@ public class DeleteMethods {
     {
         SQLiteDatabase db_write = getDBfromContext(context);
         return db_write.delete(Contract.GuestEntry.DEFECT_TABLE_NAME, null, null) > 0;
+    }
+
+    public static boolean deleteWorks(Context context)
+    {
+        SQLiteDatabase db_write = getDBfromContext(context);
+        return db_write.delete(Contract.GuestEntry.WORK_TABLE_NAME, null, null) > 0;
     }
 
     public static boolean deletePhotos(Context context)
@@ -62,4 +89,20 @@ public class DeleteMethods {
         SQLiteDatabase db_write = getDBfromContext(context);
         return db_write.delete(Contract.GuestEntry.DEFECT_PHOTO_TABLE_NAME, Contract.GuestEntry.PATH + "='" + photo.getPath() + "'", null) > 0;
     }
+
+
+    public static void deleteAnything(Context context){
+        deleteAdresses(context);
+        deleteMeasures(context);
+        deleteConstructiveElements(context);
+        deleteTypes(context);
+        deleteActs(context);
+        deleteDefects(context);
+        deleteWorks(context);
+        deletePhotos(context);
+        deleteWorkNames(context);
+        deleteStages(context);
+        deleteContractors(context);
+    }
+
 }

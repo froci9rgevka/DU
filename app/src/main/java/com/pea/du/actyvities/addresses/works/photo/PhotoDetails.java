@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.pea.du.R;
 import com.pea.du.data.Photo;
-import com.pea.du.db.methods.DeleteMethods;
+import com.pea.du.db.local.methods.DeleteMethods;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
