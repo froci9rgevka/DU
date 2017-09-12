@@ -114,6 +114,18 @@ public class WriteMethods {
     }
 
 
+    public static ArrayList<Integer> setSyncCeT(Context context, ArrayList<Integer[]> listCeT){
+        SQLiteDatabase db_write = getDBfromContext(context);
+        ArrayList<Integer> result = new ArrayList<>();
+        for (Integer[] arrCeT : listCeT) {
+            ContentValues values = new ContentValues();
+            values.put(Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_ID, arrCeT[0]);
+            values.put(Contract.GuestEntry.DEFECT_TYPE_ID, arrCeT[1]);
+            result.add((int) db_write.insert(Contract.GuestEntry.DEFECT_SYNC_CE_T_TABLE_NAME, null, values));
+        }
+        return result;
+    }
+
     public static Integer setAddress(Context context, StaticValue address){
         ArrayList<StaticValue> staticValueArrayList = new ArrayList<>();
         staticValueArrayList.add(address);

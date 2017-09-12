@@ -40,6 +40,12 @@ public class DeleteMethods {
         return db_write.delete(Contract.GuestEntry.DEFECT_TYPE_TABLE_NAME, null, null) > 0;
     }
 
+    public static boolean deleteSyncCeT(Context context)
+    {
+        SQLiteDatabase db_write = getDBfromContext(context);
+        return db_write.delete(Contract.GuestEntry.DEFECT_SYNC_CE_T_TABLE_NAME, null, null) > 0;
+    }
+
     public static boolean deleteWorkNames(Context context)
     {
         SQLiteDatabase db_write = getDBfromContext(context);
@@ -57,8 +63,6 @@ public class DeleteMethods {
         SQLiteDatabase db_write = getDBfromContext(context);
         return db_write.delete(Contract.GuestEntry.CONTRACTOR_TABLE_NAME, null, null) > 0;
     }
-
-
 
     public static boolean deleteActs(Context context)
     {
@@ -96,6 +100,7 @@ public class DeleteMethods {
         deleteMeasures(context);
         deleteConstructiveElements(context);
         deleteTypes(context);
+        deleteSyncCeT(context);
         deleteActs(context);
         deleteDefects(context);
         deleteWorks(context);

@@ -1,5 +1,6 @@
 package com.pea.du.actyvities.addresses.works.defectation;
 
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,9 +19,8 @@ import java.util.ArrayList;
 
 import static com.pea.du.data.StaticValue.getNameById;
 import static com.pea.du.db.local.data.Contract.GuestEntry.*;
-import static com.pea.du.flags.Flags.actId;
-import static com.pea.du.flags.Flags.addressId;
-import static com.pea.du.flags.Flags.workId;
+import static com.pea.du.db.local.methods.ReadMethods.getTypesFronConstructiveElement;
+import static com.pea.du.flags.Flags.*;
 
 public class DefectActivity extends AppCompatActivity {
 
@@ -53,7 +53,7 @@ public class DefectActivity extends AppCompatActivity {
         setDefectActivityContent();
     }
 
-    private void objInit(){
+    private void objInit() {
         toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.add_defect_toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -81,13 +81,40 @@ public class DefectActivity extends AppCompatActivity {
         ArrayList constructiveElements = ReadMethods.getStaticValues(this, DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, null, null);
         ArrayList types = ReadMethods.getStaticValues(this, DEFECT_TYPE_TABLE_NAME, null, null);
 
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,measures);
-        ArrayAdapter<String> ceAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,constructiveElements);
-        ArrayAdapter<String> tAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,types);
+        ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, measures);
+        ArrayAdapter<String> ceAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, constructiveElements);
+        ArrayAdapter<String> tAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, types);
 
         sMeasure.setAdapter(mAdapter);
         sConstructiveElement.setAdapter(ceAdapter);
         sDefect_type.setAdapter(tAdapter);
+
+        sConstructiveElement.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                StaticValue constructiveElement = new StaticValue(DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
+                constructiveElement.setName(sConstructiveElement.getSelectedItem().toString());
+                constructiveElement.getStaticByName(currentContext);
+
+                setTypesFromConstructiveElement(constructiveElement.getServerId());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                setTypesFromConstructiveElement(1);
+            }
+        });
+    }
+
+    // Выбираем только типы, которые относятся к выбранному конструктивному элементу
+    private void setTypesFromConstructiveElement(Integer constructiveElementId){
+        ArrayList<String> typesNames = new ArrayList<>();
+        ArrayList<Integer> typesId = getTypesFronConstructiveElement(currentContext, constructiveElementId);
+        for (Integer typeId:typesId) { typesNames.add(getNameById(currentContext, DEFECT_TYPE_TABLE_NAME, typeId)); }
+        ArrayAdapter<String> tAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,typesNames);
+        sDefect_type.setAdapter(tAdapter);
+
     }
 
     // Наполняем активити контентом

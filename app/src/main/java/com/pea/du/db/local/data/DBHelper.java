@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
     /**
      * Версия базы данных. При изменении схемы увеличить на единицу
      */
-    private static final int DATABASE_VERSION = 32;
+    private static final int DATABASE_VERSION = 34;
 
 
     /**
@@ -103,6 +103,12 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.DEFECT_TYPE + " TEXT NOT NULL);";
 
+        String SQL_CREATE_DEFECT_SYNC_CE_T_TABLE = "CREATE TABLE " + Contract.GuestEntry.DEFECT_SYNC_CE_T_TABLE_NAME + " ("
+                + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + Contract.GuestEntry.SERVER_ID + " INTEGER, "
+                + Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_ID + " INTEGER NOT NULL, "
+                + Contract.GuestEntry.DEFECT_TYPE_ID + " INTEGER NOT NULL);";
+
         String SQL_CREATE_WORK_NAME_TABLE = "CREATE TABLE " + Contract.GuestEntry.WORK_NAME_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + Contract.GuestEntry.SERVER_ID + " INTEGER NOT NULL, "
@@ -128,6 +134,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL(SQL_CREATE_DEFECT_MEASURE_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_CONSTRUCTIVE_ELEMENT_TABLE);
         db.execSQL(SQL_CREATE_DEFECT_TYPE_TABLE);
+        db.execSQL(SQL_CREATE_DEFECT_SYNC_CE_T_TABLE);
         db.execSQL(SQL_CREATE_WORK_NAME_TABLE);
         db.execSQL(SQL_CREATE_STAGE_TABLE);
         db.execSQL(SQL_CREATE_CONTRACTOR_TYPE_TABLE);
@@ -151,6 +158,7 @@ public class DBHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_MEASURE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_TYPE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.DEFECT_SYNC_CE_T_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.WORK_NAME_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.STAGE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + Contract.GuestEntry.CONTRACTOR_TABLE_NAME);

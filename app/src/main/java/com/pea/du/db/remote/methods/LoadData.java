@@ -30,6 +30,7 @@ public class LoadData extends AsyncTask<String,String,String> {
     Connection con;
 
     private ArrayList<StaticValue> staticValues = new ArrayList<>();
+    private ArrayList<Integer[]> syncCeT = new ArrayList<>();
     private ArrayList<Act> acts = new ArrayList<>();
     private ArrayList<Defect> defects = new ArrayList<>();
     private ArrayList<Work> works = new ArrayList<>();
@@ -63,6 +64,7 @@ public class LoadData extends AsyncTask<String,String,String> {
 
         deleteAnything(context);
         setStaticValues(context,staticValues);
+        setSyncCeT(context,syncCeT);
         setActs(context,acts);
         setDefects(context,defects);
         setWorks(context,works);
@@ -91,6 +93,7 @@ public class LoadData extends AsyncTask<String,String,String> {
                     LoadStaticTable(syncDBTable);
                 }
 
+                LoadSyncCeTTable();
                 LoadActTable();
                 LoadDefectTable();
                 LoadWorkTable();
@@ -128,6 +131,17 @@ public class LoadData extends AsyncTask<String,String,String> {
             staticValue.setServerId(rs.getInt("Id"));
             staticValue.setName(rs.getString("Name"));
             staticValues.add(staticValue);
+        }
+    }
+
+    private void LoadSyncCeTTable() throws SQLException {
+        String query = "select Header, Defect from zkh__constructiveelementsdetail";
+        Statement stmt = con.createStatement();
+        ResultSet rs = stmt.executeQuery(query);
+
+        while (rs.next()) {
+            Integer[] arr = {rs.getInt("Header"),rs.getInt("Defect")};
+            syncCeT.add(arr);
         }
     }
 

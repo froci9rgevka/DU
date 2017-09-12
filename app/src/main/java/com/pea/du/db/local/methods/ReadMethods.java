@@ -68,6 +68,21 @@ public class ReadMethods {
         return cursor;
     }
 
+    public static ArrayList<Integer> getTypesFronConstructiveElement(Context context, Integer ConstructiveElementId){
+        SQLiteDatabase db = getDBFromContext(context);
+        ArrayList result = new ArrayList();
+
+        Cursor cursor = db.query(
+                Contract.GuestEntry.DEFECT_SYNC_CE_T_TABLE_NAME, null,
+                Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_ID + " = ?", new String[]{ConstructiveElementId.toString()},
+                null, null, null, null);
+
+        while (cursor.moveToNext())
+            result.add(cursor.getInt(cursor.getColumnIndex(DEFECT_TYPE_ID)));
+
+        return result;
+    }
+
 
 
     public static ArrayList<User> getUsers(Context context, String selection, String[] selectionArgs){
@@ -91,8 +106,6 @@ public class ReadMethods {
 
         return result;
     }
-
-
 
     public static ArrayList<Act> getActs(Context context, String selection, String[] selectionArgs){
         SQLiteDatabase db = getDBFromContext(context);
@@ -170,7 +183,6 @@ public class ReadMethods {
     public static ArrayList<Work> getWorks(Context context, String selection, String[] selectionArgs){
         SQLiteDatabase db = getDBFromContext(context);
         ArrayList result = new ArrayList();
-
 
         Cursor cursor = db.query(
                 Contract.GuestEntry.WORK_TABLE_NAME, null, selection, selectionArgs, null, null, null, null);

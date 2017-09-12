@@ -2,6 +2,7 @@ package com.pea.du.actyvities;
 
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -46,18 +47,27 @@ public class MainActivity extends AppCompatActivity implements SeekBar.OnSeekBar
                         break;
                     case 1:
                         workType = DEFECT;
+                        workStageType = null;
                         MainActivity.this.onDefectButtonClick();
                         break;
                     case 2:
-                        workType = BEGIN_WORK;
+                        workType = STAGE_WORK;
+                        workStageType = BEGIN_WORK;
                         MainActivity.this.onDefectButtonClick();
                         break;
                     case 3:
-                        workType = DURING_WORK;
+                        workType = STAGE_WORK;
+                        workStageType = DURING_WORK;
                         MainActivity.this.onDefectButtonClick();
                         break;
                     case 4:
-                        workType = END_WORK;
+                        workType = STAGE_WORK;
+                        workStageType = END_WORK;
+                        MainActivity.this.onDefectButtonClick();
+                        break;
+                    case 5:
+                        workType = STAGE_WORK;
+                        workStageType = null;
                         MainActivity.this.onDefectButtonClick();
                         break;
                 }

@@ -1,6 +1,7 @@
 package com.pea.du.actyvities.addresses;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -143,7 +144,7 @@ public class AddressesActivity extends AppCompatActivity {
         currentAddressList.addAll(defaultAddressList);
         ArrayList<String> newAddressList = new ArrayList();
         for (String s: currentAddressList) {
-            if (s.contains(editable))
+            if (s.toLowerCase().contains(editable.toString().toLowerCase()))
                 newAddressList.add(s);
         }
         currentAddressList = newAddressList;

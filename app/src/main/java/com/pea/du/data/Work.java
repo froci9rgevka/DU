@@ -14,6 +14,7 @@ import java.util.Date;
 import static com.pea.du.db.local.data.Contract.GuestEntry.STAGE;
 import static com.pea.du.db.local.data.Contract.GuestEntry.STAGE_TABLE_NAME;
 import static com.pea.du.flags.Flags.currentContext;
+import static com.pea.du.flags.Flags.workStageType;
 import static com.pea.du.flags.Flags.workType;
 
 public class Work implements Parcelable {
@@ -96,14 +97,22 @@ public class Work implements Parcelable {
     }
 
     public static ArrayList<Work> getWorksByAddressAndUser(Integer addressId, Integer userId) {
-        StaticValue stage = new StaticValue(STAGE_TABLE_NAME,STAGE);
-        stage.setName(workType);
-        stage.getStaticByName(currentContext);
-        ArrayList<Work> workArrayList = ReadMethods.getWorks(currentContext,
-                Contract.GuestEntry.ADDRESS_ID + " = ? AND " +
-                        Contract.GuestEntry.USER_ID + " = ? AND " +
-                        Contract.GuestEntry.STAGE_ID + " = ?",
-                new String[]{addressId.toString(), userId.toString(), stage.getServerId().toString()});
+        ArrayList<Work> workArrayList;
+        if (workStageType==null)
+            workArrayList = ReadMethods.getWorks(currentContext,
+                    Contract.GuestEntry.ADDRESS_ID + " = ? AND " +
+                            Contract.GuestEntry.USER_ID + " = ?",
+                    new String[]{addressId.toString(), userId.toString()});
+        else {
+            StaticValue stage = new StaticValue(STAGE_TABLE_NAME,STAGE);
+            stage.setName(workStageType);
+            stage.getStaticByName(currentContext);
+            workArrayList = ReadMethods.getWorks(currentContext,
+                    Contract.GuestEntry.ADDRESS_ID + " = ? AND " +
+                            Contract.GuestEntry.USER_ID + " = ? AND " +
+                            Contract.GuestEntry.STAGE_ID + " = ?",
+                    new String[]{addressId.toString(), userId.toString(), stage.getServerId().toString()});
+        }
         return workArrayList;
     }
 

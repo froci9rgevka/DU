@@ -59,20 +59,16 @@ public class SaveWork extends AsyncTask<String,String,String>{
                 if(work.getSubcontract()) contractor = work.getContractor().getServerId();
 
                 String query =
-                        "insert into hsg_dataworktape (Period, HouseName, FixDate, ModerationFlag, House, Work, Cnt, MeasureC, Descr, Subcontract, Docdate, Contractor, WorkStage, Author) values ("
-                                + "13" + ","
-                                + "HouseName" + ","
-                                + "NOW()" + ","
-                                + false + ","
+                        "insert into hsg_dataworktape (House, Work, Cnt, MeasureC, Descr, Subcontract, Docdate, Contractor, WorkStage, Author) values ("
                                 + work.getAddress().getServerId() + ","
                                 + work.getName().getServerId() + ","
                                 + work.getCnt() + ","
-                                + work.getMeasure().getServerId() + ","
-                                + work.getDescr() + ","
+                                + work.getMeasure().getServerId() + ",'"
+                                + work.getDescr() + "',"
                                 + work.getSubcontract() + ","
                                 + "NOW()" + ","
-                                + contractor + ",'"
-                                + work.getStage().getServerId() + "',"
+                                + contractor + ","
+                                + work.getStage().getServerId() + ","
                                 + work.getUser().getServerId() + ")";
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate(query);

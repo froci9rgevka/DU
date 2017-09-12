@@ -12,24 +12,30 @@
             android:largeHeap="true"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-        <activity android:name=".actyvities.MainActivity">
+        <activity android:name=".actyvities.MainActivity"
+                  android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".actyvities.inspect.InspectionActivity"
                 android:label="@string/title_activity_inspection"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".actyvities.inspect.InspectionDetailsActivity"
-                android:label="@string/title_activity_content_results_child">
+                android:label="@string/title_activity_content_results_child"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".actyvities.addresses.works.WorksActivity"
-                android:label="@string/title_activity_defect">
+                android:label="@string/title_activity_defect"
+                android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".actyvities.addresses.works.photo.PhotoLibraryItem">
+        <activity android:name=".actyvities.addresses.works.photo.PhotoLibraryItem"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".actyvities.addresses.works.photo.PhotoDetails">
+        <activity android:name=".actyvities.addresses.works.photo.PhotoDetails"
+                  android:screenOrientation="portrait">
         </activity>
 
         <provider
@@ -42,20 +48,24 @@
                     android:resource="@xml/file_paths"/>
         </provider>
 
-        <activity android:name=".actyvities.Login">
+        <activity android:name=".actyvities.Login"
+                  android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".actyvities.addresses.AddressesActivity">
+        <activity android:name=".actyvities.addresses.AddressesActivity"
+                  android:screenOrientation="portrait">
         </activity>
 
 
-        <activity android:name=".actyvities.addresses.works.defectation.DefectActivity">
+        <activity android:name=".actyvities.addresses.works.defectation.DefectActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".actyvities.addresses.works.stagework.StageActivity">
+        <activity android:name=".actyvities.addresses.works.stagework.StageActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

@@ -16,6 +16,7 @@ public final class Contract {
         public final static String ADDRESS_TABLE_NAME = "tAddress";
         public final static String DEFECT_MEASURE_TABLE_NAME = "tMeasure";
         public final static String DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME = "tConstructiveElement";
+        public final static String DEFECT_SYNC_CE_T_TABLE_NAME = "tSyncCeT";
         public final static String DEFECT_TYPE_TABLE_NAME = "tType";
         public final static String WORK_NAME_TABLE_NAME = "tWorkName";
         public final static String STAGE_TABLE_NAME = "tStage";
@@ -72,6 +73,10 @@ public final class Contract {
 
         //tType
         public final static String DEFECT_TYPE = "Type";
+
+        //tSyncCeT
+        //public final static String DEFECT_CONSTRUCTIVE_ELEMENT_ID = "defect_constructiveElement_id";
+        //public final static String DEFECT_TYPE_ID = "defect_type_id";
 
         //tWorkName
         public final static String WORK_NAME = "WorkName";

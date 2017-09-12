@@ -1,5 +1,6 @@
 package com.pea.du.actyvities.addresses.works.stagework;
 
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import static com.pea.du.flags.Flags.*;
 
 public class StageActivity extends AppCompatActivity {
 
+    Spinner sStage;
     Spinner sWorkName;
     Spinner sMeasure;
     Spinner sContractor;
@@ -61,6 +63,7 @@ public class StageActivity extends AppCompatActivity {
             }
         });
 
+        sStage = (Spinner) findViewById(R.id.activity_stage_stage);
         sWorkName = (Spinner) findViewById(R.id.activity_stage_workName);
         sMeasure = (Spinner) findViewById(R.id.activity_stage_measure);
         sContractor = (Spinner) findViewById(R.id.activity_stage_contractor_s);
@@ -85,14 +88,17 @@ public class StageActivity extends AppCompatActivity {
         fragmentTransaction = getSupportFragmentManager().beginTransaction();
         photoGridFragment = new PhotoGridFragment();
 
+        ArrayList stages = ReadMethods.getStaticValues(this, STAGE_TABLE_NAME, null, null);
         ArrayList measures = ReadMethods.getStaticValues(this, DEFECT_MEASURE_TABLE_NAME, null, null);
         ArrayList workNames = ReadMethods.getStaticValues(this, WORK_NAME_TABLE_NAME, null, null);
         ArrayList contractors = ReadMethods.getStaticValues(this, CONTRACTOR_TABLE_NAME, null, null);
 
+        ArrayAdapter<String> sAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, stages);
         ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, measures);
         ArrayAdapter<String> wnAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, workNames);
         ArrayAdapter<String> cAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, contractors);
 
+        sStage.setAdapter(sAdapter);
         sWorkName.setAdapter(wnAdapter);
         sMeasure.setAdapter(mAdapter);
         sContractor.setAdapter(cAdapter);
@@ -138,6 +144,7 @@ public class StageActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r) {
             // Отображаем дефект
+            sStage.setSelection(work.getStage().getServerId() - 1);
             sWorkName.setSelection(work.getName().getServerId() - 1);
             sMeasure.setSelection(work.getMeasure().getServerId() - 1);
             sContractor.setSelection(work.getContractor().getServerId()-1);
@@ -167,7 +174,7 @@ public class StageActivity extends AppCompatActivity {
         measure.getStaticByName(this);
 
         StaticValue stage = new StaticValue(STAGE_TABLE_NAME, STAGE);
-        stage.setName(workType);
+        stage.setName(sStage.getSelectedItem().toString());
         stage.getStaticByName(this);
 
         User user = new User(authorId);
