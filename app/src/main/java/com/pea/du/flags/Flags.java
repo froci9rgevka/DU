@@ -16,6 +16,7 @@ public class Flags {
     final static public String DEFECT = "Дефектация";
     final static public String STAGE_WORK = "Стадия работы";
 
+    //workStageType вариации
     final static public String BEGIN_WORK = "Начало";
     final static public String DURING_WORK = "Выполнение";
     final static public String END_WORK = "Завершена";

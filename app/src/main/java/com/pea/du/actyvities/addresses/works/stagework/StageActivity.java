@@ -1,7 +1,5 @@
 package com.pea.du.actyvities.addresses.works.stagework;
 
-import android.content.pm.ActivityInfo;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +14,8 @@ import com.pea.du.flags.Flags;
 
 import java.util.ArrayList;
 
+import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.getParsable;
+import static com.pea.du.actyvities.addresses.works.defectation.DefectActivity.getTextable;
 import static com.pea.du.data.StaticValue.getNameById;
 import static com.pea.du.data.Work.getWorkById;
 import static com.pea.du.db.local.data.Contract.GuestEntry.*;
@@ -35,7 +35,6 @@ public class StageActivity extends AppCompatActivity {
     ToggleButton tbSubContractor;
     Button bAddStage;
 
-    android.support.v4.app.FragmentTransaction fragmentTransaction;
     android.support.v4.app.Fragment photoGridFragment;
 
     private android.support.v7.widget.Toolbar toolbar;
@@ -85,7 +84,6 @@ public class StageActivity extends AppCompatActivity {
 
         bAddStage = (Button) findViewById(R.id.activity_stage_addWork);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
         photoGridFragment = new PhotoGridFragment();
 
         ArrayList stages = ReadMethods.getStaticValues(this, STAGE_TABLE_NAME, null, null);
@@ -114,6 +112,14 @@ public class StageActivity extends AppCompatActivity {
         if (workId == -1) {
             // Если создаём новый дефект
             bAddStage.setVisibility(View.VISIBLE);
+
+            if(!(workStageType==null)) {
+                StaticValue stage = new StaticValue(STAGE_TABLE_NAME, STAGE);
+                stage.setName(workStageType);
+                stage.getStaticByName(this);
+
+                sStage.setSelection(stage.getServerId() - 1);
+            }
         } else {
             // Если редактируем старый дефект
             bAddStage.setVisibility(View.GONE);
@@ -125,8 +131,18 @@ public class StageActivity extends AppCompatActivity {
 
     // Наполняем фрагмент активити с фотофиксацией
     private void setFragmentContent() {
-        fragmentTransaction.replace(R.id.photoGrid_fragment, photoGridFragment);
-        fragmentTransaction.commit();
+        android.support.v4.app.Fragment photoGridFragment;
+        photoGridFragment = new PhotoGridFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction1;
+        fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction1.remove(photoGridFragment);
+        fragmentTransaction1.commit();
+
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction2;
+        fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction2.replace(R.id.stage_photoGrid_fragment, photoGridFragment);
+        fragmentTransaction2.commit();
     }
 
     private class LoadData extends AsyncTask<String, String, String> {
@@ -148,7 +164,7 @@ public class StageActivity extends AppCompatActivity {
             sWorkName.setSelection(work.getName().getServerId() - 1);
             sMeasure.setSelection(work.getMeasure().getServerId() - 1);
             sContractor.setSelection(work.getContractor().getServerId()-1);
-            etCurrency.setText(work.getCnt());
+            etCurrency.setText(getTextable(work.getCnt()));
             etDescription.setText(work.getDescr());
             tbSubContractor.setChecked(work.getSubcontract());
         }
@@ -163,22 +179,29 @@ public class StageActivity extends AppCompatActivity {
 
     // Создаём дефект из полей активити
     private Work getWorkFromFields() {
+        Work work = new Work();
         StaticValue contractor = null;
 
         StaticValue name = new StaticValue(WORK_NAME_TABLE_NAME, WORK_NAME);
         name.setName(sWorkName.getSelectedItem().toString());
         name.getStaticByName(this);
+        work.setName(name);
 
         StaticValue measure = new StaticValue(DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE);
         measure.setName(sMeasure.getSelectedItem().toString());
         measure.getStaticByName(this);
+        work.setMeasure(measure);
 
         StaticValue stage = new StaticValue(STAGE_TABLE_NAME, STAGE);
         stage.setName(sStage.getSelectedItem().toString());
         stage.getStaticByName(this);
+        work.setStage(stage);
 
         User user = new User(authorId);
+        work.setUser(user);
+
         StaticValue address = new StaticValue(addressId);
+        work.setAddress(address);
 
         Boolean subcontract = false;
         if (tbSubContractor.isChecked()) {
@@ -189,17 +212,13 @@ public class StageActivity extends AppCompatActivity {
             contractor.getStaticByName(this);
         }
 
-        Work work = new Work(
-                user,
-                address,
-                name,
-                stage,
-                etCurrency.getText().toString(),
-                measure,
-                etDescription.getText().toString(),
-                subcontract,
-                contractor
-        );
+        work.setSubcontract(subcontract);
+        work.setContractor(contractor);
+
+        String currency = getParsable(etCurrency.getText().toString());
+        work.setCnt(currency);
+
+        work.setDescr(etDescription.getText().toString());
 
         return work;
     }

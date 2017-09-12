@@ -146,7 +146,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:name="com.pea.du.actyvities.addresses.works.photo.PhotoGridFragment"
-                                android:id="@+id/photoGrid_fragment" android:layout_weight="0.05"
+                                android:id="@+id/stage_photoGrid_fragment" android:layout_weight="0.05"
                                 tools:layout="@layout/empty_layout"/>
                     </LinearLayout>
                 </LinearLayout>

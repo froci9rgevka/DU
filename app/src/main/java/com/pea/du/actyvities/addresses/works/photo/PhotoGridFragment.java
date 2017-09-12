@@ -45,6 +45,7 @@ public class PhotoGridFragment extends android.support.v4.app.Fragment {
 
     View view;
     Button bAddPhoto;
+    ProgressBar progressBar;
     private GridView gridView;
     private GridViewAdapter gridViewAdapter;
 
@@ -70,6 +71,8 @@ public class PhotoGridFragment extends android.support.v4.app.Fragment {
 
     private void objInit(){
         bAddPhoto = (Button) view.findViewById(R.id.addPhoto_button);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.photoProgressBar);
 
         gridView = (GridView) view.findViewById(R.id.photo_gridView);
         gridView.setOnItemClickListener(onItemClickListener);
@@ -102,8 +105,10 @@ public class PhotoGridFragment extends android.support.v4.app.Fragment {
         @Override
         protected void onPostExecute(String r)
         {
+            progressBar.setVisibility(View.VISIBLE);
             gridViewAdapter = new GridViewAdapter(currentContext, R.layout.simple_list_view_item, getImageItems());
             gridView.setAdapter(gridViewAdapter);
+            progressBar.setVisibility(View.GONE);
         }
     }
 
@@ -148,7 +153,6 @@ public class PhotoGridFragment extends android.support.v4.app.Fragment {
 
 
     public void loadPhotos () {
-
         // Массив для хранения списка актов, загружаем в него из базы акты
         photoList = getPhotos();
     }

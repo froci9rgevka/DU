@@ -34,5 +34,11 @@
                 </GridView>
             </LinearLayout>
         </ScrollView>
+        <ProgressBar
+                android:id="@+id/photoProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" android:visibility="gone"/>
     </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

@@ -9,8 +9,8 @@
         tools:context="com.pea.du.actyvities.MainActivity">
 
     <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
             tools:layout_editor_absoluteX="8dp">
 
         <LinearLayout
@@ -28,32 +28,52 @@
                     app:title="@string/defect_toolbar_title"
                     tools:layout_editor_absoluteX="8dp"
                     tools:layout_editor_absoluteY="0dp"/>
-            <LinearLayout
-                    android:orientation="vertical"
+            <Button
+                    android:text="ДЕФЕКТАЦИЯ"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp">
-                <GridView
-                        android:layout_width="match_parent"
-                        android:layout_height="408dp" android:id="@+id/main_menu_gridview"
-                        android:horizontalSpacing="10dp"
-                        android:verticalSpacing="10dp"
-                        android:numColumns="2"/>
-                <SeekBar
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" android:id="@+id/seekBar"
-                        android:max="2"
-                        android:progress="0"
-                        style="@android:style/Widget.SeekBar"/>
+                    android:layout_height="0dp"
+                    android:layout_weight="1.00"
+                    android:background="@drawable/gradient1"
+                    android:id="@+id/activity_main_bDefect"/>
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_height="0dp"
+                    android:layout_width="match_parent"
+                    android:layout_weight="1.00">
                 <Button
-                        android:text="@string/content_main_login_button"
+                        android:text="ЭТАПЫ РАБОТ"
+                        android:layout_height="match_parent"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/sync_button"
-                        android:onClick="onLoginButtonClick" android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true" android:visibility="invisible"/>
+                        android:layout_weight="1"
+                        android:background="@drawable/gradient2"
+                        android:id="@+id/activity_main_bStage_Work"/>
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:layout_weight="1">
+                    <Button
+                            android:text="НАЧАЛО"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient3"
+                            android:id="@+id/activity_main_bBegin_Stage"/>
+                    <Button
+                            android:text="ВЫПОЛНЕНИЕ"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient4"
+                            android:id="@+id/activity_main_bDuring_Stage"/>
+                    <Button
+                            android:text="ЗАВЕРШЕНИЕ"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/gradient5"
+                            android:id="@+id/activity_main_bEnd_Stage"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 

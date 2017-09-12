@@ -54,9 +54,16 @@ public class Photo implements Parcelable{
 
 
     public static ArrayList<Photo> getPhotos() {
-        ArrayList<Photo> photoList = ReadMethods.getPhotos(currentContext,
+        ArrayList<Photo> photoList;
+        if(workType.equals(DEFECT))
+            photoList = ReadMethods.getPhotos(currentContext,
+                    Contract.GuestEntry.WORK_ID + " = ? AND "
+                            + Contract.GuestEntry.WORKTYPE + " = ?",
+                    new String[]{workId.toString(), DEFECT});
+        else
+            photoList = ReadMethods.getPhotos(currentContext,
                 Contract.GuestEntry.WORK_ID + " = ? AND "
-                + Contract.GuestEntry.WORKTYPE + " = ?",
+                        + Contract.GuestEntry.WORKTYPE + " = ?",
                 new String[]{workId.toString(), workStageType});
         return photoList;
     }

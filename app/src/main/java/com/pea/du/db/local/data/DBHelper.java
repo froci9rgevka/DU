@@ -17,7 +17,7 @@ public class DBHelper extends SQLiteOpenHelper{
     /**
      * Версия базы данных. При изменении схемы увеличить на единицу
      */
-    private static final int DATABASE_VERSION = 34;
+    private static final int DATABASE_VERSION = 35;
 
 
     /**
@@ -54,12 +54,12 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.ACT_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.DEFECT_CONSTRUCTIVE_ELEMENT_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.DEFECT_TYPE_ID + " INTEGER NOT NULL, "
-                + Contract.GuestEntry.PORCH + " TEXT NOT NULL, "
-                + Contract.GuestEntry.FLOOR + " TEXT NOT NULL, "
-                + Contract.GuestEntry.FLAT + " TEXT NOT NULL, "
-                + Contract.GuestEntry.DESCRIPTION + " TEXT NOT NULL, "
+                + Contract.GuestEntry.PORCH + " TEXT, "
+                + Contract.GuestEntry.FLOOR + " TEXT, "
+                + Contract.GuestEntry.FLAT + " TEXT, "
+                + Contract.GuestEntry.DESCRIPTION + " TEXT, "
                 + Contract.GuestEntry.DEFECT_MEASURE_ID + " INTEGER NOT NULL, "
-                + Contract.GuestEntry.CURRENCY + " TEXT NOT NULL);";
+                + Contract.GuestEntry.CURRENCY + " TEXT);";
 
         String SQL_CREATE_WORK_TABLE = "CREATE TABLE " + Contract.GuestEntry.WORK_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -68,12 +68,12 @@ public class DBHelper extends SQLiteOpenHelper{
                 + Contract.GuestEntry.ADDRESS_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.WORK_NAME_ID + " INTEGER NOT NULL, "
                 + Contract.GuestEntry.STAGE_ID + " INTEGER NOT NULL, "
-                + Contract.GuestEntry.CNT + " TEXT NOT NULL, "
+                + Contract.GuestEntry.CNT + " TEXT, "
                 + Contract.GuestEntry.MEASURE_ID + " INTEGER NOT NULL, "
-                + Contract.GuestEntry.DESCR + " TEXT NOT NULL, "
+                + Contract.GuestEntry.DESCR + " TEXT, "
                 + Contract.GuestEntry.SUBCONTRACT + " BOOLEAN NOT NULL, "
                 + Contract.GuestEntry.CONTRACTOR_ID + " INTEGER, "
-                + Contract.GuestEntry.DOCDATE + " DATETIME NOT NULL);";
+                + Contract.GuestEntry.DOCDATE + " DATETIME);";
 
         String SQL_CREATE_PHOTO_TABLE = "CREATE TABLE " + Contract.GuestEntry.PHOTO_TABLE_NAME + " ("
                 + Contract.GuestEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "

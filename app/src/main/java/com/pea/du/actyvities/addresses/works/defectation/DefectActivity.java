@@ -1,6 +1,5 @@
 package com.pea.du.actyvities.addresses.works.defectation;
 
-import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,8 +34,6 @@ public class DefectActivity extends AppCompatActivity {
 
     Button bAddDefect;
 
-    android.support.v4.app.FragmentTransaction fragmentTransaction;
-    android.support.v4.app.Fragment photoGridFragment;
 
     private android.support.v7.widget.Toolbar toolbar;
 
@@ -74,8 +71,6 @@ public class DefectActivity extends AppCompatActivity {
 
         bAddDefect = (Button) findViewById(R.id.activity_defect_addDefect);
 
-        fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        photoGridFragment = new PhotoGridFragment();
 
         ArrayList measures = ReadMethods.getStaticValues(this, DEFECT_MEASURE_TABLE_NAME, null, null);
         ArrayList constructiveElements = ReadMethods.getStaticValues(this, DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, null, null);
@@ -124,6 +119,8 @@ public class DefectActivity extends AppCompatActivity {
         // Отображаем адресс
         toolbar.setTitle(address);
 
+        setPhotoGridFragmentContent();
+
         if (workId==-1) {
             // Если создаём новый дефект
             bAddDefect.setVisibility(View.VISIBLE);
@@ -131,7 +128,6 @@ public class DefectActivity extends AppCompatActivity {
         else {
             // Если редактируем старый дефект
             bAddDefect.setVisibility(View.GONE);
-            setPhotoGridFragmentContent();
             LoadData loadData = new LoadData();
             loadData.execute("");
         }
@@ -139,8 +135,18 @@ public class DefectActivity extends AppCompatActivity {
 
     // Наполняем фрагмент активити с фотофиксацией
     public void setPhotoGridFragmentContent(){
-        fragmentTransaction.replace(R.id.photoGrid_fragment, photoGridFragment);
-        fragmentTransaction.commit();
+        android.support.v4.app.Fragment photoGridFragment;
+        photoGridFragment = new PhotoGridFragment();
+        android.support.v4.app.FragmentTransaction fragmentTransaction1;
+        fragmentTransaction1 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction1.remove(photoGridFragment);
+        fragmentTransaction1.commit();
+
+
+        android.support.v4.app.FragmentTransaction fragmentTransaction2;
+        fragmentTransaction2 = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction2.replace(R.id.defect_photoGrid_fragment, photoGridFragment);
+        fragmentTransaction2.commit();
     }
 
     private class LoadData extends AsyncTask<String,String,String> {
@@ -165,12 +171,12 @@ public class DefectActivity extends AppCompatActivity {
             // Отображаем дефект
             sDefect_type.setSelection(currentDefect.getType().getServerId()-1);
             sConstructiveElement.setSelection(currentDefect.getConstructiveElement().getServerId()-1);
-            etPorch.setText(currentDefect.getPorch());
-            etFloor.setText(currentDefect.getFloor());
-            etFlat.setText(currentDefect.getFlat());
+            etPorch.setText(getTextable(currentDefect.getPorch()));
+            etFloor.setText(getTextable(currentDefect.getFloor()));
+            etFlat.setText(getTextable(currentDefect.getFlat()));
             etDescription.setText(currentDefect.getDescription());
             sMeasure.setSelection(currentDefect.getMeasure().getServerId()-1);
-            etCurrency.setText(currentDefect.getCurrency());
+            etCurrency.setText(getTextable(currentDefect.getCurrency()));
         }
     }
 
@@ -184,34 +190,57 @@ public class DefectActivity extends AppCompatActivity {
 
     // Создаём дефект из полей активити
     private Defect getDefectFromFields(){
+        Defect defect = new Defect();
+
         StaticValue type = new StaticValue(DEFECT_TYPE_TABLE_NAME, DEFECT_TYPE);
         type.setName(sDefect_type.getSelectedItem().toString());
         type.getStaticByName(this);
+        defect.setType(type);
 
         StaticValue constructiveElement = new StaticValue(DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
         constructiveElement.setName(sConstructiveElement.getSelectedItem().toString());
         constructiveElement.getStaticByName(this);
+        defect.setConstructiveElement(constructiveElement);
 
         StaticValue measure = new StaticValue(DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE);
         measure.setName(sMeasure.getSelectedItem().toString());
         measure.getStaticByName(this);
+        defect.setMeasure(measure);
 
         Act act = new Act();
         act.setServerId(actId);
+        defect.setAct(act);
 
-        Defect defect = new Defect(
-                act,
-                type,
-                constructiveElement,
-                etPorch.getText().toString(),
-                etFloor.getText().toString(),
-                etFlat.getText().toString(),
-                etDescription.getText().toString(),
-                measure,
-                etCurrency.getText().toString()
-        );
+        String porch = getParsable(etPorch.getText().toString());
+        defect.setPorch(porch);
+
+        String floor = getParsable(etFloor.getText().toString());
+        defect.setFloor(floor);
+
+        String flat = getParsable(etFlat.getText().toString());
+        defect.setFlat(flat);
+
+        String currency = getParsable(etCurrency.getText().toString());
+        defect.setCurrency(currency);
+
+        defect.setDescription(etDescription.getText().toString());
 
         return defect;
     }
 
+    public static String getParsable(String s) {
+        try {
+            Integer.parseInt(s);
+            return s;
+        }
+        catch (Exception ex){
+            return null;
+        }
+    }
+    public static String getTextable(String s){
+        if (s==null)
+            return "";
+        else
+            return s;
+    }
 }
