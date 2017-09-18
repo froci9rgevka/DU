@@ -222,7 +222,7 @@ public class ReadMethods {
 
             work.setDescr(cursor.getString(8));
 
-            work.setSubcontract(Boolean.valueOf(cursor.getString(9)));
+            work.setSubcontract(cursor.getString(9).equals("1"));
 
             contractor.setServerId(cursor.getInt(10));
             contractor.getStaticById(context);

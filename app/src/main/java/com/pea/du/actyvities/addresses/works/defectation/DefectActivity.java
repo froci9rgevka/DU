@@ -33,6 +33,12 @@ public class DefectActivity extends AppCompatActivity {
     Spinner sMeasure;
 
     Button bAddDefect;
+    Button bCancel;
+    Button bSave;
+
+    /////Flag отвечающий за коректное отображение типа дефекта
+    //Заполнено ли активити
+    Boolean isActivityFilled = false;
 
 
     private android.support.v7.widget.Toolbar toolbar;
@@ -70,7 +76,8 @@ public class DefectActivity extends AppCompatActivity {
         etCurrency = (EditText) findViewById(R.id.activity_defect_currency);
 
         bAddDefect = (Button) findViewById(R.id.activity_defect_addDefect);
-
+        bCancel = (Button) findViewById(R.id.activity_defect_cancel);
+        bSave = (Button) findViewById(R.id.activity_defect_save);
 
         ArrayList measures = ReadMethods.getStaticValues(this, DEFECT_MEASURE_TABLE_NAME, null, null);
         ArrayList constructiveElements = ReadMethods.getStaticValues(this, DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, null, null);
@@ -87,29 +94,36 @@ public class DefectActivity extends AppCompatActivity {
         sConstructiveElement.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if(((!isActivityFilled) && (workId==null)) || (isActivityFilled)){
+                    isActivityFilled = true;
+                    StaticValue constructiveElement = new StaticValue(DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
+                    constructiveElement.setName(sConstructiveElement.getSelectedItem().toString());
+                    constructiveElement.getStaticByName(currentContext);
 
-                StaticValue constructiveElement = new StaticValue(DEFECT_CONSTRUCTIVE_ELEMENT_TABLE_NAME, DEFECT_CONSTRUCTIVE_ELEMENT);
-                constructiveElement.setName(sConstructiveElement.getSelectedItem().toString());
-                constructiveElement.getStaticByName(currentContext);
-
-                setTypesFromConstructiveElement(constructiveElement.getServerId());
+                    setTypesFromConstructiveElement(constructiveElement.getServerId(), -1);
+                }
+                else
+                    isActivityFilled = true;
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                setTypesFromConstructiveElement(1);
-            }
+            public void onNothingSelected(AdapterView<?> parent) { }
         });
     }
 
     // Выбираем только типы, которые относятся к выбранному конструктивному элементу
-    private void setTypesFromConstructiveElement(Integer constructiveElementId){
+    private void setTypesFromConstructiveElement(Integer constructiveElementId, Integer currentTypeId){
         ArrayList<String> typesNames = new ArrayList<>();
         ArrayList<Integer> typesId = getTypesFronConstructiveElement(currentContext, constructiveElementId);
-        for (Integer typeId:typesId) { typesNames.add(getNameById(currentContext, DEFECT_TYPE_TABLE_NAME, typeId)); }
+        Integer typeNumber = 0;
+        for (int i = 0; i < typesId.size(); i++) {
+            Integer typeId = typesId.get(i);
+            typesNames.add(getNameById(currentContext, DEFECT_TYPE_TABLE_NAME, typeId));
+            if (typeId==currentTypeId) typeNumber=i;
+        }
         ArrayAdapter<String> tAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,typesNames);
         sDefect_type.setAdapter(tAdapter);
-
+        sDefect_type.setSelection(typeNumber);
     }
 
     // Наполняем активити контентом
@@ -124,10 +138,14 @@ public class DefectActivity extends AppCompatActivity {
         if (workId==-1) {
             // Если создаём новый дефект
             bAddDefect.setVisibility(View.VISIBLE);
+            bCancel.setVisibility(View.VISIBLE);
+            bSave.setVisibility(View.GONE);
         }
         else {
             // Если редактируем старый дефект
             bAddDefect.setVisibility(View.GONE);
+            bCancel.setVisibility(View.GONE);
+            bSave.setVisibility(View.VISIBLE);
             LoadData loadData = new LoadData();
             loadData.execute("");
         }
@@ -167,10 +185,9 @@ public class DefectActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String r)
         {
-
             // Отображаем дефект
-            sDefect_type.setSelection(currentDefect.getType().getServerId()-1);
             sConstructiveElement.setSelection(currentDefect.getConstructiveElement().getServerId()-1);
+            setTypesFromConstructiveElement(currentDefect.getConstructiveElement().getServerId(), currentDefect.getType().getServerId());
             etPorch.setText(getTextable(currentDefect.getPorch()));
             etFloor.setText(getTextable(currentDefect.getFloor()));
             etFlat.setText(getTextable(currentDefect.getFlat()));
@@ -186,6 +203,10 @@ public class DefectActivity extends AppCompatActivity {
         SaveDefect saveDefect = new SaveDefect(this, defect);
         saveDefect.execute("");
 
+    }
+
+    public void onCancelButtonClick(View view) {
+        onBackPressed();
     }
 
     // Создаём дефект из полей активити

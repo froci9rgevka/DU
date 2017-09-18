@@ -29,13 +29,18 @@ public class Photo implements Parcelable{
     }
 
     public Photo(Photo photo) {
-        this.id = photo.getId();
         this.serverId = photo.getServerId();
-        this.defect = new Defect(photo.getDefect());
-        this.work = new Work(photo.getWork());
+        if (photo.getDefect()==null){
+            Work work = new Work();
+            work.setServerId(photo.getWork().getServerId());
+            this.setWork(work);
+        }
+        else {
+            Defect defect = new Defect();
+            defect.setServerId(photo.getDefect().getServerId());
+            this.setDefect(defect);
+        }
         this.path = photo.getPath();
-        this.url = photo.getUrl();
-        this.image = photo.getImage();
     }
 
     public Photo(Parcel source) {

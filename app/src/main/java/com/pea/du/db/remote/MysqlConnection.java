@@ -27,7 +27,7 @@ public class MysqlConnection {
         {
             //Class.forName("net.sourceforge.jtds.jdbc.Driver");
             Class.forName("com.mysql.jdbc.Driver");
-            ConnectionURL = "jdbc:mysql://" + server + "/" + database;
+            ConnectionURL = "jdbc:mysql://" + server + "/" + database + "?useUnicode=true&characterEncoding=utf-8";
             connection = DriverManager.getConnection(ConnectionURL,user,password);
         }
         catch (SQLException se)

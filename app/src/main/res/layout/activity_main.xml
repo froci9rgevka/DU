@@ -8,10 +8,9 @@
         android:layout_height="match_parent"
         tools:context="com.pea.du.actyvities.MainActivity">
 
-    <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -33,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="1.00"
-                    android:background="@drawable/gradient1"
+                    android:background="@color/colorDefectButton"
                     android:id="@+id/activity_main_bDefect"/>
             <LinearLayout
                     android:orientation="horizontal"
@@ -45,7 +44,7 @@
                         android:layout_height="match_parent"
                         android:layout_width="match_parent"
                         android:layout_weight="1"
-                        android:background="@drawable/gradient2"
+                        android:background="@android:color/holo_blue_dark"
                         android:id="@+id/activity_main_bStage_Work"/>
                 <LinearLayout
                         android:orientation="vertical"
@@ -57,21 +56,21 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient3"
+                            android:background="@android:color/holo_green_dark"
                             android:id="@+id/activity_main_bBegin_Stage"/>
                     <Button
                             android:text="ВЫПОЛНЕНИЕ"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient4"
+                            android:background="@android:color/holo_green_light"
                             android:id="@+id/activity_main_bDuring_Stage"/>
                     <Button
                             android:text="ЗАВЕРШЕНИЕ"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:background="@drawable/gradient5"
+                            android:background="@color/colorEndButton"
                             android:id="@+id/activity_main_bEnd_Stage"/>
                 </LinearLayout>
             </LinearLayout>
@@ -79,10 +78,13 @@
 
         <ProgressBar
                 android:id="@+id/menuProgressBar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true" android:visibility="gone"/>
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:visibility="visible"
+                style="@android:style/Widget.ProgressBar.Large"
+                android:indeterminate="false"/>
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

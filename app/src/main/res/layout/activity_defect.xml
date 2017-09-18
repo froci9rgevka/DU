@@ -11,10 +11,9 @@
 
         tools:context=".actyvities.addresses.works.defectation.DefectActivity">
 
-    <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -51,38 +50,43 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent">
                             <TextView
-                                    android:layout_width="match_parent"
+                                    android:layout_width="122dp"
                                     android:layout_height="wrap_content"
                                     android:text="Конструктивный" android:id="@+id/textView18"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="27dp"
-                                    android:text="элемент" android:id="@+id/textView8" android:layout_weight="0.15"/>
+                                    android:text="элемент" android:id="@+id/textView8" android:layout_weight="0.15"
+                                    android:textAlignment="viewStart"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="5dp"
                                     android:layout_weight="0.97"
-                                    android:text="@string/activity_defect_type" android:id="@+id/textView10"/>
+                                    android:text="@string/activity_defect_type" android:id="@+id/textView10"
+                                    android:textAlignment="viewStart"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
                                     android:layout_weight="0.94"
-                                    android:text="@string/activity_defect_porch" android:id="@+id/textView11"/>
+                                    android:text="@string/activity_defect_porch" android:id="@+id/textView11"
+                                    android:textAlignment="viewStart"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="0dp"
                                     android:layout_weight="1.08"
-                                    android:text="@string/activity_defect_floor" android:id="@+id/textView12"/>
+                                    android:text="@string/activity_defect_floor" android:id="@+id/textView12"
+                                    android:textAlignment="viewStart"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="10dp"
                                     android:layout_weight="0.68"
-                                    android:text="@string/activity_defect_flat" android:id="@+id/textView14"/>
+                                    android:text="@string/activity_defect_flat" android:id="@+id/textView14"
+                                    android:textAlignment="viewStart"/>
                             <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/activity_defect_currency" android:id="@+id/textView15"
-                                    android:layout_weight="0.27"/>
+                                    android:layout_weight="0.27" android:textAlignment="viewStart"/>
                         </LinearLayout>
                         <LinearLayout
                                 android:orientation="vertical"
@@ -149,15 +153,43 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-                        <Button
+                        <LinearLayout
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.05"
-                                android:onClick="onAddDefectButtonClick"
-                                android:text="ДОБАВИТЬ ДЕФЕКТ" android:id="@+id/activity_defect_addDefect"/>
+                                android:layout_height="match_parent" android:layout_weight="0.05">
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:onClick="onAddDefectButtonClick"
+                                    android:text="ОК" android:id="@+id/activity_defect_addDefect"/>
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:text="ОТМЕНА" android:id="@+id/activity_defect_cancel"
+                                    android:onClick="onCancelButtonClick"/>
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:text="СОХРАНИТЬ" android:id="@+id/activity_defect_save"
+                                    android:onClick="onCancelButtonClick" android:visibility="gone"/>
+                        </LinearLayout>
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" android:layout_weight="0.05">
+                        </LinearLayout>
                         <fragment
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:name="com.pea.du.actyvities.addresses.works.photo.PhotoGridFragment"
                                 android:id="@+id/defect_photoGrid_fragment" android:layout_weight="0.05"
                                 tools:layout="@layout/empty_layout"/>

@@ -10,6 +10,7 @@ import com.pea.du.data.Photo;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -33,7 +34,7 @@ public class SavePhoto extends AsyncTask<String,String,String> {
 
     public SavePhoto(Context context, Photo photo){
         this.context = context;
-        this.photo = photo;
+        this.photo = new Photo(photo);
     }
 
     @Override
@@ -135,7 +136,26 @@ public class SavePhoto extends AsyncTask<String,String,String> {
 
             File f = new File(photo.getPath());
             channelSftp.put(new FileInputStream(f), photo.getServerId().toString()+".jpg");
-            z = "Фото сохранено на сервер";
+
+
+            ////////////////Проверка записался ли файл////////////////////////////
+            InputStream inputStream = channelSftp.get(photo.getServerId().toString()+".jpg");
+            if(inputStream.read(new byte[1]) == -1) {
+                if (f.length() > 0) {
+                    Toast.makeText(context, "Не удалось отправить файл на Сервер! Идет повторная отправка!", Toast.LENGTH_SHORT).show();
+                    sendSSHPhoto();
+                }
+                else {
+                    z = "Ошибка записи! Сделайте фото еще раз!";
+                    isSuccess = false;
+                }
+            }
+            else {
+                z = "Фото сохранено на сервер";
+                isSuccess = true;
+            }
+            //////////////////////////////////////////////////////////////////////
+
 
         } catch (Exception ex) {
             isSuccess = false;
@@ -153,6 +173,5 @@ public class SavePhoto extends AsyncTask<String,String,String> {
         }
 
     }
-
 
 }

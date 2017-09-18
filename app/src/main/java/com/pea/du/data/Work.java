@@ -163,8 +163,8 @@ public class Work implements Parcelable {
         if (id == null)
             return "";
         else
-            return name.toString() +
-                    ". Количество: " + cnt +
+            return  stage.toString() + " работы: '" + name.toString() +
+                    "'. Количество: " + cnt +
                     " " + measure +
                     ". Описание: " + descr;
     }

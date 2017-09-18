@@ -4,10 +4,10 @@
     <!--  Gradient Bg for listrow -->
 
     <gradient
-            android:centerColor="#202d7c"
+            android:centerColor="#283cb4"
             android:endColor="#121a49"
             android:gradientRadius="90%p"
-            android:startColor="#3045ba"
+            android:startColor="#3151ff"
             android:type="radial" >
     </gradient>
 </shape>

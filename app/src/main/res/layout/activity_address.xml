@@ -11,10 +11,9 @@
 
         tools:context="com.pea.du.actyvities.addresses.AddressesActivity">
 
-    <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -55,21 +54,15 @@
                             android:ems="10"
                             android:id="@+id/address_edittext"/>
                 </LinearLayout>
-                <ScrollView
-                        android:id="@+id/scrollView4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" tools:layout_editor_absoluteY="8dp"
-                        tools:layout_editor_absoluteX="8dp">
 
-                    <LinearLayout
-                            android:orientation="vertical"
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                    <ListView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent">
-                        <ListView
-                                android:layout_width="match_parent"
-                                android:layout_height="403dp" android:id="@+id/address_listview"/>
-                    </LinearLayout>
-                </ScrollView>
+                            android:layout_height="match_parent" android:id="@+id/address_listview"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>

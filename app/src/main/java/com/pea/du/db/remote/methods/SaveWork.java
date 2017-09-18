@@ -16,6 +16,7 @@ import java.sql.Statement;
 import static com.pea.du.db.remote.MysqlConnection.getConnection;
 import static com.pea.du.flags.Flags.currentContext;
 import static com.pea.du.flags.Flags.workId;
+import static com.pea.du.flags.Flags.workStageType;
 
 public class SaveWork extends AsyncTask<String,String,String>{
 
@@ -38,6 +39,7 @@ public class SaveWork extends AsyncTask<String,String,String>{
             work.setId(WriteMethods.setWork(currentContext, work));
 
             workId = work.getServerId();
+            workStageType = work.getStage().getName();
 
             ((StageActivity) currentContext).setStageActivityContent();
         }
@@ -59,13 +61,14 @@ public class SaveWork extends AsyncTask<String,String,String>{
                 if(work.getSubcontract()) contractor = work.getContractor().getServerId();
 
                 String query =
-                        "insert into hsg_dataworktape (House, Work, Cnt, MeasureC, Descr, Subcontract, Docdate, Contractor, WorkStage, Author) values ("
+                        "insert into hsg_dataworktape (House, Work, Cnt, MeasureC, Descr, Subcontract, Docdate, FixDate, Contractor, WorkStage, Author) values ("
                                 + work.getAddress().getServerId() + ","
                                 + work.getName().getServerId() + ","
                                 + work.getCnt() + ","
                                 + work.getMeasure().getServerId() + ",'"
                                 + work.getDescr() + "',"
                                 + work.getSubcontract() + ","
+                                + "NOW()" + ","
                                 + "NOW()" + ","
                                 + contractor + ","
                                 + work.getStage().getServerId() + ","

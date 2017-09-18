@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">#303f9f</color> //848dbf
     <color name="colorPrimaryDark">#192150</color> // FF444D83
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorDefectButton">#444d83</color>
+    <color name="colorAccent">#005aff</color>
+    <color name="colorDefectButton">#9575CD</color>
+    <color name="colorEndButton">#ffd54f</color>
 </resources>

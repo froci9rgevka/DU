@@ -197,7 +197,7 @@ public class LoadData extends AsyncTask<String,String,String> {
             work.setCnt(rs.getString("Cnt"));
             work.setMeasure(new StaticValue(rs.getInt("MeasureC"), DEFECT_MEASURE_TABLE_NAME, DEFECT_MEASURE));
             work.setDescr(rs.getString("Descr"));
-            work.setSubcontract(Boolean.parseBoolean(rs.getString("Subcontract")));
+            work.setSubcontract(rs.getString("Subcontract").equals("1"));
             work.setContractor(new StaticValue(rs.getInt("Contractor"), CONTRACTOR_TABLE_NAME, CONTRACTOR));
             works.add(work);
         }

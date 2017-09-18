@@ -20,8 +20,7 @@ import com.pea.du.db.remote.methods.SavePhoto;
 import com.pea.du.tools.gridview.GridViewAdapter;
 import com.pea.du.tools.gridview.ImageItem;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -221,7 +220,6 @@ public class PhotoGridFragment extends android.support.v4.app.Fragment {
             //controller.start();
 
             isPhotoSending = true;
-            //bAddPhoto.setEnabled(!isPhotoSending);
 
             SavePhoto savePhoto = new SavePhoto(currentContext, newPhoto);
             savePhoto.execute("");

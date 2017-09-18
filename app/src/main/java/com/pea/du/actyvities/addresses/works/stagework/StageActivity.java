@@ -32,8 +32,10 @@ public class StageActivity extends AppCompatActivity {
 
     LinearLayout llContractor;
 
-    ToggleButton tbSubContractor;
+    Switch tbSubContractor;
     Button bAddStage;
+    Button bCancel;
+    Button bSave;
 
     android.support.v4.app.Fragment photoGridFragment;
 
@@ -71,7 +73,7 @@ public class StageActivity extends AppCompatActivity {
 
         llContractor = (LinearLayout) findViewById(R.id.activity_stage_contractorLayout);
 
-        tbSubContractor = (ToggleButton) findViewById(R.id.activity_stage_subContractorButton);
+        tbSubContractor = (Switch) findViewById(R.id.activity_stage_subContractorButton);
         tbSubContractor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -83,6 +85,8 @@ public class StageActivity extends AppCompatActivity {
         });
 
         bAddStage = (Button) findViewById(R.id.activity_stage_addWork);
+        bCancel = (Button) findViewById(R.id.activity_stage_cancel);
+        bSave = (Button) findViewById(R.id.activity_stage_save);
 
         photoGridFragment = new PhotoGridFragment();
 
@@ -112,6 +116,8 @@ public class StageActivity extends AppCompatActivity {
         if (workId == -1) {
             // Если создаём новый дефект
             bAddStage.setVisibility(View.VISIBLE);
+            bCancel.setVisibility(View.VISIBLE);
+            bSave.setVisibility(View.GONE);
 
             if(!(workStageType==null)) {
                 StaticValue stage = new StaticValue(STAGE_TABLE_NAME, STAGE);
@@ -123,6 +129,8 @@ public class StageActivity extends AppCompatActivity {
         } else {
             // Если редактируем старый дефект
             bAddStage.setVisibility(View.GONE);
+            bCancel.setVisibility(View.GONE);
+            bSave.setVisibility(View.VISIBLE);
             setFragmentContent();
             StageActivity.LoadData loadData = new StageActivity.LoadData();
             loadData.execute("");
@@ -163,6 +171,7 @@ public class StageActivity extends AppCompatActivity {
             sStage.setSelection(work.getStage().getServerId() - 1);
             sWorkName.setSelection(work.getName().getServerId() - 1);
             sMeasure.setSelection(work.getMeasure().getServerId() - 1);
+            tbSubContractor.setChecked(work.getSubcontract());
             sContractor.setSelection(work.getContractor().getServerId()-1);
             etCurrency.setText(getTextable(work.getCnt()));
             etDescription.setText(work.getDescr());
@@ -175,6 +184,10 @@ public class StageActivity extends AppCompatActivity {
 
         SaveWork saveWork = new SaveWork(work);
         saveWork.execute("");
+    }
+
+    public void onCancelButtonClick(View view) {
+        onBackPressed();
     }
 
     // Создаём дефект из полей активити

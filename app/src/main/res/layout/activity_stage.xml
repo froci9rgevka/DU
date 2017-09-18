@@ -11,10 +11,9 @@
 
         tools:context="com.pea.du.actyvities.addresses.works.stagework.StageActivity">
 
-    <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="551dp" tools:layout_editor_absoluteY="8dp"
-            tools:layout_editor_absoluteX="8dp" tools:ignore="MissingConstraints">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
 
         <LinearLayout
                 android:orientation="vertical"
@@ -96,14 +95,17 @@
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
-                    <ToggleButton
-                            android:text="ToggleButton"
+                    <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" android:id="@+id/activity_stage_subContractorButton"
-                            android:layout_weight="1"
-                            android:checked="false"
-                            android:textOff="УКАЗАТЬ ПОДРЯДЧИКА"
-                            android:textOn="НЕ УКАЗЫВАТЬ ПОДРЯДЧИКА"/>
+                            android:layout_height="match_parent">
+                        <Switch
+                                android:text="Указать подрядчика"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/activity_stage_subContractorButton"
+                                android:layout_weight="1"/>
+                    </LinearLayout>
                     <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -136,15 +138,43 @@
                             android:orientation="vertical"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-                        <Button
+                        <LinearLayout
+                                android:orientation="horizontal"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="0.05"
-                                android:text="ДОБАВИТЬ РАБОТУ" android:id="@+id/activity_stage_addWork"
-                                android:onClick="onAddWorkButtonClick"/>
+                                android:layout_height="match_parent" android:layout_weight="0.05">
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:text="ОК" android:id="@+id/activity_stage_addWork"
+                                    android:onClick="onAddWorkButtonClick"/>
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:text="ОТМЕНА" android:id="@+id/activity_stage_cancel"
+                                    android:onClick="onCancelButtonClick"/>
+                            <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#ffffff"
+                                    android:background="@drawable/mybutton"
+                                    android:layout_weight="1"
+                                    android:text="СОХРАНИТЬ" android:id="@+id/activity_stage_save"
+                                    android:onClick="onCancelButtonClick" android:visibility="gone"/>
+                        </LinearLayout>
+                        <LinearLayout
+                                android:orientation="horizontal"
+                                android:layout_width="match_parent"
+                                android:layout_height="10dp" android:layout_weight="0.05">
+                        </LinearLayout>
                         <fragment
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
+                                android:layout_height="match_parent"
                                 android:name="com.pea.du.actyvities.addresses.works.photo.PhotoGridFragment"
                                 android:id="@+id/stage_photoGrid_fragment" android:layout_weight="0.05"
                                 tools:layout="@layout/empty_layout"/>

@@ -19,7 +19,7 @@ public class Flags {
     //workStageType вариации
     final static public String BEGIN_WORK = "Начало";
     final static public String DURING_WORK = "Выполнение";
-    final static public String END_WORK = "Завершена";
+    final static public String END_WORK = "Завершение";
 
     //Флаги блокировки активити или кнопок
     public static Boolean isPhotoSending = false;

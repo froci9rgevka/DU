@@ -113,6 +113,7 @@ public class WorksActivity extends AppCompatActivity {
         }
         else {
             workId = workList.get(position).getServerId();
+            workStageType = workList.get(position).getStage().getName();
 
             Intent intent = new Intent(WorksActivity.this, StageActivity.class);
             startActivity(intent);
