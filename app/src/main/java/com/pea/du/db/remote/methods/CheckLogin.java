@@ -7,6 +7,8 @@ import android.widget.Toast;
 import com.pea.du.actyvities.MainActivity;
 import com.pea.du.data.User;
 import com.pea.du.db.local.methods.WriteMethods;
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -32,7 +34,6 @@ public class CheckLogin extends AsyncTask<String,String,String> {
     @Override
     protected void onPreExecute(){
         Toast.makeText(currentContext, "Выполняется вход...", Toast.LENGTH_LONG).show();
-
     }
 
     @Override
@@ -60,12 +61,14 @@ public class CheckLogin extends AsyncTask<String,String,String> {
             }
             else
             {
-                String query = "SELECT Id, Login from tmausers where Login='" + user.getNickname() + "'";
+                String query = "SELECT Id, Login, Employee from hsg_dirMobileUsers where " +
+                        "Login='" + user.getNickname() + "' AND " +
+                        "Password='" + new String(Hex.encodeHex(DigestUtils.sha1(user.getPassword()))) + "'";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
 
                 if (rs.next()) {
-                    user.setServerId(rs.getInt("Id"));
+                    user.setServerId(rs.getInt("Employee"));
                     WriteMethods.setUser(currentContext, user);
                     isSuccess = true;
                 }

@@ -78,6 +78,9 @@ dependencies {
     //////////////FUNCTIONALITY
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'mysql:mysql-connector-java:5.1.24'
+    // String to SHA1
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.7'
+
     /////////////WEB
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
 
