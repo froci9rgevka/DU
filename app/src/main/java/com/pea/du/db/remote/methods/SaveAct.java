@@ -68,10 +68,11 @@ public class SaveAct extends AsyncTask<String,String,String>{
             else
             {
                 String query =
-                        "insert into zkh_actofdefect (CreateDate, Author, Adress) values ("
+                        "insert into zkh_actofdefect (CreateDate, Author, Adress, Status) values ("
                                 + "Now()" + ","
                                 + act.getUser().getServerId() + ","
-                                + act.getAddress().getServerId() + ")";
+                                + act.getAddress().getServerId() + "," +
+                                "1" + ")";
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate(query);
 
